@@ -1,0 +1,4108 @@
+# 🏛️ MAJLIS
+## Engineering Layer — System Architecture
+### Version 1.0 | Enterprise Grade
+
+---
+
+```
+Document Control
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Document:     ENG-ARCH-MAJLIS-001
+Version:      1.0.0
+Status:       APPROVED FOR ENGINEERING
+Follows:      PRD-MAJLIS-001 + IA-WF-001
+Owner:        Engineering & Architecture Team
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 1 — SYSTEM ARCHITECTURE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 1.1 — Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MAJLIS SYSTEM ARCHITECTURE               │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                 │
+│  │ iOS App  │  │Android   │  │ Web App  │  CLIENTS        │
+│  │ Flutter  │  │ Flutter  │  │ Flutter  │                 │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘                 │
+│       └─────────────┴─────────────┘                        │
+│                      │ HTTPS / WSS                         │
+│  ┌───────────────────▼─────────────────────────────────┐   │
+│  │                  CDN (CloudFront)                   │   │
+│  │         Static Assets + API Cache + DDoS            │   │
+│  └───────────────────┬─────────────────────────────────┘   │
+│                      │                                      │
+│  ┌───────────────────▼─────────────────────────────────┐   │
+│  │               API GATEWAY (Kong)                    │   │
+│  │    Rate Limiting + Auth + Routing + Monitoring      │   │
+│  └──┬──────┬──────┬──────┬──────┬──────┬──────┬───────┘   │
+│     │      │      │      │      │      │      │            │
+│  ┌──▼─┐ ┌──▼─┐ ┌──▼─┐ ┌──▼─┐ ┌──▼─┐ ┌──▼─┐ ┌──▼─┐      │
+│  │AUTH│ │USER│ │ACCEL│ │DEAL│ │FEED│ │NOTIF│ │ AI │      │
+│  │SVC │ │SVC │ │ SVC │ │SVC │ │SVC │ │ SVC │ │SVC │      │
+│  └──┬─┘ └──┬─┘ └──┬──┘ └──┬─┘ └──┬─┘ └──┬──┘ └──┬─┘      │
+│     └──────┴──────┴──────┴──────┴──────┴──────┘            │
+│                      │ Message Bus (Redis Pub/Sub)          │
+│  ┌───────────────────▼─────────────────────────────────┐   │
+│  │                  DATA LAYER                         │   │
+│  │  PostgreSQL  Redis  Elasticsearch  Pinecone  Neo4j  │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 1.2 — Microservices Map
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 1: AUTH SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → Registration + Login
+  → OTP Generation & Validation
+  → JWT Issue + Refresh + Revoke
+  → OAuth (Google + LinkedIn)
+  → Session Management
+  → MFA
+Port:         3001
+DB:           PostgreSQL (users, sessions)
+Cache:        Redis (OTPs, tokens blacklist)
+Publishes:    user.registered, user.verified
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 2: USER SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → User Profiles (CRUD)
+  → Company Profiles
+  → Connections + Following
+  → Search (People + Companies)
+  → Verification Badges
+  → Profile Analytics
+Port:         3002
+DB:           PostgreSQL (profiles)
+Cache:        Redis (profile views)
+Search:       Elasticsearch
+Graph:        Neo4j (connections graph)
+Publishes:    profile.updated, connection.made
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 3: ACCELERATOR SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → Accelerator Profiles
+  → Cohort Management
+  → Startup Scorecards
+  → Verified Pipeline
+  → Milestone Tracking
+  → Demo Day Management
+  → Alumni Network
+Port:         3003
+DB:           PostgreSQL (accelerators, cohorts)
+Publishes:    startup.graduated, scorecard.updated
+               demo_day.created
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 4: DEAL SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → Deal Rooms (Create + Manage)
+  → Pitch Deck Upload + Processing
+  → Slide Analytics + Visit Tracking
+  → Data Room + File Management
+  → NDA Management
+  → Interest Signals
+  → Deal Pipeline (Investor side)
+  → Cap Table Management
+  → Intro Requests
+Port:         3004
+DB:           PostgreSQL (deals, rooms, cap_table)
+Storage:      S3 (decks, documents)
+Cache:        Redis (visit sessions)
+Publishes:    deal_room.visited, interest.expressed
+               deal.closed, intro.requested
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 5: FEED SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → Post Creation + CRUD
+  → Feed Generation (Personalized)
+  → Reactions + Comments
+  → Rooms Management
+  → Content Moderation
+  → Trending Topics
+Port:         3005
+DB:           PostgreSQL (posts, reactions)
+Cache:        Redis (feed cache per user)
+Search:       Elasticsearch (post search)
+Queue:        Bull (feed fanout)
+Publishes:    post.created, milestone.published
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 6: MESSAGING SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → Direct Messages
+  → Real-time Delivery (WebSocket)
+  → Message Requests
+  → File Sharing in Chat
+  → Online Presence
+Port:         3006
+DB:           PostgreSQL (messages)
+Cache:        Redis (online status, unread counts)
+Realtime:     Socket.io
+Publishes:    message.sent, message.read
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 7: NOTIFICATION SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → In-App Notifications
+  → Push Notifications (FCM + APNs)
+  → Email Notifications (SendGrid)
+  → SMS Notifications (Twilio)
+  → Notification Preferences
+  → Digest Emails
+Port:         3007
+DB:           PostgreSQL (notifications)
+Queue:        Bull (delivery queue)
+Subscribes:   ALL service events
+Publishes:    notification.sent, notification.read
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 8: AI SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Python + FastAPI
+Responsibility:
+  → Pitch Deck Analysis (GPT-4o Vision)
+  → Meeting Transcription (Whisper)
+  → Meeting Summarization
+  → Investor-Startup Matching
+  → Feed Personalization Signals
+  → Fraud Detection
+  → Document Q&A (RAG)
+  → Execution Score Calculation
+  → Equity Compatibility Score
+  → Market Intelligence
+Port:         3008
+DB:           PostgreSQL (ai_results, embeddings)
+Vector:       Pinecone (embeddings)
+Queue:        Bull (async AI jobs)
+External:     OpenAI API, Whisper API
+Publishes:    ai.analysis_ready, ai.match_found
+               ai.insight_generated
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 9: MARKETPLACE SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Node.js + TypeScript
+Responsibility:
+  → Startup Listings
+  → Franchise Listings
+  → Equity Role Listings
+  → Fund Listings
+  → Marketplace Browse + Filters
+  → Featured Listings
+  → Listing Analytics
+Port:         3009
+DB:           PostgreSQL (listings)
+Search:       Elasticsearch (marketplace search)
+Cache:        Redis (listing views)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SERVICE 10: ANALYTICS SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Language:     Python + FastAPI
+Responsibility:
+  → Event Tracking (all user actions)
+  → Business Metrics Aggregation
+  → Deal Analytics
+  → Platform Health Metrics
+  → Market Intelligence Data
+Port:         3010
+DB:           PostgreSQL (events)
+             ClickHouse (analytics OLAP)
+Subscribes:   ALL service events
+```
+
+---
+
+## 1.3 — Infrastructure Architecture
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AWS Infrastructure (Production)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Region Primary:    me-central-1 (UAE)
+Region Secondary:  me-south-1 (Bahrain)
+                   (Disaster Recovery)
+
+VPC Design:
+┌────────────────────────────────────────┐
+│  VPC: 10.0.0.0/16                     │
+│                                        │
+│  Public Subnets (3 AZs):              │
+│  → Load Balancers                     │
+│  → NAT Gateways                       │
+│  → Bastion Host                       │
+│                                        │
+│  Private Subnets (3 AZs):             │
+│  → EKS Worker Nodes                   │
+│  → RDS Instances                      │
+│  → ElastiCache                        │
+│                                        │
+│  Isolated Subnets (3 AZs):            │
+│  → RDS Primary                        │
+│  → Backup Storage                     │
+└────────────────────────────────────────┘
+
+Compute:
+  Orchestration:   AWS EKS (Kubernetes)
+  Node Groups:
+    → General: t3.xlarge (4 vCPU, 16GB)
+    → AI:      g4dn.xlarge (GPU)
+    → Memory:  r6i.large (memory optimized)
+
+  Auto Scaling:
+    Min: 2 nodes per group
+    Max: 20 nodes per group
+    Metric: CPU > 70% OR Memory > 80%
+
+Load Balancing:
+  External: AWS ALB (Application LB)
+  Internal: AWS NLB (Network LB)
+  Algorithm: Least Outstanding Requests
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Kubernetes Architecture
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Namespaces:
+  production:   Services في الـ Production
+  staging:      Services في الـ Staging
+  monitoring:   Prometheus + Grafana
+  ingress:      Nginx Ingress Controller
+
+Per Service (Deployment):
+  Replicas:     min 2, max 10
+  Strategy:     RollingUpdate
+  Resources:
+    requests: cpu: 250m, memory: 512Mi
+    limits:   cpu: 1000m, memory: 2Gi
+
+  Health Checks:
+    Liveness:   GET /health (30s interval)
+    Readiness:  GET /ready (10s interval)
+
+  Pod Disruption Budget:
+    minAvailable: 1 (ensures no downtime)
+
+HPA (Horizontal Pod Autoscaler):
+  Metric:       CPU Utilization > 70%
+  Scale Up:     +2 pods (stabilization: 60s)
+  Scale Down:   -1 pod (stabilization: 300s)
+```
+
+---
+
+## 1.4 — Real-time Architecture
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WebSocket Architecture
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Problem: Multiple instances of Messaging Service
+         يجب أن يصل الـ message لأي instance
+
+Solution: Redis Pub/Sub as Message Broker
+
+Flow:
+Client A → WS → Instance 1
+Client B → WS → Instance 2
+
+Message A→B:
+  1. Instance 1 receives message
+  2. Saves to PostgreSQL
+  3. Publishes to Redis channel: "user:{B_id}"
+  4. Instance 2 subscribes to "user:{B_id}"
+  5. Instance 2 delivers to Client B via WS
+
+Rooms (Deal Day, Group):
+  Redis channel: "room:{room_id}"
+  All instances subscribe to active rooms
+
+Connection Management:
+  On Connect:   SET user:{id}:socket → instance_id (Redis)
+  On Disconnect: DEL user:{id}:socket
+  Heartbeat:    Ping every 30s
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Event-Driven Architecture
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Event Bus: Redis Pub/Sub (Phase 1)
+           → Migrate to Kafka (Phase 3+)
+
+Event Schema:
+{
+  "event_id": "uuid",
+  "event_type": "deal_room.visited",
+  "version": "1.0",
+  "timestamp": "ISO8601",
+  "source_service": "deal-service",
+  "actor_id": "user_uuid",
+  "payload": {
+    // event-specific data
+  },
+  "metadata": {
+    "correlation_id": "uuid",
+    "environment": "production"
+  }
+}
+
+Critical Event Flows:
+
+1. DEAL ROOM VISITED:
+   Deal Service → PUBLISHES → deal_room.visited
+   ↓
+   Notification Service → SUBSCRIBES → notifies Founder
+   Analytics Service → SUBSCRIBES → logs event
+   AI Service → SUBSCRIBES → updates interest signals
+
+2. STARTUP GRADUATED:
+   Accelerator Service → PUBLISHES → startup.graduated
+   ↓
+   Deal Service → creates Verified Pipeline entry
+   Marketplace Service → adds to listings
+   Notification Service → notifies startup founder
+
+3. DEAL CLOSED:
+   Deal Service → PUBLISHES → deal.closed
+   ↓
+   Cap Table Service → creates entry
+   Analytics Service → updates metrics
+   Feed Service → creates announcement post
+   Notification Service → congratulations
+   AI Service → trains matching model
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 2 — TECH STACK DECISIONS
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 2.1 — Full Tech Stack
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FRONTEND / MOBILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Framework:        Flutter 3.x
+Language:         Dart
+State Management: BLoC + Cubit
+Navigation:       GoRouter (Deep linking)
+HTTP Client:      Dio + Retrofit
+WebSocket:        socket_io_client
+Local Storage:    Hive (NoSQL) + SharedPrefs
+Caching:          flutter_cache_manager
+Images:           cached_network_image
+DI:               GetIt + Injectable
+Code Gen:         build_runner, freezed, json_serializable
+Analytics:        PostHog Flutter SDK
+Crash Reporting:  Sentry Flutter
+Push:             firebase_messaging
+RTL:              Native Flutter RTL support
+Testing:          flutter_test + mockito + integration_test
+CI/CD:            Fastlane + GitHub Actions
+
+Why Flutter?
+✅ Single codebase: iOS + Android + Web
+✅ RTL support built-in
+✅ Performance near-native
+✅ Hot reload = fast development
+✅ Growing MENA developer community
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BACKEND SERVICES (Node.js)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Runtime:          Node.js 20 LTS
+Language:         TypeScript 5.x
+Framework:        Fastify (faster than Express)
+ORM:              Prisma
+Validation:       Zod
+Auth:             jose (JWT) + bcrypt
+File Upload:      Multipart + Sharp (images)
+Queue:            BullMQ
+Testing:          Vitest + Supertest
+Linting:          ESLint + Prettier
+Documentation:    Swagger/OpenAPI 3.0
+
+Why Fastify over Express?
+✅ 2x faster throughput
+✅ Built-in schema validation
+✅ TypeScript-first
+✅ Plugin architecture
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BACKEND SERVICES (Python — AI)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Runtime:          Python 3.11
+Framework:        FastAPI
+AI Orchestration: LangChain + LangGraph
+LLM:              OpenAI GPT-4o
+Speech:           OpenAI Whisper
+Embeddings:       OpenAI text-embedding-3-large
+Vector Store:     Pinecone
+Document Parse:   LlamaParse + PyMuPDF
+ML:               scikit-learn + XGBoost
+Deep Learning:    PyTorch (matching models)
+Graph ML:         PyTorch Geometric
+Testing:          pytest + httpx
+Async:            asyncio + httpx
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DATABASES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Primary DB:       PostgreSQL 16
+  Hosting:        AWS RDS
+  Config:         Multi-AZ deployment
+  Read Replicas:  2 (for read-heavy queries)
+  Extensions:     pgvector, uuid-ossp,
+                  pg_trgm, postgis (future)
+
+Cache:            Redis 7 (Cluster Mode)
+  Hosting:        AWS ElastiCache
+  Use Cases:
+    → Sessions & JWT blacklist
+    → OTP storage (TTL 10min)
+    → Feed cache (TTL 5min)
+    → Rate limiting counters
+    → Real-time presence
+    → Job queues (BullMQ)
+
+Search:           Elasticsearch 8
+  Hosting:        AWS OpenSearch
+  Indexes:
+    → users (profile search)
+    → companies (company search)
+    → posts (content search)
+    → listings (marketplace search)
+
+Vector DB:        Pinecone
+  Use Cases:
+    → User embeddings (matching)
+    → Company embeddings
+    → Post semantic search
+    → Document Q&A (RAG)
+
+Graph DB:         Neo4j
+  Hosting:        Neo4j AuraDB
+  Use Cases:
+    → Social connections graph
+    → Warm intro path finding
+    → Network strength scoring
+
+Analytics OLAP:   ClickHouse (Phase 2+)
+  Use Cases:
+    → Product analytics
+    → Business intelligence
+    → Market intelligence reports
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INFRASTRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Cloud:            AWS
+Containers:       Docker
+Orchestration:    Kubernetes (EKS)
+Service Mesh:     Istio (Phase 2)
+API Gateway:      Kong
+IaC:              Terraform
+Config Mgmt:      Helm Charts
+Secret Mgmt:      AWS Secrets Manager
+                  + HashiCorp Vault
+
+Storage:          AWS S3 (KSA region)
+CDN:              CloudFront
+DNS:              Route 53
+SSL:              AWS Certificate Manager
+Email:            SendGrid (transactional)
+SMS:              Twilio + Unifonic
+Push:             FCM + APNs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OBSERVABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Metrics:          Prometheus + Grafana
+Tracing:          Jaeger (Distributed Tracing)
+Logging:          ELK Stack
+                  (Elasticsearch + Logstash + Kibana)
+Errors:           Sentry
+Uptime:           AWS CloudWatch + PagerDuty
+APM:              DataDog
+Product Analytics: PostHog (self-hosted)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CI/CD PIPELINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Source Control:   GitHub
+CI:               GitHub Actions
+CD:               ArgoCD (GitOps)
+Registry:         AWS ECR (Container Registry)
+Mobile:           Fastlane
+                  → iOS: TestFlight → App Store
+                  → Android: Internal → Play Store
+Code Quality:     SonarQube
+Dependency Scan:  Dependabot + Snyk
+```
+
+---
+
+## 2.2 — Architecture Decision Records (ADRs)
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADR-001: Microservices vs Monolith
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Decision: Modular Monolith → Microservices
+
+Rationale:
+Phase 1: Modular Monolith
+  → أسرع في البناء
+  → أقل complexity
+  → فريق صغير يديره بسهولة
+  → يمكن تقسيمه لاحقاً
+
+Phase 3+: Full Microservices
+  → Scale مستقل لكل service
+  → تقنيات مختلفة حسب الحاجة
+  → fault isolation
+
+Migration Path:
+  Monolith بـ Domain Modules →
+  Extract services تدريجياً →
+  Full Microservices
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADR-002: Flutter vs React Native vs Native
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Decision: Flutter
+
+Why not React Native:
+  → Bridge overhead
+  → JSI improvement but still not native
+  → Fragmented ecosystem
+
+Why not Native (Swift + Kotlin):
+  → 2x development cost
+  → 2x team size
+  → مشكلة RTL تحتاج حل مزدوج
+
+Why Flutter:
+  ✅ Single codebase iOS + Android + Web
+  ✅ Skia rendering = consistent UI
+  ✅ RTL support built-in وممتاز
+  ✅ Performance ممتازة للـ Social apps
+  ✅ Arabic font rendering ممتاز
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADR-003: PostgreSQL vs MongoDB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Decision: PostgreSQL
+
+Why PostgreSQL wins:
+  ✅ ACID transactions (للـ Cap Table والـ Deals)
+  ✅ Complex joins للعلاقات
+  ✅ JSONB للـ flexible fields
+  ✅ Row-level security (RLS)
+  ✅ pgvector للـ embeddings
+  ✅ Mature ecosystem
+  ✅ Better for financial data
+
+When to use MongoDB:
+  → لو كانت البيانات document-heavy فقط
+  → لو لا توجد علاقات معقدة
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADR-004: REST vs GraphQL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Decision: REST (Primary) + GraphQL (Feed only)
+
+REST for:
+  → CRUD operations
+  → Simple request/response
+  → Caching (easier with REST)
+  → Developer familiarity
+
+GraphQL for:
+  → Feed (complex nested queries)
+  → Real-time subscriptions
+  → Mobile (reduces over-fetching)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ADR-005: Redis Pub/Sub vs Kafka
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 1 Decision: Redis Pub/Sub
+
+Rationale:
+  → Redis موجود بالفعل للـ Cache
+  → No additional infra
+  → Simpler operations
+  → Sufficient for < 10K events/second
+
+Phase 3 Migration to Kafka when:
+  → Events > 10K/second
+  → Need event replay
+  → Need event sourcing
+  → Multiple consumer groups needed
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 3 — DATABASE SCHEMA (COMPLETE)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 3.1 — Complete SQL Schema
+
+```sql
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- EXTENSIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+CREATE EXTENSION IF NOT EXISTS "pgvector";
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- ENUMS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TYPE user_role AS ENUM (
+  'FOUNDER', 'INVESTOR', 'ACCELERATOR',
+  'OPERATOR', 'ANGEL', 'FRANCHISE', 'ADMIN'
+);
+
+CREATE TYPE company_type AS ENUM (
+  'STARTUP', 'VC_FUND', 'ACCELERATOR',
+  'INCUBATOR', 'CORPORATE', 'FAMILY_OFFICE',
+  'ANGEL_SYNDICATE', 'FRANCHISE_BRAND',
+  'GOVERNMENT', 'SERVICE_PROVIDER'
+);
+
+CREATE TYPE startup_stage AS ENUM (
+  'IDEA', 'PRE_SEED', 'SEED',
+  'SERIES_A', 'SERIES_B', 'SERIES_C',
+  'GROWTH', 'PRE_IPO'
+);
+
+CREATE TYPE deal_status AS ENUM (
+  'SOURCED', 'REVIEWING', 'MEETING_SCHEDULED',
+  'DUE_DILIGENCE', 'TERM_SHEET',
+  'NEGOTIATING', 'CLOSED_WON', 'CLOSED_LOST', 'ON_HOLD'
+);
+
+CREATE TYPE investment_instrument AS ENUM (
+  'EQUITY', 'SAFE', 'CONVERTIBLE_NOTE',
+  'DEBT', 'REVENUE_SHARE', 'GRANT'
+);
+
+CREATE TYPE cohort_startup_status AS ENUM (
+  'IN_PROGRAM', 'GRADUATED', 'RAISING',
+  'FUNDED', 'DROPPED'
+);
+
+CREATE TYPE interest_level AS ENUM (
+  'WATCHING', 'INTERESTED', 'READY_TO_INVEST'
+);
+
+CREATE TYPE equity_role_type AS ENUM (
+  'COFOUNDER', 'FRACTIONAL_COFOUNDER',
+  'EQUITY_EXECUTIVE', 'ADVISOR_EQUITY'
+);
+
+CREATE TYPE connection_status AS ENUM (
+  'PENDING', 'ACCEPTED', 'BLOCKED'
+);
+
+CREATE TYPE notification_type AS ENUM (
+  'CONNECTION_REQUEST', 'CONNECTION_ACCEPTED',
+  'DEAL_ROOM_INVITE', 'INVESTOR_INTEREST',
+  'PROFILE_VIEWED', 'POST_REACTION',
+  'POST_COMMENT', 'DEAL_STAGE_CHANGE',
+  'DOCUMENT_VIEWED', 'REMINDER_DUE',
+  'MILESTONE_DUE', 'NDA_SIGNED',
+  'MEETING_SCHEDULED', 'NEW_MATCH',
+  'ROOM_INVITE', 'MENTION', 'AI_INSIGHT',
+  'KPI_UPDATE', 'DEAL_CLOSED'
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- CORE: USERS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE users (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  email                 VARCHAR(255) UNIQUE,
+  phone                 VARCHAR(25) UNIQUE,
+  password_hash         VARCHAR(255),
+  primary_role          user_role NOT NULL,
+  full_name_ar          VARCHAR(255),
+  full_name_en          VARCHAR(255),
+  username              VARCHAR(50) UNIQUE NOT NULL,
+  profile_photo_url     TEXT,
+  cover_photo_url       TEXT,
+  bio_ar                TEXT,
+  bio_en                TEXT,
+  headline              VARCHAR(200),
+  country               CHAR(2),
+  city                  VARCHAR(100),
+  language_pref         VARCHAR(5) DEFAULT 'ar',
+  timezone              VARCHAR(50) DEFAULT 'Asia/Riyadh',
+
+  -- Verification
+  email_verified        BOOLEAN DEFAULT FALSE,
+  phone_verified        BOOLEAN DEFAULT FALSE,
+  identity_verified     BOOLEAN DEFAULT FALSE,
+  accredited_investor   BOOLEAN DEFAULT FALSE,
+  verification_level    SMALLINT DEFAULT 0
+                        CHECK (verification_level BETWEEN 0 AND 4),
+
+  -- Scores (AI-calculated)
+  trust_score           SMALLINT DEFAULT 0
+                        CHECK (trust_score BETWEEN 0 AND 100),
+  activity_score        SMALLINT DEFAULT 0
+                        CHECK (activity_score BETWEEN 0 AND 100),
+
+  -- Subscription
+  subscription_plan     VARCHAR(50) DEFAULT 'FREE',
+  subscription_expires  TIMESTAMPTZ,
+
+  -- Status
+  is_active             BOOLEAN DEFAULT TRUE,
+  is_suspended          BOOLEAN DEFAULT FALSE,
+  suspension_reason     TEXT,
+  deactivated_at        TIMESTAMPTZ,
+
+  -- Counters (denormalized for performance)
+  followers_count       INTEGER DEFAULT 0,
+  following_count       INTEGER DEFAULT 0,
+  connections_count     INTEGER DEFAULT 0,
+  posts_count           INTEGER DEFAULT 0,
+
+  last_active_at        TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_users_email ON users(email)
+  WHERE email IS NOT NULL;
+CREATE INDEX idx_users_phone ON users(phone)
+  WHERE phone IS NOT NULL;
+CREATE INDEX idx_users_username ON users(username);
+CREATE INDEX idx_users_role ON users(primary_role);
+CREATE INDEX idx_users_country ON users(country);
+CREATE INDEX idx_users_active ON users(is_active, last_active_at DESC);
+CREATE INDEX idx_users_search ON users
+  USING GIN (
+    to_tsvector('arabic', COALESCE(full_name_ar,''))
+    || to_tsvector('english', COALESCE(full_name_en,''))
+  );
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- USER ROLE PROFILES
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE investor_profiles (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  user_id               UUID UNIQUE NOT NULL
+                        REFERENCES users(id) ON DELETE CASCADE,
+
+  investor_type         VARCHAR(50) NOT NULL,
+  -- ANGEL/MICRO_VC/VC_FUND/FAMILY_OFFICE/
+  -- CORPORATE_VC/SOVEREIGN_FUND
+
+  thesis_description    TEXT,
+  focus_industries      TEXT[],
+  focus_stages          startup_stage[],
+  focus_geographies     CHAR(2)[],
+
+  check_size_min        BIGINT,
+  check_size_max        BIGINT,
+  check_size_sweet      BIGINT,
+
+  investments_count     SMALLINT DEFAULT 0,
+  total_deployed        BIGINT DEFAULT 0,
+
+  lead_investor         BOOLEAN DEFAULT FALSE,
+  co_invest             BOOLEAN DEFAULT TRUE,
+  board_seats           BOOLEAN DEFAULT FALSE,
+
+  decision_days_avg     SMALLINT,
+  response_rate         DECIMAL(5,2),
+  -- % of messages he responds to
+
+  open_to_cold          BOOLEAN DEFAULT FALSE,
+  requires_warm_intro   BOOLEAN DEFAULT TRUE,
+
+  preferred_contact     VARCHAR(50),
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE founder_profiles (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  user_id               UUID UNIQUE NOT NULL
+                        REFERENCES users(id) ON DELETE CASCADE,
+  company_id            UUID REFERENCES companies(id),
+
+  founder_type          VARCHAR(50),
+  -- SOLO/CO_FOUNDER/REPEAT_FOUNDER
+
+  previous_companies    TEXT[],
+  previous_exits        INTEGER DEFAULT 0,
+  domain_expertise      TEXT[],
+
+  currently_raising     BOOLEAN DEFAULT FALSE,
+  raising_stage         startup_stage,
+  raising_amount        BIGINT,
+  raising_currency      CHAR(3) DEFAULT 'USD',
+  raising_deadline      DATE,
+
+  execution_score       SMALLINT DEFAULT 0
+                        CHECK (execution_score BETWEEN 0 AND 100),
+  execution_score_data  JSONB,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE operator_profiles (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  user_id               UUID UNIQUE NOT NULL
+                        REFERENCES users(id) ON DELETE CASCADE,
+
+  operator_type         equity_role_type,
+  primary_domain        VARCHAR(50) NOT NULL,
+  -- CTO/CMO/CFO/COO/CPO/CSO/CLO
+
+  years_experience      SMALLINT,
+  seniority_level       VARCHAR(50),
+  -- SENIOR/DIRECTOR/VP/C_LEVEL/FOUNDER_OPERATOR
+
+  past_companies        TEXT[],
+  notable_achievements  TEXT[],
+  industries_expertise  TEXT[],
+
+  -- What they're looking for
+  seeking_stages        startup_stage[],
+  seeking_industries    TEXT[],
+  time_commitment       VARCHAR(50),
+  -- FULL_TIME/PART_TIME/FRACTIONAL/ADVISORY
+
+  equity_min            DECIMAL(5,2),
+  equity_max            DECIMAL(5,2),
+  cash_component_ok     BOOLEAN DEFAULT FALSE,
+
+  profile_visibility    VARCHAR(20) DEFAULT 'PUBLIC',
+  open_to_approaches    BOOLEAN DEFAULT TRUE,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- COMPANIES
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE companies (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  name                  VARCHAR(255) NOT NULL,
+  name_ar               VARCHAR(255),
+  slug                  VARCHAR(100) UNIQUE NOT NULL,
+  logo_url              TEXT,
+  cover_url             TEXT,
+  tagline               VARCHAR(200),
+  tagline_ar            VARCHAR(200),
+  description           TEXT,
+  description_ar        TEXT,
+  website               VARCHAR(255),
+
+  company_type          company_type NOT NULL,
+  stage                 startup_stage,
+  primary_sector        VARCHAR(50),
+  sectors               TEXT[],
+  business_model        VARCHAR(20),
+  -- B2B/B2C/B2B2C/MARKETPLACE/SAAS
+
+  country               CHAR(2),
+  city                  VARCHAR(100),
+  operating_markets     CHAR(2)[],
+  remote_first          BOOLEAN DEFAULT FALSE,
+
+  founded_year          SMALLINT,
+  team_size             SMALLINT,
+  legal_name            VARCHAR(255),
+  registration_number   VARCHAR(100),
+
+  -- Metrics (Startup)
+  total_funding_raised  BIGINT DEFAULT 0,
+  last_round_type       VARCHAR(50),
+  last_round_amount     BIGINT,
+  last_round_date       DATE,
+  current_valuation     BIGINT,
+
+  revenue_range         VARCHAR(50),
+  -- PRE_REVENUE/0_100K/100K_1M/1M_10M/10M_PLUS
+
+  -- Verification
+  is_verified           BOOLEAN DEFAULT FALSE,
+  verified_at           TIMESTAMPTZ,
+  accelerator_backed    BOOLEAN DEFAULT FALSE,
+
+  created_by            UUID REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_companies_slug ON companies(slug);
+CREATE INDEX idx_companies_type ON companies(company_type);
+CREATE INDEX idx_companies_sector ON companies(primary_sector);
+CREATE INDEX idx_companies_country ON companies(country);
+CREATE INDEX idx_companies_stage ON companies(stage);
+CREATE INDEX idx_companies_search ON companies
+  USING GIN (
+    to_tsvector('arabic', COALESCE(name_ar,''))
+    || to_tsvector('english', COALESCE(name,''))
+  );
+
+-- Company Members Junction
+CREATE TABLE company_members (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  company_id            UUID NOT NULL
+                        REFERENCES companies(id) ON DELETE CASCADE,
+  user_id               UUID NOT NULL
+                        REFERENCES users(id) ON DELETE CASCADE,
+  role                  VARCHAR(100),
+  title                 VARCHAR(100),
+  is_founder            BOOLEAN DEFAULT FALSE,
+  equity_percentage     DECIMAL(6,3),
+  joined_at             DATE,
+  left_at               DATE,
+  is_active             BOOLEAN DEFAULT TRUE,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(company_id, user_id)
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- ACCELERATOR OS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE accelerator_profiles (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  company_id            UUID UNIQUE NOT NULL
+                        REFERENCES companies(id) ON DELETE CASCADE,
+
+  program_type          VARCHAR(50) DEFAULT 'ACCELERATOR',
+  focus_industries      TEXT[],
+  focus_stages          startup_stage[],
+  focus_geographies     CHAR(2)[],
+
+  equity_taken          BOOLEAN DEFAULT FALSE,
+  equity_percentage     DECIMAL(5,2),
+  investment_amount     INTEGER,
+  investment_currency   CHAR(3) DEFAULT 'USD',
+
+  program_duration_weeks SMALLINT,
+  cohort_size_avg       SMALLINT,
+  cohorts_per_year      SMALLINT,
+
+  -- Auto-calculated
+  total_cohorts_run     SMALLINT DEFAULT 0,
+  total_startups_grad   INTEGER DEFAULT 0,
+  total_funding_alumni  BIGINT DEFAULT 0,
+  acceptance_rate       DECIMAL(5,2),
+  alumni_survival_2yr   DECIMAL(5,2),
+
+  is_verified           BOOLEAN DEFAULT FALSE,
+  verified_at           TIMESTAMPTZ,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE cohorts (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  accelerator_id        UUID NOT NULL
+                        REFERENCES accelerator_profiles(id)
+                        ON DELETE CASCADE,
+  cohort_number         SMALLINT NOT NULL,
+  name                  VARCHAR(100) NOT NULL,
+
+  status                VARCHAR(50) DEFAULT 'ACTIVE',
+  -- ACTIVE/DEMO_DAY/GRADUATED/ARCHIVED
+
+  start_date            DATE,
+  end_date              DATE,
+  demo_day_date         DATE,
+  target_size           SMALLINT,
+
+  -- Auto-calculated
+  current_size          SMALLINT DEFAULT 0,
+  graduated_count       SMALLINT DEFAULT 0,
+  funded_count          SMALLINT DEFAULT 0,
+  total_funding_raised  BIGINT DEFAULT 0,
+
+  investor_view_enabled BOOLEAN DEFAULT TRUE,
+  investor_view_privacy VARCHAR(20) DEFAULT 'REGISTERED',
+  -- PUBLIC/REGISTERED/INVITE_ONLY
+
+  demo_day_room_id      UUID,
+  -- → deal_rooms.id (set after creation)
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(accelerator_id, cohort_number)
+);
+
+CREATE INDEX idx_cohorts_accelerator
+  ON cohorts(accelerator_id, status);
+
+CREATE TABLE cohort_startups (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  cohort_id             UUID NOT NULL
+                        REFERENCES cohorts(id) ON DELETE CASCADE,
+  company_id            UUID NOT NULL
+                        REFERENCES companies(id),
+
+  status                cohort_startup_status
+                        DEFAULT 'IN_PROGRAM',
+  joined_at             DATE DEFAULT CURRENT_DATE,
+  graduated_at          DATE,
+
+  -- Scorecard (0-25 each section)
+  score_team            SMALLINT DEFAULT 0
+                        CHECK (score_team BETWEEN 0 AND 25),
+  score_product         SMALLINT DEFAULT 0
+                        CHECK (score_product BETWEEN 0 AND 25),
+  score_revenue         SMALLINT DEFAULT 0
+                        CHECK (score_revenue BETWEEN 0 AND 25),
+  score_readiness       SMALLINT DEFAULT 0
+                        CHECK (score_readiness BETWEEN 0 AND 25),
+
+  -- Auto-calculated
+  total_score           SMALLINT GENERATED ALWAYS AS (
+    score_team + score_product +
+    score_revenue + score_readiness
+  ) STORED,
+
+  score_notes           TEXT,
+  accelerator_note      TEXT,
+
+  recommend_status      VARCHAR(20),
+  -- READY/SOON/NOT_YET
+
+  scored_by             UUID REFERENCES users(id),
+  scored_at             TIMESTAMPTZ,
+
+  -- Verified Badge
+  accelerator_backed    BOOLEAN DEFAULT FALSE,
+  backed_at             TIMESTAMPTZ,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(cohort_id, company_id)
+);
+
+CREATE INDEX idx_cohort_startups_cohort
+  ON cohort_startups(cohort_id, status);
+CREATE INDEX idx_cohort_startups_score
+  ON cohort_startups(total_score DESC)
+  WHERE accelerator_backed = TRUE;
+
+CREATE TABLE cohort_milestones (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  cohort_id             UUID NOT NULL
+                        REFERENCES cohorts(id) ON DELETE CASCADE,
+  title                 VARCHAR(255) NOT NULL,
+  description           TEXT,
+  due_date              DATE,
+  order_index           SMALLINT DEFAULT 0,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE startup_milestone_progress (
+  milestone_id          UUID NOT NULL
+                        REFERENCES cohort_milestones(id),
+  cohort_startup_id     UUID NOT NULL
+                        REFERENCES cohort_startups(id),
+  status                VARCHAR(30) DEFAULT 'NOT_STARTED',
+  -- NOT_STARTED/IN_PROGRESS/COMPLETED/BLOCKED
+  notes                 TEXT,
+  completed_at          TIMESTAMPTZ,
+  PRIMARY KEY (milestone_id, cohort_startup_id)
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- DEAL ROOMS & FUNDRAISING
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE deal_rooms (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  company_id            UUID NOT NULL
+                        REFERENCES companies(id),
+  owner_id              UUID NOT NULL
+                        REFERENCES users(id),
+
+  name                  VARCHAR(255) NOT NULL,
+  type                  VARCHAR(50) DEFAULT 'FUNDRAISING',
+  privacy               VARCHAR(50) DEFAULT 'PRIVATE',
+  -- PUBLIC/PRIVATE/INVITE_ONLY/NDA_GATED
+
+  -- Fundraising Details
+  raising_amount        BIGINT,
+  raising_currency      CHAR(3) DEFAULT 'USD',
+  amount_committed      BIGINT DEFAULT 0,
+  instrument            investment_instrument,
+  pre_money_valuation   BIGINT,
+  closing_date          DATE,
+
+  status                VARCHAR(50) DEFAULT 'ACTIVE',
+  -- ACTIVE/PAUSED/CLOSED/FUNDED
+
+  -- Access
+  unique_link_token     VARCHAR(100) UNIQUE
+                        DEFAULT encode(gen_random_bytes(32), 'hex'),
+
+  -- Counters
+  views_count           INTEGER DEFAULT 0,
+  unique_visitors       INTEGER DEFAULT 0,
+  interest_count        INTEGER DEFAULT 0,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_deal_rooms_company
+  ON deal_rooms(company_id, status);
+CREATE INDEX idx_deal_rooms_token
+  ON deal_rooms(unique_link_token);
+
+CREATE TABLE pitch_decks (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  deal_room_id          UUID NOT NULL
+                        REFERENCES deal_rooms(id) ON DELETE CASCADE,
+
+  original_filename     VARCHAR(255),
+  file_url              TEXT NOT NULL,
+  file_size_bytes       BIGINT,
+  slides_count          SMALLINT,
+  processing_status     VARCHAR(50) DEFAULT 'PROCESSING',
+  -- PROCESSING/READY/FAILED
+
+  -- AI Analysis
+  ai_score              SMALLINT,
+  ai_analysis           JSONB,
+  -- Full GPT-4o analysis result
+
+  is_active             BOOLEAN DEFAULT TRUE,
+  uploaded_by           UUID REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE deal_room_visits (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  deal_room_id          UUID NOT NULL
+                        REFERENCES deal_rooms(id),
+  visitor_id            UUID NOT NULL
+                        REFERENCES users(id),
+
+  entered_at            TIMESTAMPTZ DEFAULT NOW(),
+  exited_at             TIMESTAMPTZ,
+  duration_seconds      INTEGER,
+
+  -- Per-slide tracking
+  slides_viewed         SMALLINT[],
+  time_per_slide        JSONB,
+  -- {"1": 45, "2": 30, "7": 180}
+  exit_slide            SMALLINT,
+
+  -- Device info
+  platform              VARCHAR(20),
+  -- WEB/IOS/ANDROID
+  device_type           VARCHAR(20)
+);
+
+CREATE INDEX idx_visits_room
+  ON deal_room_visits(deal_room_id, entered_at DESC);
+CREATE INDEX idx_visits_visitor
+  ON deal_room_visits(visitor_id, entered_at DESC);
+
+CREATE TABLE interest_signals (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  deal_room_id          UUID NOT NULL
+                        REFERENCES deal_rooms(id),
+  user_id               UUID NOT NULL
+                        REFERENCES users(id),
+
+  level                 interest_level NOT NULL,
+  private_note          TEXT,
+
+  is_visible_to_owner   BOOLEAN DEFAULT FALSE,
+  revealed_at           TIMESTAMPTZ,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(deal_room_id, user_id)
+);
+
+CREATE TABLE deal_room_documents (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  deal_room_id          UUID NOT NULL
+                        REFERENCES deal_rooms(id) ON DELETE CASCADE,
+
+  folder                VARCHAR(100),
+  name                  VARCHAR(255) NOT NULL,
+  file_url              TEXT NOT NULL,
+  file_size_bytes       BIGINT,
+  mime_type             VARCHAR(100),
+
+  access_tier           SMALLINT DEFAULT 1,
+  -- 1=Public 2=Basic 3=Full 4=NDA_Only
+
+  version               SMALLINT DEFAULT 1,
+  is_active             BOOLEAN DEFAULT TRUE,
+
+  views_count           INTEGER DEFAULT 0,
+  downloads_count       INTEGER DEFAULT 0,
+
+  uploaded_by           UUID REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- INVESTOR DEAL PIPELINE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE investor_deals (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  investor_id           UUID NOT NULL
+                        REFERENCES users(id),
+  company_id            UUID NOT NULL
+                        REFERENCES companies(id),
+  deal_room_id          UUID REFERENCES deal_rooms(id),
+
+  status                deal_status DEFAULT 'SOURCED',
+
+  source_channel        VARCHAR(50),
+  -- MAJLIS_DISCOVERY/WARM_INTRO/ACCELERATOR/
+  -- COLD_OUTREACH/EVENT/REFERRAL
+
+  rejection_reason      TEXT,
+  pass_reason_category  VARCHAR(50),
+
+  -- Dates
+  first_contact_date    DATE,
+  first_meeting_date    DATE,
+  dd_start_date         DATE,
+  term_sheet_date       DATE,
+  close_date            DATE,
+  last_interaction_at   TIMESTAMPTZ,
+
+  -- Conviction tracking
+  conviction_score      SMALLINT,
+  -- 1-10, AI + manual
+
+  notes                 TEXT,
+
+  -- If closed
+  investment_amount     BIGINT,
+  investment_currency   CHAR(3),
+  equity_percentage     DECIMAL(6,3),
+  valuation_at_entry    BIGINT,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(investor_id, company_id)
+);
+
+CREATE INDEX idx_inv_deals_investor
+  ON investor_deals(investor_id, status);
+CREATE INDEX idx_inv_deals_company
+  ON investor_deals(company_id);
+CREATE INDEX idx_inv_deals_last_interaction
+  ON investor_deals(investor_id, last_interaction_at DESC);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- CAP TABLE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE cap_tables (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  company_id            UUID UNIQUE NOT NULL
+                        REFERENCES companies(id),
+  currency              CHAR(3) DEFAULT 'USD',
+  total_shares_issued   BIGINT DEFAULT 0,
+  latest_valuation      BIGINT,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE share_classes (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  cap_table_id          UUID NOT NULL
+                        REFERENCES cap_tables(id),
+  name                  VARCHAR(100) NOT NULL,
+  -- "Common", "Series A Preferred"
+  type                  VARCHAR(20) NOT NULL,
+  -- COMMON/PREFERRED/OPTION/WARRANT
+  total_shares          BIGINT NOT NULL,
+  price_per_share       DECIMAL(18,6),
+  liquidation_pref      DECIMAL(5,2),
+  anti_dilution         VARCHAR(50),
+  voting_rights         DECIMAL(5,2) DEFAULT 1.0,
+  order_index           SMALLINT DEFAULT 0,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE cap_table_entries (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  cap_table_id          UUID NOT NULL
+                        REFERENCES cap_tables(id),
+  share_class_id        UUID NOT NULL
+                        REFERENCES share_classes(id),
+
+  holder_type           VARCHAR(20) NOT NULL,
+  -- USER/ENTITY/POOL
+  holder_user_id        UUID REFERENCES users(id),
+  holder_name           VARCHAR(255),
+  -- For non-Majlis holders
+
+  shares_owned          BIGINT NOT NULL,
+  ownership_percentage  DECIMAL(8,4),
+  -- Auto-calculated: shares/total*100
+
+  investment_amount     BIGINT,
+  investment_date       DATE,
+  round_name            VARCHAR(100),
+
+  -- Vesting (for employees/founders)
+  has_vesting           BOOLEAN DEFAULT FALSE,
+  vesting_total_months  SMALLINT,
+  vesting_cliff_months  SMALLINT,
+  vesting_start_date    DATE,
+  shares_vested         BIGINT DEFAULT 0,
+
+  is_active             BOOLEAN DEFAULT TRUE,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_cap_entries_table
+  ON cap_table_entries(cap_table_id, holder_type);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- EQUITY TALENT MARKETPLACE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE equity_roles (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  company_id            UUID NOT NULL
+                        REFERENCES companies(id),
+  posted_by             UUID NOT NULL
+                        REFERENCES users(id),
+
+  title                 VARCHAR(200) NOT NULL,
+  role_type             equity_role_type NOT NULL,
+  domain                VARCHAR(50) NOT NULL,
+
+  description           TEXT,
+  why_exciting          TEXT,
+  what_you_do           TEXT,
+
+  -- Compensation
+  equity_min            DECIMAL(5,2) NOT NULL,
+  equity_max            DECIMAL(5,2) NOT NULL,
+  cash_component        BOOLEAN DEFAULT FALSE,
+  cash_amount           INTEGER,
+
+  -- Vesting
+  vesting_months        SMALLINT DEFAULT 48,
+  cliff_months          SMALLINT DEFAULT 12,
+
+  -- Requirements
+  time_commitment       VARCHAR(50) NOT NULL,
+  min_years_exp         SMALLINT,
+  required_skills       TEXT[],
+  required_domains      TEXT[],
+
+  location_type         VARCHAR(20) DEFAULT 'HYBRID',
+  location_city         VARCHAR(100),
+
+  status                VARCHAR(20) DEFAULT 'OPEN',
+  -- OPEN/REVIEWING/FILLED/PAUSED/CLOSED
+
+  -- Counters
+  views_count           INTEGER DEFAULT 0,
+  applications_count    INTEGER DEFAULT 0,
+  shortlisted_count     INTEGER DEFAULT 0,
+
+  expires_at            TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_equity_roles_company
+  ON equity_roles(company_id, status);
+CREATE INDEX idx_equity_roles_domain
+  ON equity_roles(domain, status);
+
+CREATE TABLE equity_applications (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  role_id               UUID NOT NULL
+                        REFERENCES equity_roles(id),
+  applicant_id          UUID NOT NULL
+                        REFERENCES users(id),
+
+  status                VARCHAR(50) DEFAULT 'SUBMITTED',
+
+  cover_note            VARCHAR(500),
+  why_this_company      TEXT,
+  what_i_bring          TEXT,
+  first_90_days         TEXT,
+  equity_counter        DECIMAL(5,2),
+
+  -- AI-generated
+  ai_compatibility      SMALLINT,
+  ai_compatibility_data JSONB,
+
+  -- Founder evaluation
+  founder_rating        SMALLINT CHECK (founder_rating BETWEEN 1 AND 5),
+  founder_notes         TEXT,
+
+  -- Final agreement
+  final_equity          DECIMAL(5,2),
+  final_role_title      VARCHAR(200),
+  agreement_signed      BOOLEAN DEFAULT FALSE,
+  agreement_signed_at   TIMESTAMPTZ,
+  start_date            DATE,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(role_id, applicant_id)
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- SOCIAL LAYER
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE posts (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  author_id             UUID NOT NULL
+                        REFERENCES users(id),
+  company_id            UUID REFERENCES companies(id),
+  room_id               UUID,
+  -- → rooms.id (circular ref handled at app layer)
+
+  type                  VARCHAR(50) NOT NULL,
+  -- MILESTONE/DEAL_ANNOUNCEMENT/TRACTION_UPDATE/
+  -- LOOKING_FOR/INSIGHT/ROOM_UPDATE/GENERAL/REPOST
+
+  content               TEXT,
+  content_ar            TEXT,
+  media_urls            TEXT[],
+  linked_url            TEXT,
+
+  visibility            VARCHAR(20) DEFAULT 'PUBLIC',
+  -- PUBLIC/CONNECTIONS/ROOM
+
+  -- Verification
+  is_verified_claim     BOOLEAN DEFAULT FALSE,
+  verification_source   VARCHAR(100),
+  linked_entity_type    VARCHAR(50),
+  linked_entity_id      UUID,
+
+  -- Repost
+  original_post_id      UUID REFERENCES posts(id),
+  repost_note           TEXT,
+
+  -- Counters
+  reactions_count       JSONB DEFAULT '{}',
+  -- {"IMPRESSIVE": 0, "INSIGHTFUL": 0, ...}
+  comments_count        INTEGER DEFAULT 0,
+  shares_count          INTEGER DEFAULT 0,
+  saves_count           INTEGER DEFAULT 0,
+  views_count           INTEGER DEFAULT 0,
+
+  -- Moderation
+  is_active             BOOLEAN DEFAULT TRUE,
+  report_count          INTEGER DEFAULT 0,
+  moderated_at          TIMESTAMPTZ,
+  moderation_reason     VARCHAR(100),
+
+  edited_at             TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_posts_author
+  ON posts(author_id, created_at DESC)
+  WHERE is_active = TRUE;
+CREATE INDEX idx_posts_type
+  ON posts(type, created_at DESC)
+  WHERE is_active = TRUE;
+CREATE INDEX idx_posts_room
+  ON posts(room_id, created_at DESC)
+  WHERE room_id IS NOT NULL AND is_active = TRUE;
+
+CREATE TABLE post_reactions (
+  post_id               UUID NOT NULL
+                        REFERENCES posts(id) ON DELETE CASCADE,
+  user_id               UUID NOT NULL
+                        REFERENCES users(id),
+  reaction_type         VARCHAR(20) NOT NULL,
+  -- IMPRESSIVE/INSIGHTFUL/INTERESTED/BACKING_THIS
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (post_id, user_id)
+);
+
+CREATE TABLE post_comments (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  post_id               UUID NOT NULL
+                        REFERENCES posts(id) ON DELETE CASCADE,
+  author_id             UUID NOT NULL
+                        REFERENCES users(id),
+  parent_id             UUID REFERENCES post_comments(id),
+  -- For nested replies (max 3 levels)
+
+  content               TEXT NOT NULL,
+  is_active             BOOLEAN DEFAULT TRUE,
+
+  reactions_count       INTEGER DEFAULT 0,
+  replies_count         INTEGER DEFAULT 0,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_comments_post
+  ON post_comments(post_id, created_at ASC)
+  WHERE is_active = TRUE;
+
+CREATE TABLE rooms (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  name                  VARCHAR(200) NOT NULL,
+  name_ar               VARCHAR(200),
+  description           TEXT,
+  cover_image_url       TEXT,
+
+  type                  VARCHAR(50) NOT NULL,
+  -- ACCELERATOR_COHORT/SECTOR/GEOGRAPHY/
+  -- STAGE/FRANCHISE/ALUMNI/PRIVATE_NETWORK
+
+  access_type           VARCHAR(20) DEFAULT 'PUBLIC',
+  -- PUBLIC/REQUEST_TO_JOIN/INVITE_ONLY
+
+  associated_type       VARCHAR(50),
+  associated_id         UUID,
+  -- Links to accelerator/cohort/company
+
+  members_count         INTEGER DEFAULT 0,
+  posts_count           INTEGER DEFAULT 0,
+
+  is_active             BOOLEAN DEFAULT TRUE,
+  created_by            UUID REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE room_members (
+  room_id               UUID NOT NULL
+                        REFERENCES rooms(id) ON DELETE CASCADE,
+  user_id               UUID NOT NULL
+                        REFERENCES users(id),
+  role                  VARCHAR(20) DEFAULT 'MEMBER',
+  -- ADMIN/MODERATOR/MEMBER
+  status                VARCHAR(20) DEFAULT 'ACTIVE',
+  -- ACTIVE/PENDING/BANNED
+  joined_at             TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (room_id, user_id)
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- CONNECTIONS & NETWORKING
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE connections (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  user_a_id             UUID NOT NULL
+                        REFERENCES users(id),
+  user_b_id             UUID NOT NULL
+                        REFERENCES users(id),
+  -- Enforce user_a_id < user_b_id to avoid duplicates
+  CHECK (user_a_id < user_b_id),
+
+  status                connection_status DEFAULT 'PENDING',
+  requested_by          UUID NOT NULL
+                        REFERENCES users(id),
+
+  context               VARCHAR(50),
+  -- DIRECT/SAME_COHORT/CO_INVESTED/SAME_ROOM/INTRO
+  introducer_id         UUID REFERENCES users(id),
+
+  -- Calculated strength
+  strength_score        SMALLINT DEFAULT 0
+                        CHECK (strength_score BETWEEN 0 AND 100),
+  messages_count        INTEGER DEFAULT 0,
+  deals_together        INTEGER DEFAULT 0,
+
+  last_interacted_at    TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_a_id, user_b_id)
+);
+
+CREATE INDEX idx_connections_user_a
+  ON connections(user_a_id, status);
+CREATE INDEX idx_connections_user_b
+  ON connections(user_b_id, status);
+
+CREATE TABLE follows (
+  follower_id           UUID NOT NULL
+                        REFERENCES users(id),
+  following_id          UUID NOT NULL
+                        REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (follower_id, following_id),
+  CHECK (follower_id != following_id)
+);
+
+CREATE TABLE intro_requests (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  requester_id          UUID NOT NULL
+                        REFERENCES users(id),
+  target_id             UUID NOT NULL
+                        REFERENCES users(id),
+  introducer_id         UUID NOT NULL
+                        REFERENCES users(id),
+
+  context               TEXT,
+  message_to_introducer TEXT,
+
+  status                VARCHAR(30) DEFAULT 'PENDING',
+  -- PENDING/ACCEPTED/DECLINED/INTRODUCED/CONNECTED
+
+  ai_suggested          BOOLEAN DEFAULT FALSE,
+  ai_path_score         SMALLINT,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- MESSAGING
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE conversations (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  type                  VARCHAR(20) DEFAULT 'DIRECT',
+  -- DIRECT/GROUP
+  last_message_at       TIMESTAMPTZ,
+  last_message_preview  VARCHAR(200),
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE conversation_participants (
+  conversation_id       UUID NOT NULL
+                        REFERENCES conversations(id),
+  user_id               UUID NOT NULL
+                        REFERENCES users(id),
+  unread_count          INTEGER DEFAULT 0,
+  last_read_at          TIMESTAMPTZ,
+  is_muted              BOOLEAN DEFAULT FALSE,
+  joined_at             TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (conversation_id, user_id)
+);
+
+CREATE INDEX idx_conv_participants_user
+  ON conversation_participants(user_id, last_read_at DESC);
+
+CREATE TABLE messages (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  conversation_id       UUID NOT NULL
+                        REFERENCES conversations(id),
+  sender_id             UUID NOT NULL
+                        REFERENCES users(id),
+
+  type                  VARCHAR(20) DEFAULT 'TEXT',
+  -- TEXT/IMAGE/FILE/VOICE/SYSTEM
+  content               TEXT,
+  file_url              TEXT,
+  file_name             VARCHAR(255),
+  file_size             BIGINT,
+
+  is_deleted            BOOLEAN DEFAULT FALSE,
+  deleted_at            TIMESTAMPTZ,
+
+  read_by               UUID[],
+  -- Array of user_ids who read it
+
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_messages_conversation
+  ON messages(conversation_id, created_at ASC)
+  WHERE is_deleted = FALSE;
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- NOTIFICATIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE notifications (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  user_id               UUID NOT NULL
+                        REFERENCES users(id) ON DELETE CASCADE,
+
+  type                  notification_type NOT NULL,
+  title_ar              VARCHAR(255) NOT NULL,
+  title_en              VARCHAR(255),
+  body_ar               TEXT,
+  body_en               TEXT,
+  deep_link             VARCHAR(500),
+  image_url             TEXT,
+
+  priority              VARCHAR(10) DEFAULT 'MEDIUM',
+  -- HIGH/MEDIUM/LOW
+
+  is_read               BOOLEAN DEFAULT FALSE,
+  read_at               TIMESTAMPTZ,
+  is_pushed             BOOLEAN DEFAULT FALSE,
+  pushed_at             TIMESTAMPTZ,
+
+  related_type          VARCHAR(50),
+  related_id            UUID,
+
+  expires_at            TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_notif_user_unread
+  ON notifications(user_id, is_read, created_at DESC);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- AI & INTELLIGENCE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE ai_embeddings (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  entity_type           VARCHAR(50) NOT NULL,
+  -- USER/COMPANY/POST/DEAL/DOCUMENT
+  entity_id             UUID NOT NULL,
+  embedding_model       VARCHAR(100) NOT NULL,
+  -- text-embedding-3-large
+  dimensions            SMALLINT NOT NULL,
+  -- 1536 for OpenAI
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(entity_type, entity_id)
+);
+-- Note: Actual vectors stored in Pinecone
+-- This table tracks metadata
+
+CREATE TABLE meeting_notes (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  owner_id              UUID NOT NULL
+                        REFERENCES users(id),
+  contact_id            UUID REFERENCES users(id),
+  deal_id               UUID REFERENCES investor_deals(id),
+
+  audio_duration_sec    INTEGER,
+  transcript            TEXT,
+  summary               TEXT,
+  action_items          JSONB,
+  -- [{assignee_id, assignee_name, task, due_date, status}]
+  topics                TEXT[],
+  sentiment             VARCHAR(20),
+  deal_stage_suggested  deal_status,
+  deal_probability      DECIMAL(5,2),
+  -- 0-100% AI estimate
+
+  model_used            VARCHAR(50),
+  tokens_used           INTEGER,
+  processing_time_ms    INTEGER,
+
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_meeting_notes_owner
+  ON meeting_notes(owner_id, created_at DESC);
+CREATE INDEX idx_meeting_notes_deal
+  ON meeting_notes(deal_id)
+  WHERE deal_id IS NOT NULL;
+
+CREATE TABLE ai_insights (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  target_user_id        UUID NOT NULL
+                        REFERENCES users(id),
+
+  insight_type          VARCHAR(50) NOT NULL,
+  -- MATCH_FOUND/DEAL_RISK/FOLLOW_UP_DUE/
+  -- MARKET_TREND/FRAUD_SIGNAL/TIMING_SIGNAL
+
+  title_ar              VARCHAR(255),
+  title_en              VARCHAR(255),
+  body_ar               TEXT,
+  body_en               TEXT,
+
+  confidence_score      SMALLINT
+                        CHECK (confidence_score BETWEEN 0 AND 100),
+  supporting_data       JSONB,
+  action_suggested      TEXT,
+  deep_link             VARCHAR(500),
+
+  is_shown              BOOLEAN DEFAULT FALSE,
+  shown_at              TIMESTAMPTZ,
+  user_action           VARCHAR(20),
+  -- DISMISSED/ACTED/SAVED
+
+  expires_at            TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_ai_insights_user
+  ON ai_insights(target_user_id, is_shown, created_at DESC);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- ANALYTICS EVENTS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CREATE TABLE analytics_events (
+  id                    UUID PRIMARY KEY
+                        DEFAULT gen_random_uuid(),
+  user_id               UUID REFERENCES users(id),
+  session_id            UUID,
+  anonymous_id          VARCHAR(100),
+
+  event_type            VARCHAR(100) NOT NULL,
+  -- From Event Tracking Plan
+
+  entity_type           VARCHAR(50),
+  entity_id             UUID,
+
+  properties            JSONB,
+  -- All event-specific properties
+
+  platform              VARCHAR(20),
+  -- WEB/IOS/ANDROID
+  app_version           VARCHAR(20),
+  country               CHAR(2),
+
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+)
+PARTITION BY RANGE (created_at);
+-- Monthly partitions for performance
+
+-- Create partitions
+CREATE TABLE analytics_events_2026_01
+  PARTITION OF analytics_events
+  FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+
+CREATE TABLE analytics_events_2026_02
+  PARTITION OF analytics_events
+  FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
+-- ... continue monthly
+
+CREATE INDEX idx_events_user
+  ON analytics_events(user_id, event_type, created_at DESC);
+CREATE INDEX idx_events_type
+  ON analytics_events(event_type, created_at DESC);
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- TRIGGERS & FUNCTIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- Auto-update updated_at
+CREATE OR REPLACE FUNCTION update_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Apply to all tables with updated_at
+CREATE TRIGGER trg_users_updated
+  BEFORE UPDATE ON users
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER trg_companies_updated
+  BEFORE UPDATE ON companies
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+CREATE TRIGGER trg_deal_rooms_updated
+  BEFORE UPDATE ON deal_rooms
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- Auto-calculate cohort_startup score badge
+CREATE OR REPLACE FUNCTION update_accelerator_backed()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.total_score >= 60 AND
+     NEW.status = 'GRADUATED' AND
+     NEW.accelerator_backed = FALSE THEN
+    NEW.accelerator_backed = TRUE;
+    NEW.backed_at = NOW();
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_cohort_startup_badge
+  BEFORE INSERT OR UPDATE ON cohort_startups
+  FOR EACH ROW EXECUTE FUNCTION update_accelerator_backed();
+
+-- Auto-update post reaction counts
+CREATE OR REPLACE FUNCTION update_post_reaction_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    UPDATE posts
+    SET reactions_count = jsonb_set(
+      reactions_count,
+      ARRAY[NEW.reaction_type],
+      (COALESCE((reactions_count->>NEW.reaction_type)::int, 0) + 1)::text::jsonb
+    )
+    WHERE id = NEW.post_id;
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE posts
+    SET reactions_count = jsonb_set(
+      reactions_count,
+      ARRAY[OLD.reaction_type],
+      GREATEST(0, COALESCE((reactions_count->>OLD.reaction_type)::int, 0) - 1)::text::jsonb
+    )
+    WHERE id = OLD.post_id;
+  END IF;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_post_reactions
+  AFTER INSERT OR DELETE ON post_reactions
+  FOR EACH ROW EXECUTE FUNCTION update_post_reaction_count();
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 4 — API DESIGN DOCUMENT
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 4.1 — API Standards
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Base URL:      https://api.majlis.io/v1
+Auth:          Bearer JWT in Authorization header
+Content-Type:  application/json
+Language:      Accept-Language: ar | en
+
+Response Envelope:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Success:
+{
+  "success": true,
+  "data": { ... },
+  "meta": {
+    "page": 1,
+    "per_page": 20,
+    "total": 150,
+    "total_pages": 8
+  },
+  "request_id": "uuid"
+}
+
+Error:
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "رسالة للمستخدم",
+    "message_en": "User message in English",
+    "field_errors": [
+      {"field": "email", "message": "البريد غير صالح"}
+    ],
+    "request_id": "uuid",
+    "timestamp": "2026-01-15T10:30:00Z"
+  }
+}
+
+Pagination:
+  ?page=1&per_page=20
+  ?cursor=eyJpZCI6IjEyMyJ9  (Cursor-based for feeds)
+
+Sorting:
+  ?sort=created_at&order=desc
+
+Filtering:
+  ?sector=FINTECH&stage=SEED&country=SA
+```
+
+---
+
+## 4.2 — Complete API Endpoints
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AUTH ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST   /auth/register
+POST   /auth/login
+POST   /auth/logout
+POST   /auth/refresh
+POST   /auth/verify-email
+POST   /auth/verify-phone
+POST   /auth/resend-otp
+POST   /auth/forgot-password
+POST   /auth/reset-password
+POST   /auth/oauth/google
+POST   /auth/oauth/linkedin
+GET    /auth/sessions
+DELETE /auth/sessions/:session_id
+DELETE /auth/sessions/all
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+USER ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /users/me
+PATCH  /users/me
+GET    /users/:username
+GET    /users/:id/profile
+PATCH  /users/me/investor-profile
+PATCH  /users/me/founder-profile
+PATCH  /users/me/operator-profile
+POST   /users/me/photo
+DELETE /users/me/photo
+GET    /users/me/analytics
+GET    /users/search?q=&role=&country=
+GET    /users/:id/posts
+GET    /users/:id/connections
+GET    /users/:id/companies
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMPANY ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST   /companies
+GET    /companies/:slug
+PATCH  /companies/:id
+DELETE /companies/:id
+POST   /companies/:id/logo
+GET    /companies/search?q=&type=&sector=
+GET    /companies/:id/members
+POST   /companies/:id/members
+DELETE /companies/:id/members/:user_id
+GET    /companies/:id/deals
+GET    /companies/:id/posts
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACCELERATOR ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST   /accelerators
+GET    /accelerators/:id
+PATCH  /accelerators/:id
+GET    /accelerators/:id/pipeline
+GET    /accelerators/:id/stats
+
+-- Cohorts
+POST   /accelerators/:id/cohorts
+GET    /accelerators/:id/cohorts
+GET    /cohorts/:id
+PATCH  /cohorts/:id
+DELETE /cohorts/:id
+GET    /cohorts/:id/startups
+GET    /cohorts/:id/stats
+
+-- Cohort Startups
+POST   /cohorts/:id/startups
+POST   /cohorts/:id/startups/import     (CSV)
+GET    /cohorts/:id/startups/:company_id
+PATCH  /cohorts/:id/startups/:company_id
+PATCH  /cohorts/:id/startups/:company_id/scorecard
+PATCH  /cohorts/:id/startups/:company_id/graduate
+DELETE /cohorts/:id/startups/:company_id
+
+-- Milestones
+POST   /cohorts/:id/milestones
+GET    /cohorts/:id/milestones
+PATCH  /milestones/:id
+DELETE /milestones/:id
+PATCH  /milestones/:milestone_id/progress/:startup_id
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DEAL ROOM ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST   /deal-rooms
+GET    /deal-rooms/:id
+PATCH  /deal-rooms/:id
+DELETE /deal-rooms/:id
+GET    /deal-rooms/by-token/:token      (Public access)
+
+-- Deck
+POST   /deal-rooms/:id/deck             (Upload PDF)
+GET    /deal-rooms/:id/deck
+DELETE /deal-rooms/:id/deck
+
+-- Analytics
+GET    /deal-rooms/:id/analytics
+GET    /deal-rooms/:id/visitors
+GET    /deal-rooms/:id/visitors/:user_id
+POST   /deal-rooms/:id/visit            (Track visit)
+PATCH  /deal-rooms/:id/visit            (Update slides)
+
+-- Interest Signals
+POST   /deal-rooms/:id/interest
+GET    /deal-rooms/:id/interest
+PATCH  /deal-rooms/:id/interest
+DELETE /deal-rooms/:id/interest
+
+-- Data Room
+GET    /deal-rooms/:id/documents
+POST   /deal-rooms/:id/documents
+DELETE /deal-rooms/:id/documents/:doc_id
+GET    /deal-rooms/:id/documents/:doc_id/download
+
+-- NDA
+POST   /deal-rooms/:id/nda/sign
+GET    /deal-rooms/:id/nda/status
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INVESTOR DEAL PIPELINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /investor/deals
+POST   /investor/deals
+GET    /investor/deals/:id
+PATCH  /investor/deals/:id
+DELETE /investor/deals/:id
+PATCH  /investor/deals/:id/stage
+GET    /investor/deals/pipeline         (Kanban view)
+GET    /investor/portfolio
+GET    /investor/portfolio/stats
+GET    /investor/portfolio/:company_id
+PATCH  /investor/portfolio/:company_id/kpis
+POST   /investor/portfolio/report       (Generate LP Report)
+GET    /investor/deal-flow              (AI-filtered)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAP TABLE ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /companies/:id/cap-table
+POST   /companies/:id/cap-table
+GET    /companies/:id/cap-table/summary
+GET    /companies/:id/cap-table/dilution
+POST   /companies/:id/cap-table/share-classes
+POST   /companies/:id/cap-table/entries
+PATCH  /companies/:id/cap-table/entries/:entry_id
+DELETE /companies/:id/cap-table/entries/:entry_id
+GET    /companies/:id/cap-table/waterfall
+POST   /companies/:id/cap-table/simulate
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EQUITY MARKETPLACE ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /equity-roles
+POST   /equity-roles
+GET    /equity-roles/:id
+PATCH  /equity-roles/:id
+DELETE /equity-roles/:id
+GET    /equity-roles/my-roles
+GET    /equity-roles/my-applications
+
+-- Applications
+POST   /equity-roles/:id/apply
+GET    /equity-roles/:id/applications   (Founder only)
+PATCH  /equity-roles/:id/applications/:app_id
+GET    /equity-roles/:id/applications/:app_id
+POST   /equity-roles/:id/applications/:app_id/shortlist
+POST   /equity-roles/:id/applications/:app_id/reject
+POST   /equity-roles/:id/applications/:app_id/offer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SOCIAL FEED ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /feed                            (Personal feed)
+GET    /feed/trending
+POST   /posts
+GET    /posts/:id
+PATCH  /posts/:id
+DELETE /posts/:id
+POST   /posts/:id/react
+DELETE /posts/:id/react
+POST   /posts/:id/repost
+POST   /posts/:id/save
+DELETE /posts/:id/save
+GET    /posts/:id/comments
+POST   /posts/:id/comments
+PATCH  /comments/:id
+DELETE /comments/:id
+POST   /posts/:id/report
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ROOMS ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /rooms
+POST   /rooms
+GET    /rooms/:id
+PATCH  /rooms/:id
+DELETE /rooms/:id
+GET    /rooms/discover
+GET    /rooms/:id/posts
+GET    /rooms/:id/members
+POST   /rooms/:id/join
+DELETE /rooms/:id/leave
+POST   /rooms/:id/invite/:user_id
+PATCH  /rooms/:id/members/:user_id
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONNECTIONS ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /connections
+POST   /connections/:user_id            (Send request)
+PATCH  /connections/:id/accept
+PATCH  /connections/:id/decline
+DELETE /connections/:id
+GET    /connections/requests
+GET    /connections/suggestions
+POST   /follows/:user_id
+DELETE /follows/:user_id
+GET    /intro-requests
+POST   /intro-requests
+PATCH  /intro-requests/:id
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MESSAGING ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /conversations
+POST   /conversations
+GET    /conversations/:id/messages
+POST   /conversations/:id/messages
+PATCH  /messages/:id
+DELETE /messages/:id
+POST   /conversations/:id/read
+GET    /conversations/requests
+
+WebSocket Events:
+  CONNECT:    ws://api.majlis.io/ws?token={jwt}
+  EMIT:       message.send
+  ON:         message.received
+  ON:         user.online
+  ON:         user.typing
+  ON:         notification.new
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AI ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST   /ai/pitch-deck/analyze           (Upload + analyze)
+GET    /ai/pitch-deck/:deck_id/analysis
+POST   /ai/meeting-notes               (Upload audio)
+GET    /ai/meeting-notes/:id
+GET    /ai/insights                    (User's AI insights)
+PATCH  /ai/insights/:id/dismiss
+POST   /ai/match/investors             (For founder)
+POST   /ai/match/startups              (For investor)
+GET    /ai/market/benchmarks
+GET    /ai/market/trends
+POST   /ai/documents/:doc_id/ask       (RAG Q&A)
+GET    /ai/execution-score/:founder_id
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MARKETPLACE ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /marketplace/startups
+GET    /marketplace/startups/:id
+GET    /marketplace/franchise
+GET    /marketplace/franchise/:id
+GET    /marketplace/funds
+GET    /marketplace/funds/:id
+GET    /marketplace/deals-feed
+GET    /marketplace/my-matches
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTIFICATIONS ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /notifications
+PATCH  /notifications/:id/read
+POST   /notifications/read-all
+GET    /notifications/preferences
+PATCH  /notifications/preferences
+POST   /notifications/push/register    (Register device token)
+DELETE /notifications/push/unregister
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEARCH ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GET    /search?q=&type=all|users|companies|deals|posts
+GET    /search/users?q=&role=&country=&sector=
+GET    /search/companies?q=&type=&sector=&stage=
+GET    /search/deals?q=&sector=&stage=&country=
+GET    /search/posts?q=&type=
+GET    /search/trending
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 5 — SECURITY & COMPLIANCE PLAN
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 5.1 — Security Architecture
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYER 1: NETWORK SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DDoS Protection:
+  Provider: AWS Shield Advanced
+  Threshold: Auto-mitigation
+  Alerting: PagerDuty P1
+
+WAF Rules (AWS WAF):
+  → Block SQL Injection patterns
+  → Block XSS patterns
+  → Block known bad IPs (AbuseIPDB)
+  → Rate limit by IP: 100 req/min
+  → Geo-blocking: configurable
+  → Bot detection: CAPTCHA for suspicious
+
+Network Isolation:
+  → All services in Private subnets
+  → Internet access via NAT Gateway only
+  → Services communicate via VPC internally
+  → No direct internet access to databases
+
+TLS:
+  → TLS 1.3 minimum
+  → TLS 1.0/1.1 disabled
+  → Certificate: AWS ACM (auto-renew)
+  → HSTS header enforced
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYER 2: AUTHENTICATION SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+JWT Strategy:
+  Algorithm:          RS256 (asymmetric)
+  Access Token TTL:   15 minutes
+  Refresh Token TTL:  30 days
+  Key Rotation:       Monthly (automated)
+
+  Payload:
+  {
+    "sub": "user_id",
+    "role": "FOUNDER",
+    "ver_level": 2,
+    "plan": "PRO",
+    "iat": 1234567890,
+    "exp": 1234568790,
+    "jti": "unique_token_id"  ← للـ revocation
+  }
+
+Token Security:
+  → Refresh Token: stored as httpOnly cookie
+  → Access Token: in-memory (not localStorage)
+  → Token Rotation: new refresh on every use
+  → Blacklist: Redis SET with TTL
+
+Password Security:
+  → bcrypt with cost factor 12
+  → Minimum 8 chars
+  → Common passwords list check (10K list)
+  → Breached password check (HaveIBeenPwned API)
+  → No password hints stored
+
+Brute Force Protection:
+  → 5 failed attempts → 15 min lockout
+  → 10 failed attempts → 24h lockout
+  → Email notification on lockout
+  → Admin can unlock manually
+
+MFA:
+  → TOTP (Google Authenticator compatible)
+  → SMS backup
+  → Backup codes (10 codes, single use)
+  → Required for: Accelerator Admins, VCs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYER 3: AUTHORIZATION (RBAC)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Roles Hierarchy:
+  ADMIN > ACCELERATOR_ADMIN > FOUNDER >
+  INVESTOR > OPERATOR > ANGEL > USER
+
+Permission Matrix:
+┌──────────────────────────────────────────┐
+│ Resource         │ Owner │ Member │ Public│
+├──────────────────┼───────┼────────┼───────┤
+│ Company Profile  │ CRUD  │  R     │  R*   │
+│ Deal Room        │ CRUD  │  R     │  R*   │
+│ Cohort Data      │ CRUD  │  R     │  ─    │
+│ Scorecard        │ CRUD  │  ─     │  ─    │
+│ Cap Table        │ CRUD  │  R     │  ─    │
+│ Messages         │ CRUD  │  CRUD  │  ─    │
+│ Posts            │ CRUD  │  CR    │  R    │
+└──────────────────┴───────┴────────┴───────┘
+*R = Read (based on privacy settings)
+
+Row-Level Security (PostgreSQL RLS):
+  ALTER TABLE deal_room_documents
+  ENABLE ROW LEVEL SECURITY;
+
+  CREATE POLICY "owner_access" ON deal_room_documents
+    FOR ALL
+    USING (
+      EXISTS (
+        SELECT 1 FROM deal_rooms dr
+        WHERE dr.id = deal_room_id
+        AND dr.owner_id = current_setting('app.user_id')::UUID
+      )
+    );
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYER 4: DATA SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Encryption at Rest:
+  Database:     AWS RDS encryption (AES-256)
+  S3:           SSE-S3 (AES-256)
+  Redis:        ElastiCache encryption
+  Backups:      Encrypted by default
+
+Field-level Encryption (sensitive fields):
+  → phone numbers
+  → national ID (if collected)
+  → bank account info (future)
+  Library: AWS Encryption SDK
+
+Data Masking:
+  → Logs: mask phone/email
+  → Analytics: anonymize PII
+  → Error reports: no PII in Sentry
+
+Secrets Management:
+  → AWS Secrets Manager for:
+     DB credentials, API keys
+  → HashiCorp Vault for:
+     Dynamic secrets, PKI
+  → No secrets in code or ENV files
+  → Secret rotation: automated monthly
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYER 5: APPLICATION SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Input Validation (Zod schemas):
+  → All API inputs validated
+  → Types enforced at compile time (TypeScript)
+  → SQL injection: impossible (Prisma ORM)
+  → XSS: DOMPurify on frontend
+        + sanitize-html on backend
+
+File Upload Security:
+  → Whitelist MIME types only
+  → Validate file header (magic bytes)
+  → Max file size enforced
+  → Virus scan: ClamAV on upload
+  → Files renamed (UUID) on S3
+  → No direct S3 URLs (presigned only)
+
+Rate Limiting (per endpoint):
+  Auth endpoints:    5 req/minute
+  OTP endpoints:     3 req/minute
+  API general:       100 req/minute
+  AI endpoints:      10 req/minute
+  File upload:       5 req/minute
+
+CORS Policy:
+  Allowed Origins:
+    https://majlis.io
+    https://app.majlis.io
+    https://admin.majlis.io
+  Credentials: true
+  Methods: GET, POST, PATCH, DELETE, OPTIONS
+
+Security Headers:
+  Content-Security-Policy: strict
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin
+  Permissions-Policy: camera=(), microphone=(self)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LAYER 6: AUDIT & MONITORING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Audit Log (immutable):
+  Events logged:
+  → Authentication (login/logout/failed)
+  → Authorization failures
+  → Data access (sensitive resources)
+  → Data modification (Cap Table, Deals)
+  → Admin actions
+  → File access (Data Room)
+
+  Schema:
+  {
+    timestamp, user_id, action,
+    resource_type, resource_id,
+    ip_address, user_agent,
+    old_value, new_value,
+    success, reason
+  }
+
+  Storage: Write-only table in separate DB
+  Retention: 7 years (legal requirement)
+
+Security Monitoring:
+  → CloudTrail: AWS API calls
+  → GuardDuty: Threat detection
+  → Security Hub: Centralized findings
+  → Custom alerts: Suspicious patterns
+
+Penetration Testing:
+  → Annual third-party pentest
+  → Bug bounty program (Phase 2)
+  → Automated SAST: SonarQube
+  → Automated DAST: OWASP ZAP
+```
+
+---
+
+## 5.2 — Compliance Framework
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Saudi Arabia — PDPL Compliance
+(Personal Data Protection Law)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data Controller Registration:
+  → Register with SDAIA (Saudi Authority)
+  → Appoint Data Protection Officer (DPO)
+  → Maintain Records of Processing Activities
+
+Lawful Basis for Processing:
+  → Consent (explicit, withdrawable)
+  → Contractual necessity
+  → Legitimate interests (documented)
+
+Data Subject Rights Implementation:
+  ✅ Right of Access:
+     GET /users/me/data-export
+     → Returns all data in JSON format
+     → Within 30 days of request
+
+  ✅ Right to Rectification:
+     → Profile editing available
+     → Support ticket for system data
+
+  ✅ Right to Erasure:
+     DELETE /users/me/account
+     → Soft delete immediately
+     → Hard delete after 30 days
+     → Some data retained for legal reasons:
+       (Financial transactions, Audit logs)
+
+  ✅ Right to Data Portability:
+     → JSON + CSV export available
+     → Standard formats
+
+  ✅ Right to Object:
+     → Opt-out of AI processing
+     → Opt-out of marketing
+     → Opt-out of analytics
+
+Data Localization:
+  → Saudi users' data: me-central-1 (UAE)
+    or me-south-1 (Bahrain)
+  → No transfer outside GCC without consent
+  → Data Processing Agreements with all vendors
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+UAE — Data Protection Law
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  → DIFC Data Protection Law 2020
+  → ADGM Data Protection Regulations
+  → Same principles as PDPL
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Financial Services Compliance
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Note: Majlis في المراحل الأولى
+لا تُجري معاملات مالية مباشرة
+لذا لا تحتاج ترخيص مالي في Phase 1
+
+Phase 1 (Information Platform):
+  → No licensing required
+  → Clearly marked as "information only"
+  → Disclaimer on all deal pages:
+    "لا تُقدم Majlis خدمات استثمارية"
+
+Phase 3 (Financial Features):
+  → KSA: CMA (Capital Market Authority)
+  → UAE: FSRA (ADGM) or DFSA (DIFC)
+  → Legal counsel required before launch
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 6 — CI/CD PIPELINE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 6.1 — Complete Pipeline
+
+```yaml
+# .github/workflows/backend.yml
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  AWS_REGION: me-central-1
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+
+jobs:
+  # ─── STAGE 1: CODE QUALITY ─────────────
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npm run type-check
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Prettier check
+        run: npm run format:check
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  # ─── STAGE 2: TESTING ──────────────────
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: quality
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: majlis_test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run DB migrations
+        run: npm run db:migrate:test
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/majlis_test
+
+      - name: Run Unit Tests
+        run: npm run test:unit -- --coverage
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/majlis_test
+          REDIS_URL: redis://localhost:6379
+
+      - name: Run Integration Tests
+        run: npm run test:integration
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/majlis_test
+
+      - name: Coverage Check (80% minimum)
+        run: npm run test:coverage-check
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+
+  # ─── STAGE 3: SECURITY SCAN ────────────
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency vulnerability scan
+        run: npm audit --audit-level=high
+
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+
+  # ─── STAGE 4: BUILD & PUSH ─────────────
+  build:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    if: github.ref == 'refs/heads/main' ||
+        github.ref == 'refs/heads/develop'
+
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.ECR_REGISTRY }}/majlis-api
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_ENV=production
+
+      - name: Container vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.tags }}
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+
+  # ─── STAGE 5: DEPLOY STAGING ───────────
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+
+    steps:
+      - name: Deploy to EKS Staging
+        run: |
+          aws eks update-kubeconfig \
+            --name majlis-staging \
+            --region ${{ env.AWS_REGION }}
+
+          helm upgrade --install majlis-api ./helm/majlis-api \
+            --namespace staging \
+            --set image.tag=${{ needs.build.outputs.image-tag }} \
+            --set environment=staging \
+            --values helm/values-staging.yaml \
+            --wait --timeout 5m
+
+      - name: Run Smoke Tests
+        run: npm run test:smoke -- --env staging
+
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "✅ Deployed to Staging: ${{ github.sha }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ─── STAGE 6: DEPLOY PRODUCTION ────────
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    environment: production
+
+    steps:
+      - name: Deploy to EKS Production
+        run: |
+          aws eks update-kubeconfig \
+            --name majlis-production \
+            --region ${{ env.AWS_REGION }}
+
+          # Blue-Green deployment
+          helm upgrade --install majlis-api ./helm/majlis-api \
+            --namespace production \
+            --set image.tag=${{ needs.build.outputs.image-tag }} \
+            --set environment=production \
+            --set replicaCount=3 \
+            --values helm/values-production.yaml \
+            --wait --timeout 10m \
+            --atomic  # Rollback on failure
+
+      - name: Verify deployment health
+        run: |
+          kubectl rollout status deployment/majlis-api -n production
+          kubectl get pods -n production | grep majlis-api
+
+      - name: Run Production Smoke Tests
+        run: npm run test:smoke -- --env production
+
+      - name: Notify team
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "🚀 *Production Deployed*: ${{ github.sha }}\nBy: ${{ github.actor }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+```
+
+---
+
+## 6.2 — Mobile CI/CD (Fastlane)
+
+```ruby
+# fastlane/Fastfile
+
+platform :ios do
+  lane :beta do
+    increment_build_number
+    build_ios_app(
+      scheme: "Majlis",
+      configuration: "Release",
+      export_method: "app-store"
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+    slack(
+      message: "🍎 iOS Beta uploaded to TestFlight"
+    )
+  end
+
+  lane :release do
+    ensure_git_branch(branch: 'main')
+    ensure_git_status_clean
+    increment_version_number
+    beta
+    upload_to_app_store(
+      submit_for_review: true,
+      automatic_release: false
+    )
+  end
+end
+
+platform :android do
+  lane :beta do
+    increment_version_code
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      properties: {
+        "android.injected.signing.store.file" =>
+          ENV["KEYSTORE_FILE"],
+        "android.injected.signing.store.password" =>
+          ENV["KEYSTORE_PASSWORD"]
+      }
+    )
+    upload_to_play_store(
+      track: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab"
+    )
+    slack(
+      message: "🤖 Android Beta uploaded to Play Store"
+    )
+  end
+end
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 7 — PERFORMANCE & CACHING STRATEGY
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7.1 Caching Layers
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LAYER 1 — CDN (CloudFront):
+  What: Static assets, public profiles
+  TTL: 24 hours (long-lived)
+  Invalidation: On content update
+
+LAYER 2 — API Gateway Cache (Kong):
+  What: GET requests for public data
+  TTL: 5 minutes
+  Keys: URL + query params
+
+LAYER 3 — Application Cache (Redis):
+  What:
+    User sessions:          TTL 30d
+    JWT blacklist:          TTL = token expiry
+    OTP codes:              TTL 10min
+    User profile:           TTL 15min
+    Feed (per user):        TTL 5min
+    Investor pipeline:      TTL 10min
+    Cohort pipeline page:   TTL 2min
+    Deal room analytics:    TTL 1min
+    Online presence:        TTL 5min
+    Rate limit counters:    TTL 1min
+
+  Keys Strategy:
+    user:{id}:profile
+    user:{id}:feed:page:{n}
+    investor:{id}:pipeline
+    accelerator:{id}:pipeline
+    deal_room:{id}:analytics
+
+LAYER 4 — Database Query Cache:
+  PostgreSQL:
+    shared_buffers: 4GB
+    effective_cache_size: 12GB
+    work_mem: 256MB
+    Statement timeout: 5000ms
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7.2 Database Query Optimization
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Critical Query Optimizations:
+
+1. Feed Query (most frequent):
+   -- Bad: Full table scan
+   SELECT * FROM posts ORDER BY created_at DESC;
+
+   -- Good: Index + pagination + filter
+   SELECT p.*, u.full_name_ar, u.profile_photo_url
+   FROM posts p
+   JOIN users u ON p.author_id = u.id
+   WHERE p.is_active = TRUE
+     AND p.visibility = 'PUBLIC'
+     AND p.created_at < $cursor
+     AND (
+       p.author_id = ANY($following_ids)
+       OR p.room_id = ANY($room_ids)
+     )
+   ORDER BY p.created_at DESC
+   LIMIT 20;
+   -- Index: (is_active, visibility, created_at DESC)
+
+2. Investor Pipeline Query:
+   SELECT cs.*, c.name, c.logo_url,
+          cs.total_score,
+          dr.raising_amount, dr.status as raise_status
+   FROM cohort_startups cs
+   JOIN companies c ON cs.company_id = c.id
+   LEFT JOIN deal_rooms dr ON dr.company_id = c.id
+     AND dr.status = 'ACTIVE'
+   WHERE cs.cohort_id = $coh
+```sql
+   WHERE cs.cohort_id = $cohort_id
+     AND cs.accelerator_backed = TRUE
+   ORDER BY cs.total_score DESC;
+   -- Index: (cohort_id, accelerator_backed, total_score DESC)
+
+3. Deal Flow for Investor (AI-filtered):
+   SELECT dr.*, c.name, c.logo_url, c.stage,
+          cs.total_score, cs.accelerator_backed,
+          ai.match_score
+   FROM deal_rooms dr
+   JOIN companies c ON dr.company_id = c.id
+   LEFT JOIN cohort_startups cs ON cs.company_id = c.id
+     AND cs.accelerator_backed = TRUE
+   LEFT JOIN ai_investor_matches ai
+     ON ai.investor_id = $investor_id
+     AND ai.company_id = c.id
+   WHERE dr.status = 'ACTIVE'
+     AND dr.privacy IN ('PUBLIC', 'REGISTERED')
+     AND c.stage = ANY($thesis_stages)
+     AND c.primary_sector = ANY($thesis_sectors)
+     AND c.country = ANY($thesis_geos)
+     AND dr.company_id NOT IN (
+       SELECT company_id FROM investor_deals
+       WHERE investor_id = $investor_id
+     )
+   ORDER BY COALESCE(ai.match_score, 0) DESC,
+            cs.total_score DESC NULLS LAST
+   LIMIT 20;
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 8 — AI SERVICE ARCHITECTURE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## 8.1 — AI Pipeline Architecture
+
+```python
+# ai_service/main.py
+from fastapi import FastAPI, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="Majlis AI Service", version="1.0.0")
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PIPELINE 1: PITCH DECK ANALYZER
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import JsonOutputParser
+from pydantic import BaseModel
+import fitz  # PyMuPDF
+import base64
+
+class SlideAnalysis(BaseModel):
+    slide_number: int
+    title: str
+    score: int  # 0-10
+    strengths: list[str]
+    weaknesses: list[str]
+    suggestions: list[str]
+    time_investor_likely_spends: str
+
+class DeckAnalysis(BaseModel):
+    overall_score: int
+    slide_analyses: list[SlideAnalysis]
+    top_strengths: list[str]
+    critical_issues: list[str]
+    mena_specific_feedback: list[str]
+    likely_investor_questions: list[str]
+    missing_sections: list[str]
+    benchmark_comparison: str
+
+async def analyze_pitch_deck(
+    deck_id: str,
+    file_url: str
+) -> DeckAnalysis:
+    """
+    Full pipeline:
+    1. Download PDF
+    2. Convert to images
+    3. GPT-4o Vision analysis per slide
+    4. Aggregate and score
+    5. MENA-specific feedback
+    6. Store results
+    """
+
+    # Step 1: Convert PDF to images
+    pdf_document = fitz.open(file_url)
+    slide_images = []
+
+    for page_num in range(len(pdf_document)):
+        page = pdf_document[page_num]
+        mat = fitz.Matrix(2, 2)  # 2x zoom for quality
+        clip = page.get_pixmap(matrix=mat)
+        img_bytes = clip.tobytes("png")
+        b64 = base64.b64encode(img_bytes).decode()
+        slide_images.append({
+            "slide_num": page_num + 1,
+            "image_b64": b64
+        })
+
+    # Step 2: Analyze each slide with GPT-4o Vision
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    slide_analyses = []
+
+    for slide in slide_images:
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", SLIDE_ANALYSIS_SYSTEM_PROMPT),
+            ("human", [
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/png;base64,{slide['image_b64']}"
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": f"""
+                    Analyze slide {slide['slide_num']}.
+                    Context: This is a MENA startup pitch deck.
+                    Investors are from Gulf region (KSA, UAE).
+                    Return JSON matching the SlideAnalysis schema.
+                    """
+                }
+            ])
+        ])
+
+        parser = JsonOutputParser(pydantic_object=SlideAnalysis)
+        chain = prompt | llm | parser
+        analysis = await chain.ainvoke({})
+        slide_analyses.append(analysis)
+
+    # Step 3: Aggregate analysis
+    aggregation_prompt = ChatPromptTemplate.from_messages([
+        ("system", DECK_AGGREGATION_SYSTEM_PROMPT),
+        ("human", f"""
+        Slide analyses:
+        {[a.dict() for a in slide_analyses]}
+
+        Generate overall deck analysis for MENA investors.
+        Focus on: Saudi Arabia, UAE, Egypt markets.
+        Consider: Cultural context, regulatory environment,
+                  MENA VC expectations.
+        Return JSON matching DeckAnalysis schema.
+        """)
+    ])
+
+    parser = JsonOutputParser(pydantic_object=DeckAnalysis)
+    chain = aggregation_prompt | llm | parser
+    deck_analysis = await chain.ainvoke({})
+
+    # Step 4: Store in database
+    await store_deck_analysis(deck_id, deck_analysis)
+
+    return deck_analysis
+
+
+SLIDE_ANALYSIS_SYSTEM_PROMPT = """
+أنت خبير في تحليل Pitch Decks للـ startups في منطقة MENA.
+لديك خبرة 15 سنة في مجال Venture Capital.
+
+قيّم كل slide بموضوعية وأعطِ:
+1. نقاط القوة المحددة
+2. نقاط الضعف الحقيقية (لا تكن متحيزاً)
+3. اقتراحات عملية قابلة للتنفيذ
+4. الوقت الذي سيقضيه المستثمر في هذا الـ slide
+
+كن صادقاً وعملياً. المستثمرون الخليجيون يهتمون بـ:
+- الفريق والخبرة المحلية
+- حجم السوق في MENA تحديداً
+- المنافسة المحلية (مش فقط العالمية)
+- مسار الإيراد والربحية
+- التوافق مع التشريعات المحلية
+"""
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PIPELINE 2: MEETING INTELLIGENCE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+import openai
+from pydantic import BaseModel
+
+class ActionItem(BaseModel):
+    assignee_name: str
+    assignee_id: str | None
+    task: str
+    due_date: str | None
+    priority: str  # HIGH/MEDIUM/LOW
+
+class MeetingIntelligence(BaseModel):
+    summary_points: list[str]  # 3-5 points
+    action_items: list[ActionItem]
+    topics_discussed: list[str]
+    sentiment: str  # POSITIVE/NEUTRAL/NEGATIVE
+    deal_stage_suggested: str
+    deal_probability: int  # 0-100
+    key_concerns: list[str]
+    next_step_recommendation: str
+
+async def process_meeting_note(
+    audio_file_path: str,
+    owner_id: str,
+    contact_info: dict,
+    deal_context: dict | None = None
+) -> MeetingIntelligence:
+    """
+    Pipeline:
+    1. Whisper transcription (Arabic + English)
+    2. GPT-4o intelligence extraction
+    3. Deal context integration
+    4. Action items with assignments
+    5. Delete audio after processing
+    """
+
+    # Step 1: Transcribe with Whisper
+    client = openai.AsyncOpenAI()
+
+    with open(audio_file_path, "rb") as audio_file:
+        transcription = await client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_file,
+            language=None,  # Auto-detect AR/EN
+            response_format="verbose_json",
+            timestamp_granularities=["segment"]
+        )
+
+    transcript_text = transcription.text
+
+    # Step 2: Extract intelligence
+    context = f"""
+    Meeting between:
+    - Investor: {owner_id}
+    - Contact: {contact_info.get('name')} at {contact_info.get('company')}
+
+    Deal Context: {deal_context or 'No prior context'}
+
+    Meeting Transcript:
+    {transcript_text}
+    """
+
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", MEETING_INTELLIGENCE_PROMPT),
+        ("human", context)
+    ])
+
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    parser = JsonOutputParser(pydantic_object=MeetingIntelligence)
+    chain = prompt | llm | parser
+    intelligence = await chain.ainvoke({})
+
+    # Step 3: Delete audio for privacy
+    import os
+    os.remove(audio_file_path)
+
+    return intelligence
+
+
+MEETING_INTELLIGENCE_PROMPT = """
+أنت مساعد ذكي متخصص في تحليل اجتماعات الاستثمار في MENA.
+
+مهمتك:
+1. استخرج ملخصاً دقيقاً (3-5 نقاط فقط — الأهم)
+2. حدد Action Items بوضوح مع صاحب كل مهمة
+3. قيّم sentiment الاجتماع
+4. اقترح المرحلة المناسبة في الـ deal pipeline
+5. قدّر احتمالية إغلاق الصفقة (0-100%)
+6. حدد أبرز المخاوف التي أُثيرت
+7. أوصِ بالخطوة التالية المثلى
+
+ملاحظات مهمة:
+- المحادثات قد تكون بالعربية أو الإنجليزية أو كليهما
+- السياق خليجي — راعِ ثقافة بناء العلاقات
+- الـ Action Items يجب أن تكون قابلة للتنفيذ ومحددة
+- كن دقيقاً في تحديد من يملك كل مهمة
+"""
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PIPELINE 3: INVESTOR-STARTUP MATCHING
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from pinecone import Pinecone
+from openai import AsyncOpenAI
+
+pc = Pinecone(api_key=PINECONE_API_KEY)
+index = pc.Index("majlis-matches")
+
+class MatchResult(BaseModel):
+    company_id: str
+    match_score: int  # 0-100
+    match_reasons: list[str]
+    potential_concerns: list[str]
+    recommended_approach: str
+
+async def generate_embedding(text: str) -> list[float]:
+    client = AsyncOpenAI()
+    response = await client.embeddings.create(
+        input=text,
+        model="text-embedding-3-large"
+    )
+    return response.data[0].embedding
+
+async def match_investor_to_startups(
+    investor_id: str,
+    investor_profile: dict,
+    limit: int = 20
+) -> list[MatchResult]:
+    """
+    Smart matching pipeline:
+    1. Build investor profile text
+    2. Generate embedding
+    3. Query Pinecone for similar startups
+    4. Re-rank with GPT-4o
+    5. Filter already-seen deals
+    6. Return ranked matches
+    """
+
+    # Step 1: Build rich investor profile text
+    investor_text = f"""
+    Investment Thesis: {investor_profile['thesis']}
+    Focus Sectors: {', '.join(investor_profile['sectors'])}
+    Target Stages: {', '.join(investor_profile['stages'])}
+    Check Size: ${investor_profile['check_min']}K-${investor_profile['check_max']}K
+    Portfolio: {investor_profile['portfolio_description']}
+    Recent investments: {investor_profile['recent_deals']}
+    What I look for: {investor_profile['criteria']}
+    """
+
+    # Step 2: Generate embedding
+    investor_embedding = await generate_embedding(investor_text)
+
+    # Step 3: Query Pinecone
+    results = index.query(
+        vector=investor_embedding,
+        top_k=50,
+        namespace="startups",
+        filter={
+            "stage": {"$in": investor_profile['stages']},
+            "sector": {"$in": investor_profile['sectors']},
+            "country": {"$in": investor_profile['geographies']},
+            "is_raising": True,
+            "accelerator_backed": True
+        },
+        include_metadata=True
+    )
+
+    # Step 4: Re-rank top 20 with GPT-4o
+    candidates = [
+        {
+            "company_id": r.id,
+            "metadata": r.metadata,
+            "vector_score": r.score
+        }
+        for r in results.matches[:20]
+    ]
+
+    rerank_prompt = f"""
+    Investor Profile:
+    {investor_text}
+
+    Candidate Startups:
+    {candidates}
+
+    Re-rank these startups for this specific investor.
+    Consider: thesis fit, stage, sector, traction, team quality.
+    Return JSON array of MatchResult objects, top 10 only.
+    Be specific about WHY each is a good match.
+    """
+
+    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    response = await llm.ainvoke(rerank_prompt)
+
+    return parse_match_results(response.content)
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PIPELINE 4: DEAL CONTINUITY ENGINE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+scheduler = AsyncIOScheduler()
+
+@scheduler.scheduled_job('interval', hours=24)
+async def run_deal_continuity_check():
+    """
+    Runs daily at 8 AM Gulf time.
+    Checks all active deals for:
+    1. No contact in N days
+    2. New traction from startup
+    3. Deal closing soon
+    4. Anniversary triggers
+    """
+
+    investors = await get_active_investors()
+
+    for investor in investors:
+        insights = await generate_deal_insights(investor.id)
+        if insights:
+            await create_ai_insights_batch(investor.id, insights)
+            await notify_investor(investor.id, insights)
+
+
+async def generate_deal_insights(investor_id: str) -> list[dict]:
+    insights = []
+
+    # Rule 1: No contact > 30 days
+    stale_deals = await get_stale_deals(
+        investor_id,
+        days_without_contact=30
+    )
+
+    for deal in stale_deals:
+        # Check if startup had recent activity
+        recent_posts = await get_company_recent_posts(
+            deal.company_id,
+            days=14
+        )
+
+        if recent_posts:
+            insights.append({
+                "type": "FOLLOW_UP_DUE",
+                "priority": "HIGH",
+                "title_ar": f"تحديث جديد من {deal.company_name}",
+                "body_ar": f"""
+                    لم تتواصل مع {deal.founder_name}
+                    منذ {deal.days_since_contact} يوماً.
+                    نشروا تحديثاً جديداً: "{recent_posts[0].content[:100]}..."
+                    الآن وقت مناسب للتواصل.
+                """,
+                "deep_link": f"/investor/deals/{deal.id}",
+                "action_suggested": "message",
+                "confidence_score": 87
+            })
+        else:
+            insights.append({
+                "type": "FOLLOW_UP_DUE",
+                "priority": "MEDIUM",
+                "title_ar": f"متابعة مع {deal.company_name}",
+                "body_ar": f"""
+                    مضى {deal.days_since_contact} يوماً
+                    على آخر تواصل مع {deal.founder_name}.
+                    لا تدع هذه الصفقة تبرد.
+                """,
+                "deep_link": f"/investor/deals/{deal.id}",
+                "confidence_score": 72
+            })
+
+    # Rule 2: Closing deadline approaching
+    closing_soon = await get_deals_closing_soon(
+        investor_id,
+        days_until_close=14
+    )
+
+    for deal in closing_soon:
+        insights.append({
+            "type": "TIMING_SIGNAL",
+            "priority": "HIGH",
+            "title_ar": f"⚡ {deal.company_name} تغلق الجولة قريباً",
+            "body_ar": f"""
+                تغلق جولة {deal.company_name}
+                في {deal.days_until_close} يوم.
+                {deal.raise_percentage}% من الجولة ممتلئة.
+                هل قررت؟
+            """,
+            "deep_link": f"/deals/{deal.deal_room_id}",
+            "confidence_score": 95
+        })
+
+    return insights
+```
+
+---
+
+## 8.2 — Founder Execution Score Algorithm
+
+```python
+# ai_service/execution_score.py
+
+class ExecutionScoreComponents(BaseModel):
+    promise_delivery_rate: float     # 0-1
+    milestone_hit_rate: float        # 0-1
+    revenue_growth_consistency: float # 0-1
+    team_retention_rate: float        # 0-1
+    investor_communication_score: float # 0-1
+    burn_efficiency_score: float      # 0-1
+
+    # Weights
+    WEIGHTS = {
+        "promise_delivery": 0.25,
+        "milestone_hit": 0.20,
+        "revenue_growth": 0.20,
+        "team_retention": 0.15,
+        "investor_communication": 0.10,
+        "burn_efficiency": 0.10
+    }
+
+async def calculate_execution_score(
+    founder_id: str,
+    company_id: str
+) -> dict:
+    """
+    Calculates the Execution Score (0-100)
+    Based on verified behavioral data only.
+    NOT on self-reported claims.
+    """
+
+    # 1. Promise vs Delivery
+    milestones = await get_all_milestones(company_id)
+    completed_on_time = sum(
+        1 for m in milestones
+        if m.completed_at and m.completed_at <= m.due_date
+    )
+    promise_delivery = (
+        completed_on_time / len(milestones)
+        if milestones else 0.5  # neutral if no data
+    )
+
+    # 2. Revenue Growth Consistency
+    kpi_history = await get_kpi_history(company_id, months=6)
+    if len(kpi_history) >= 3:
+        growth_rates = [
+            (kpi_history[i].mrr - kpi_history[i-1].mrr)
+            / kpi_history[i-1].mrr
+            if kpi_history[i-1].mrr > 0 else 0
+            for i in range(1, len(kpi_history))
+        ]
+        # Consistency = low variance in growth
+        import statistics
+        variance = statistics.variance(growth_rates)
+        revenue_growth = max(0, 1 - variance)
+    else:
+        revenue_growth = 0.5
+
+    # 3. Team Retention
+    team_history = await get_team_history(company_id, months=12)
+    if team_history:
+        avg_tenure = sum(
+            m.months_active for m in team_history
+        ) / len(team_history)
+        team_retention = min(1.0, avg_tenure / 12)
+    else:
+        team_retention = 0.5
+
+    # 4. Investor Communication Score
+    update_frequency = await get_update_frequency(company_id)
+    # Expected: monthly updates
+    communication = min(
+        1.0,
+        update_frequency.updates_per_month / 1.0
+    )
+
+    # 5. KPI Update Timeliness
+    kpi_updates = await get_kpi_update_timeliness(company_id)
+    timeliness = kpi_updates.on_time_rate
+
+    # Calculate weighted score
+    raw_score = (
+        promise_delivery * 0.25 +
+        (completed_on_time / max(len(milestones), 1)) * 0.20 +
+        revenue_growth * 0.20 +
+        team_retention * 0.15 +
+        communication * 0.10 +
+        timeliness * 0.10
+    )
+
+    final_score = round(raw_score * 100)
+
+    # Generate explanation
+    explanation = await generate_score_explanation(
+        founder_id=founder_id,
+        score=final_score,
+        components={
+            "promise_delivery": round(promise_delivery * 100),
+            "revenue_growth": round(revenue_growth * 100),
+            "team_retention": round(team_retention * 100),
+            "communication": round(communication * 100),
+        }
+    )
+
+    return {
+        "score": final_score,
+        "components": {
+            "promise_delivery": round(promise_delivery * 100),
+            "revenue_growth": round(revenue_growth * 100),
+            "team_retention": round(team_retention * 100),
+            "communication": round(communication * 100),
+        },
+        "explanation_ar": explanation['ar'],
+        "explanation_en": explanation['en'],
+        "data_points_count": len(milestones) + len(kpi_history),
+        "calculated_at": datetime.now().isoformat()
+    }
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 9 — THIRD-PARTY INTEGRATIONS
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 1: TWILIO (SMS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use Cases:
+  → OTP verification
+  → Critical security alerts
+  → Meeting reminders (optional)
+
+Implementation:
+  Primary:  Twilio (global)
+  Fallback: Unifonic (MENA-native, better delivery)
+
+Config:
+  TWILIO_ACCOUNT_SID=ACxxxxxxxxxx
+  TWILIO_AUTH_TOKEN=xxxxxxxxxx
+  TWILIO_PHONE_KSA=+966xxxxxxxxx
+  TWILIO_PHONE_UAE=+971xxxxxxxxx
+
+Fallback Logic:
+  if (twilio_fails || country in MENA) {
+    use unifonic
+  }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 2: SENDGRID (EMAIL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email Templates (all bilingual AR/EN):
+  welcome_email
+  email_verification
+  password_reset
+  investor_interest_received
+  deal_room_invitation
+  scorecard_completed
+  deal_closed_congratulations
+  weekly_digest
+  lp_report_ready
+  cohort_invitation
+  meeting_summary_ready
+  ai_insight_notification
+
+Template Strategy:
+  → Dynamic RTL/LTR based on user language
+  → Arabic subject lines for AR users
+  → Mobile-responsive design
+  → Unsubscribe per category
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 3: STRIPE + TAP PAYMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Strategy:
+  Stripe:      International cards, global
+  Tap:         MENA cards (Mada, local)
+
+Supported Methods:
+  → Credit/Debit (Visa, Mastercard)
+  → Mada (Saudi)
+  → KNET (Kuwait)
+  → Benefit (Bahrain)
+  → Apple Pay / Google Pay
+
+Subscription Billing:
+  → Stripe Billing for recurring
+  → Proration on upgrades
+  → Grace period: 7 days after failure
+  → Dunning: 3 retry attempts
+
+Payment Flow:
+  User selects plan
+  → Checkout (Stripe/Tap)
+  → Webhook: payment.succeeded
+  → Activate subscription
+  → Send receipt email
+
+Webhook Security:
+  Validate Stripe-Signature header
+  Idempotency keys on all requests
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 4: DOCUSIGN (E-SIGNATURE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use Cases:
+  → NDA for Deal Room access
+  → Co-Founder Agreements
+  → Investment Term Sheets (future)
+
+Flow:
+  1. Generate document from template
+  2. Send to signer via DocuSign
+  3. Webhook: envelope.completed
+  4. Store signed PDF in S3
+  5. Grant access / update status
+
+Templates:
+  → NDA Template (AR + EN)
+  → Co-Founder MOU Template
+  → Advisory Agreement Template
+
+Arabic Support:
+  → DocuSign supports Arabic
+  → RTL document rendering
+  → Arabic signer names
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 5: FIREBASE (PUSH)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FCM (Android + Web):
+  → flutter_messaging package
+  → Background + foreground handling
+  → Topic-based (deals, connections)
+  → Device token management
+
+APNs (iOS):
+  → Via Firebase (unified interface)
+  → Critical alerts for security events
+  → Notification categories + actions
+
+Notification Payload:
+  {
+    "notification": {
+      "title": "فيصل العتيبي أبدى اهتمامه",
+      "body": "بـ PayFlow Seed Round"
+    },
+    "data": {
+      "type": "INVESTOR_INTEREST",
+      "deal_room_id": "uuid",
+      "deep_link": "/founder/deal-rooms/uuid"
+    },
+    "apns": {
+      "payload": {
+        "aps": {
+          "sound": "default",
+          "badge": 1
+        }
+      }
+    }
+  }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 6: LINKEDIN OAUTH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Scopes Requested:
+  r_liteprofile    (name, photo)
+  r_emailaddress   (email)
+  w_member_social  (future: share posts)
+
+Data Imported:
+  → Full name (EN)
+  → Email
+  → Profile photo
+  → Headline
+  → Current company (if available)
+
+Privacy:
+  → User explicitly approves
+  → Can disconnect at any time
+  → We never post without permission
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+INTEGRATION 7: AWS S3 (FILE STORAGE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Bucket Structure:
+  majlis-production/
+  ├── users/
+  │   ├── {user_id}/
+  │   │   ├── avatar.jpg
+  │   │   └── cover.jpg
+  ├── companies/
+  │   └── {company_id}/
+  │       ├── logo.png
+  │       └── cover.jpg
+  ├── deal-rooms/
+  │   └── {room_id}/
+  │       ├── deck/
+  │       │   ├── original.pdf
+  │       │   └── slides/
+  │       │       ├── slide_1.png
+  │       │       └── ...
+  │       └── data-room/
+  │           └── {folder}/
+  │               └── {file_uuid}.pdf
+  └── meeting-notes/
+      └── {note_id}/
+          └── audio_temp.mp3
+          (deleted after processing)
+
+Access Control:
+  → All files private by default
+  → Pre-signed URLs for access (15 min expiry)
+  → No public read ACL ever
+  → Deck slides: 1-hour presigned URLs
+  → Documents: 15-min presigned (more sensitive)
+
+Virus Scanning:
+  Lambda trigger on S3 upload →
+  ClamAV scan →
+  Tag: clean/infected →
+  Move to quarantine if infected →
+  Notify security team
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# PART 10 — DISASTER RECOVERY PLAN
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10.1 Backup Strategy
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PostgreSQL (RDS):
+  Automated Backups:
+    Frequency:  Every 6 hours
+    Retention:  30 days
+    Type:       AWS RDS snapshots
+    Region:     Primary + Cross-region copy
+
+  Point-in-Time Recovery:
+    WAL archiving enabled
+    Recovery point: any point in last 30 days
+    Recovery time: < 30 minutes
+
+Redis (ElastiCache):
+  AOF persistence enabled
+  Snapshot: Every 1 hour
+  Retention: 7 days
+
+S3 Files:
+  Versioning: Enabled on all buckets
+  Cross-region replication: To me-south-1
+  Glacier transition: After 90 days
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10.2 Recovery Scenarios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SCENARIO 1: Single Service Down
+  Detection: Health check fails → PagerDuty P2
+  Resolution:
+    Kubernetes auto-restart (30 sec)
+    If persistent → new pod scheduled
+    If node failure → new node added
+  RTO: < 2 minutes
+  RPO: 0 (stateless services)
+
+SCENARIO 2: Database Failure
+  Detection: RDS health check → P1 alert
+  Resolution:
+    Multi-AZ auto-failover (< 60 sec)
+    Read replica promoted if needed
+  RTO: < 2 minutes
+  RPO: < 5 seconds (transaction loss)
+
+SCENARIO 3: Entire Region Down
+  Detection: CloudWatch alarms → P1
+  Resolution:
+    DNS failover to secondary region
+    RDS restore from cross-region snapshot
+    EKS cluster in secondary region
+    S3 replication already active
+  RTO: < 1 hour
+  RPO: < 1 hour
+
+SCENARIO 4: Data Corruption / Deletion
+  Detection: Application errors, user reports
+  Resolution:
+    Point-in-time recovery to pre-corruption
+    Targeted table restore from snapshot
+    Audit log analysis for root cause
+  RTO: < 4 hours
+  RPO: < 6 hours (last backup)
+
+SCENARIO 5: Security Breach
+  Response Team:
+    1. Isolate affected services immediately
+    2. Rotate ALL secrets and credentials
+    3. Force logout ALL active sessions
+    4. Forensic analysis of audit logs
+    5. Notify affected users within 72h (PDPL)
+    6. Regulatory notification if required
+  RTO: 4-24 hours (depending on scope)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10.3 Runbook — Critical Incidents
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ON-CALL ROTATION:
+  Primary:   CTO / Lead Engineer
+  Secondary: Senior Backend Engineer
+  Escalation: CEO for P1 > 2h unresolved
+
+INCIDENT SEVERITY:
+  P1 CRITICAL:
+    → Auth Service down (users can't login)
+    → Database unreachable
+    → Security breach detected
+    Response: 15 minutes, all hands
+
+  P2 MAJOR:
+    → Any core service down > 5 min
+    → Error rate > 5%
+    → Payment processing down
+    Response: 30 minutes
+
+  P3 MINOR:
+    → Performance degradation
+    → Non-critical feature broken
+    Response: 4 hours
+
+COMMUNICATION:
+  Internal: Slack #incidents channel
+  Users: Status page (status.majlis.io)
+  Major incidents: In-app banner
+```
+
+---
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│         🏛️ END OF ENGINEERING LAYER DOCUMENT              │
+│                                                             │
+│   ENG-ARCH-MAJLIS-001 — Version 1.0.0                      │
+│                                                             │
+│   ما تم بناؤه في هذه الوثيقة:                              │
+│                                                             │
+│   ✅ System Architecture (Microservices Map)               │
+│   ✅ Infrastructure (AWS + Kubernetes)                     │
+│   ✅ Real-time Architecture (WebSocket + Events)           │
+│   ✅ Full Tech Stack + ADRs (القرارات مع المبررات)         │
+│   ✅ Complete Database Schema (SQL كامل + Triggers)        │
+│   ✅ API Design (150+ Endpoints)                           │
+│   ✅ Security Architecture (6 Layers)                      │
+│   ✅ PDPL/UAE Compliance Framework                         │
+│   ✅ CI/CD Pipeline (GitHub Actions + Fastlane)           │
+│   ✅ Caching Strategy (4 Layers)                           │
+│   ✅ AI Service Architecture (Python + LangChain)          │
+│   ✅ All 7 Third-Party Integrations                        │
+│   ✅ Disaster Recovery Plan (5 Scenarios)                  │
+│                                                             │
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   │
+│                                                             │
+│   الوثائق المكتملة حتى الآن:                               │
+│                                                             │
+│   ✅ Product Vision Document                               │
+│   ✅ User Personas + JTBD                                  │
+│   ✅ Feature List / Product Backlog                        │
+│   ✅ PRD (Product Requirements Document)                   │
+│   ✅ Information Architecture + Wireframes                 │
+│   ✅ Engineering Architecture (هذه الوثيقة)               │
+│                                                             │
+│
+```
