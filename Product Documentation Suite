@@ -1,0 +1,3028 @@
+# 🏛️ MAJLIS
+## Product Documentation Suite — Enterprise Grade
+### Version 1.0 | Confidential
+
+---
+
+```
+Document Control
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Product:      Majlis — Investment OS for MENA
+Version:      1.0.0
+Status:       APPROVED FOR DEVELOPMENT
+Date:         2026
+Owner:        Product & Engineering
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DOCUMENT 1 — USER JOURNEY MAPS
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+---
+
+## UJM-001 — Accelerator Manager (سارة)
+
+```
+PHASE 0: AWARENESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Trigger Events:
+→ تسمع عن Majlis من مدير مسرّعة أخرى
+→ ترى LinkedIn post من VC يمدح الـ Verified Pipeline
+→ تبحث عن "accelerator management software arabic"
+
+Touchpoints:
+→ LinkedIn Post
+→ Google Search
+→ Word of Mouth من peer
+
+Emotion:      😐 محايدة — شككية
+Thought:      "هل هذا مختلف فعلاً عن Excel؟"
+Barrier:      "جربت أدوات كثيرة — كلها خذلتني"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1: CONSIDERATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Actions:
+→ تزور majlis.io
+→ تشاهد demo video (يجب أن يكون < 3 دقائق)
+→ تقرأ case study من مسرّعة مشابهة
+→ تطلب demo مع Sales
+
+Touchpoints:
+→ Landing Page
+→ Demo Video
+→ Case Studies
+→ Sales Demo Call
+
+Emotion:      🤔 مهتمة لكن حذرة
+Thought:      "هذا يحل مشكلتي الحقيقية"
+Barrier:      "هل الفريق سيتبناه؟ هل التنفيذ صعب؟"
+
+Jobs Being Evaluated:
+✓ هل يوفر وقت حقيقي؟
+✓ هل يربطني بمستثمرين جدد؟
+✓ هل التدريب سهل للفريق؟
+✓ هل السعر مبرر للإدارة؟
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2: ONBOARDING (Day 1-7)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Day 1 — Setup:
+→ تسجل المسرّعة (اسم، لوغو، تخصص)
+→ Onboarding Wizard خطوة بخطوة
+→ تستورد قائمة الـ startups (CSV/Excel)
+→ تُعيّن أدوار الفريق
+
+Day 2-3 — First Cohort:
+→ تنشئ Cohort جديد
+→ تضيف الـ startups
+→ تُرسل invitations للـ founders
+→ تضع Milestones الأولى
+
+Day 4-5 — First Value:
+→ تملأ أول Scorecard لـ 5 startups
+→ ترى Investor View تلقائياً
+→ أول مستثمر يفتح الصفحة
+→ تتلقى notification: "مستثمر اطلع على pipeline"
+
+Day 6-7 — Aha Moment:
+→ مستثمر يطلب intro لستارتب عبر Majlis
+→ تُدرك: "هذا يجلب مستثمرين تلقائياً"
+
+Emotion:      😮 مفاجأة إيجابية
+Thought:      "الـ Aha moment — هذا يحل المشكلة الحقيقية"
+Success Metric: أول intro request خلال 7 أيام
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3: ACTIVATION (Week 2-4)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Week 2:
+→ تضيف كل الـ cohort على المنصة
+→ تبدأ Weekly Updates من الـ founders
+→ فريقها يبدأ الاستخدام اليومي
+→ أول تقرير تلقائي للإدارة
+
+Week 3:
+→ تُجهز Virtual Demo Day Room
+→ تُرسل invites لـ investors في الـ network
+→ ترى analytics لكل مستثمر
+
+Week 4:
+→ Demo Day ناجح — 3x مستثمرين من المعتاد
+→ أول deal يُغلق عبر Majlis
+→ الإدارة تطلب تقرير الـ ROI
+
+Emotion:      🎉 متحمسة — مؤمنة
+Thought:      "يجب أن أُقنع الإدارة بالتجديد السنوي"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4: RETENTION & EXPANSION (Month 2+)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Behaviors:
+→ تفتح Majlis أول شيء كل صباح
+→ Cohort Manager أصبح مرجعها الوحيد
+→ تُضيف Cohort ثانٍ وثالث
+→ توصي به لمديري مسرّعات أخريات
+
+Expansion Triggers:
+→ تطلب Enterprise Plan
+→ تُضيف الـ Alumni Network
+→ تطلب Custom Branding للتقارير
+
+Advocacy:
+→ تُعطي testimonial رسمي
+→ تصبح reference customer
+→ تُقدّم Majlis في مؤتمر LEAP
+
+Emotion:      💪 مدافعة عن المنتج
+Churn Risk:   منخفض جداً بعد نقل البيانات
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## UJM-002 — VC Fund Manager (فيصل)
+
+```
+PHASE 0: AWARENESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Trigger Events:
+→ مسرّعة يعمل معها بدأت تستخدم Majlis
+→ رأى Verified Pipeline لـ cohort — بدت احترافية
+→ زميل VC أخبره أنه "لم يضيع صفقة منذ 3 أشهر"
+
+Emotion:      😯 فضولي — يشعر بالـ FOMO
+Thought:      "هل أنا أضيع صفقات فعلاً بسبب workflow؟"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1: CONSIDERATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Actions:
+→ يطلب Private Demo مخصص
+→ يريد يرى Portfolio Dashboard بشكل خاص
+→ يحسب: كم ساعة يضيع على LP Reports؟
+   (الإجابة: 3 أسابيع كل ربع سنة)
+→ يتحدث مع VC آخر يستخدمه
+
+Decision Criteria:
+✓ هل Deal Flow سيكون أفضل؟
+✓ هل Portfolio tracking سيوفر وقتاً؟
+✓ هل LP Reports ستكون احترافية؟
+✓ هل البيانات آمنة وخاصة؟
+✓ هل فريقه سيتبناه؟
+
+Emotion:      🧐 يحلل ويقارن
+Barrier:      "أنا مشغول — لا وقت للتنفيذ"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2: ONBOARDING (Day 1-14)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Day 1-2 — Fund Setup:
+→ يُنشئ Fund Profile
+→ يُدخل Portfolio (23 شركة)
+→ يُعيّن الـ Associate لإتمام الإعداد
+
+Day 3-5 — Deal Flow:
+→ يرى Verified Pipeline من مسرّعات موثقة
+→ يرى AI Match Score لكل صفقة
+→ يُفعّل Deal Continuity Engine
+→ يُرسل أول Voice Note بعد اجتماع
+
+Day 6-10 — Portfolio:
+→ يُرسل invitations لـ 23 founder
+→ 18 منهم يُفعّلون Startup Profile
+→ Portfolio Dashboard يبدأ يأخذ شكله
+→ يرى KPIs لكل شركة في مكان واحد
+
+Day 11-14 — Aha Moment:
+→ يُولّد أول LP Report تلقائياً
+→ يقارنه بما كان يأخذ 3 أسابيع
+→ LP يُعلّق: "هذا أكثر احترافية من قبل"
+
+Emotion:      😲 مندهش من الوقت المُوفَّر
+Thought:      "كنت أضيع 80 ساعة ربعياً على هذا"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3: DEEP USAGE (Month 2-3)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Behaviors:
+→ يفتح Deal Flow كل صباح (5 دقائق)
+→ يُسجّل Voice Note بعد كل اجتماع
+→ يُراجع Portfolio Dashboard أسبوعياً
+→ يستخدم Warm Intro Engine لأول مرة
+
+Critical Moment:
+→ Majlis يُنبّهه: "لم تتابع مع Ahmed منذ 45 يوم
+   أعلن MRR جديداً الأسبوع الماضي"
+→ يتواصل → الصفقة كانت ستضيع
+→ يُغلق Investment
+
+Emotion:      🏆 يثق بالمنتج بشكل كامل
+Thought:      "هذا أنقذ صفقة بـ $500K"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4: CHAMPION (Month 4+)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+→ يُقنع 2 VCs آخرين في شبكته
+→ يطلب Fund II Setup على Majlis
+→ يستخدم Market Intelligence للـ LP Deck
+→ يصبح Advisory Board member
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## UJM-003 — Founder (خالد)
+
+```
+PHASE 0: AWARENESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Trigger Events:
+→ مسرّعته تُرسل له invitation للـ platform
+→ مستثمر يطلب منه "أرسل Deal Room على Majlis"
+→ Founder آخر: "جمعت تمويلي خلال 6 أسابيع عبره"
+
+Emotion:      😤 محبط من الـ fundraising الحالي
+Thought:      "أي شيء أفضل من WhatsApp و cold email"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1: ONBOARDING (Day 1-3)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Day 1 — Profile Setup:
+→ يُنشئ Founder + Company Profile
+→ AI يحلل LinkedIn ويملأ تلقائياً
+→ يُضيف Metrics الحقيقية
+→ يربط شركته بالمسرّعة (Verified Badge)
+
+Day 2 — Deal Room:
+→ يرفع Pitch Deck
+→ AI Pitch Coach يحلل ويُعطي feedback
+→ يُصلح أضعف 3 slides
+→ يُنشئ Deal Room
+
+Day 3 — Investor Matching:
+→ يرى 8 مستثمرين تناسب thesis
+→ AI يشرح لماذا كل مستثمر مناسب
+→ يطلب Warm Intro لأول مستثمر
+→ يُرسل Deal Room link
+
+Emotion:      😌 يشعر باحترافية لأول مرة
+Aha Moment:   مستثمر يفتح الـ Deck ويقضي 12 دقيقة
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2: FUNDRAISING (Week 2-8)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Week 2-3: الـ Outreach
+→ يُرسل Deal Room لـ 8 مستثمرين مقترحين
+→ يرى analytics: من فتح، كم دقيقة، أي slide
+→ يُخصّص follow-up بناءً على البيانات
+→ 3 منهم يطلبون meeting
+
+Week 4-6: الـ Meetings
+→ يُسجّل كل اجتماع
+→ AI يُلخّص ويُعطي next steps
+→ يتابع Deal Stage لكل مستثمر
+→ Majlis يُذكّره بالـ follow-ups
+
+Week 7-8: الـ Close
+→ أول Term Sheet
+→ يفتح Cap Table على Majlis
+→ يُضيف المستثمر رسمياً
+→ يُعلن الإغلاق في الـ Feed
+
+Emotion:      🎊 فرحة حقيقية
+Metric:       من 9 أشهر → 8 أسابيع
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3: POST-FUNDING (Month 3+)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+→ يستخدم Majlis لـ investor updates
+→ يتتبع Milestones علناً
+→ Execution Score يتحسن تلقائياً
+→ يجذب مزيداً من المستثمرين بدون جهد
+→ يُرشّح Majlis لكل founder يعرفه
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## UJM-004 — Operator (منى)
+
+```
+PHASE 0 → 1: DISCOVERY & SIGNUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Trigger:
+→ ترى "Equity Roles" في الـ Feed
+→ أول مرة ترى سوقاً منظماً لخبرتها
+
+Day 1 — Operator Profile:
+→ تبني Equity Profile (مش CV)
+→ تُحدد: نوع الدور، الـ equity المتوقع
+→ AI يُحسّن العرض ليكون جذاباً
+→ تربط LinkedIn للتحقق
+
+Day 3 — First Match:
+→ ترى 4 شركات تناسب خبرتها
+→ AI Compatibility Score لكل فرصة
+→ تتقدم لأقواهم (89% match)
+
+Week 2-4 — Process:
+→ Intro Call → Deep Dive → Trial Week
+→ اتفاق مبدئي على 7% equity
+→ AI يُنشئ مسودة اتفاقية
+→ محامٍ يراجع ويُوقّع
+
+Aha Moment:
+"أصبحت Co-Founder في شركة واعدة
+بدون أن أتنازل عن قيمتي"
+
+Emotion:      🤩 تشعر بالتقدير لأول مرة
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DOCUMENT 2 — FEATURE LIST & PRODUCT BACKLOG
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+```
+Priority Framework:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+P0 — MUST HAVE      Launch Blocker
+P1 — SHOULD HAVE    Core Value
+P2 — NICE TO HAVE   Enhancer
+P3 — FUTURE         Roadmap
+
+Effort Scale:
+S = Small     (1-3 days)
+M = Medium    (1-2 weeks)
+L = Large     (2-4 weeks)
+XL = X-Large  (1-3 months)
+
+Status:
+🔴 Not Started
+🟡 In Progress
+🟢 Done
+⚪ Blocked
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+## EPIC 1 — AUTHENTICATION & ONBOARDING
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ A-01 │ Sign Up (Email + Phone)            │  P0  │   S    │   🔴   │
+│ A-02 │ OTP Verification (SMS + Email)     │  P0  │   S    │   🔴   │
+│ A-03 │ Social Login (Google + LinkedIn)   │  P1  │   M    │   🔴   │
+│ A-04 │ Role Selection Onboarding          │  P0  │   S    │   🔴   │
+│      │ (Founder/Investor/Accelerator/     │      │        │        │
+│      │  Operator/Angel/Franchise)         │      │        │        │
+│ A-05 │ Guided Profile Setup Wizard        │  P0  │   M    │   🔴   │
+│ A-06 │ LinkedIn Import (Auto-fill)        │  P1  │   M    │   🔴   │
+│ A-07 │ Invite-Only Access Mode            │  P1  │   S    │   🔴   │
+│ A-08 │ Waitlist Management                │  P1  │   S    │   🔴   │
+│ A-09 │ Multi-Factor Authentication        │  P0  │   S    │   🔴   │
+│ A-10 │ Password Reset Flow                │  P0  │   S    │   🔴   │
+│ A-11 │ Session Management (Multi-device)  │  P1  │   M    │   🔴   │
+│ A-12 │ Deep Link Handling                 │  P1  │   S    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 2 — USER & COMPANY PROFILES
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ P-01 │ User Profile (Full)                │  P0  │   M    │   🔴   │
+│      │ Name, Photo, Bio, Role, Skills     │      │        │        │
+│ P-02 │ Company Profile (Full)             │  P0  │   M    │   🔴   │
+│      │ Logo, Stage, Sector, Metrics       │      │        │        │
+│ P-03 │ Investor Profile                   │  P0  │   M    │   🔴   │
+│      │ Thesis, Check Size, Portfolio      │      │        │        │
+│ P-04 │ Founder Profile                    │  P0  │   M    │   🔴   │
+│      │ Company Link, Raising Status       │      │        │        │
+│ P-05 │ Operator Profile                   │  P0  │   M    │   🔴   │
+│      │ Domain, Equity Expectations        │      │        │        │
+│ P-06 │ Profile Completeness Score         │  P1  │   S    │   🔴   │
+│ P-07 │ AI Profile Improvement Tips        │  P1  │   M    │   🔴   │
+│ P-08 │ Verified Identity Badge            │  P0  │   M    │   🔴   │
+│ P-09 │ Verified Metrics Badge             │  P1  │   L    │   🔴   │
+│ P-10 │ Profile View Analytics             │  P1  │   S    │   🔴   │
+│      │ "12 شخصاً اطلع على بروفايلك"       │      │        │        │
+│ P-11 │ Privacy Controls (Granular)        │  P0  │   M    │   🔴   │
+│ P-12 │ Public Profile URL                 │  P1  │   S    │   🔴   │
+│ P-13 │ Profile Embed (External)           │  P3  │   M    │   🔴   │
+│ P-14 │ Multi-Language Profile (AR/EN)     │  P0  │   M    │   🔴   │
+│ P-15 │ Work History + Education           │  P1  │   S    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 3 — ACCELERATOR OS
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ AC-01│ Accelerator Profile Page           │  P0  │   M    │   🔴   │
+│ AC-02│ Cohort Creation & Management       │  P0  │   M    │   🔴   │
+│ AC-03│ Startup Invite (Email + Link)      │  P0  │   S    │   🔴   │
+│ AC-04│ Cohort Status Tracking             │  P0  │   S    │   🔴   │
+│      │ In Program/Graduated/Raising/Funded│      │        │        │
+│ AC-05│ Startup Scorecard                  │  P0  │   M    │   🔴   │
+│      │ Team/Product/Revenue/Readiness     │      │        │        │
+│ AC-06│ Investment Readiness Score /100    │  P0  │   S    │   🔴   │
+│ AC-07│ Verified Pipeline Page             │  P0  │   M    │   🔴   │
+│ AC-08│ Investor View (Public/Private)     │  P0  │   M    │   🔴   │
+│ AC-09│ ✓ Accelerator Backed Badge         │  P0  │   S    │   🔴   │
+│ AC-10│ Milestone Tracker per Startup      │  P1  │   M    │   🔴   │
+│ AC-11│ Session & Events Management        │  P1  │   M    │   🔴   │
+│ AC-12│ Mentor Assignment & Tracking       │  P1  │   M    │   🔴   │
+│ AC-13│ Virtual Demo Day Room              │  P1  │   XL   │   🔴   │
+│ AC-14│ Demo Day Investor Invitations      │  P1  │   M    │   🔴   │
+│ AC-15│ Demo Day Analytics                 │  P1  │   M    │   🔴   │
+│ AC-16│ Alumni Network Management          │  P2  │   L    │   🔴   │
+│ AC-17│ Auto-generated Program Reports     │  P1  │   L    │   🔴   │
+│ AC-18│ Application Management System      │  P2  │   XL   │   🔴   │
+│ AC-19│ Cohort Communication Hub           │  P1  │   M    │   🔴   │
+│ AC-20│ Sponsor Reporting Dashboard        │  P2  │   M    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 4 — INVESTOR OS
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ IN-01│ Deal Flow Feed (AI Filtered)       │  P0  │   L    │   🔴   │
+│ IN-02│ Deal Stage Pipeline (Kanban)       │  P0  │   M    │   🔴   │
+│      │ Sourced→Reviewing→Meeting→DD→      │      │        │        │
+│      │ TermSheet→Negotiating→Closed       │      │        │        │
+│ IN-03│ Deal Notes & Tags                  │  P0  │   S    │   🔴   │
+│ IN-04│ Reminder & Follow-up System        │  P0  │   M    │   🔴   │
+│ IN-05│ Voice Note Recording & Summary     │  P1  │   L    │   🔴   │
+│      │ (Whisper + GPT-4o)                 │      │        │        │
+│ IN-06│ Portfolio Dashboard                │  P0  │   L    │   🔴   │
+│ IN-07│ Portfolio Company KPI Tracking     │  P1  │   M    │   🔴   │
+│ IN-08│ LP Report Generator (PDF)          │  P1  │   XL   │   🔴   │
+│ IN-09│ VC Fund Management                 │  P2  │   XL   │   🔴   │
+│ IN-10│ Capital Calls & Distributions      │  P2  │   XL   │   🔴   │
+│ IN-11│ LP Portal                          │  P2  │   XL   │   🔴   │
+│ IN-12│ Deal Rejection Tracking            │  P1  │   S    │   🔴   │
+│      │ (with private reasons)             │      │        │        │
+│ IN-13│ Co-Investment Tracking             │  P2  │   M    │   🔴   │
+│ IN-14│ Investment Thesis Builder          │  P1  │   M    │   🔴   │
+│ IN-15│ Fund Performance Analytics         │  P2  │   L    │   🔴   │
+│      │ IRR / TVPI / DPI / MOIC            │      │        │        │
+│ IN-16│ Deal Activity Timeline             │  P1  │   M    │   🔴   │
+│ IN-17│ Investor Deal Score                │  P2  │   L    │   🔴   │
+│ IN-18│ Market Benchmark Comparison        │  P2  │   L    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 5 — FOUNDER OS
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ FO-01│ Fundraising Profile Setup          │  P0  │   M    │   🔴   │
+│ FO-02│ Deal Room Creation                 │  P0  │   L    │   🔴   │
+│ FO-03│ Pitch Deck Upload (PDF/PPT)        │  P0  │   M    │   🔴   │
+│ FO-04│ Pitch Deck Slide Analytics         │  P1  │   L    │   🔴   │
+│      │ Views per slide, Time spent        │      │        │        │
+│ FO-05│ AI Pitch Coach                     │  P1  │   XL   │   🔴   │
+│ FO-06│ Data Room (Secure File Storage)    │  P1  │   L    │   🔴   │
+│ FO-07│ NDA Digital Signing                │  P1  │   M    │   🔴   │
+│ FO-08│ Investor Access Controls           │  P0  │   M    │   🔴   │
+│ FO-09│ Deal Room Visitor Analytics        │  P1  │   M    │   🔴   │
+│ FO-10│ Interest Signal Notifications      │  P1  │   S    │   🔴   │
+│ FO-11│ Investor Matching Engine           │  P1  │   XL   │   🔴   │
+│ FO-12│ Fundraising Progress Tracker       │  P0  │   M    │   🔴   │
+│ FO-13│ Milestone Tracker & Publisher      │  P1  │   M    │   🔴   │
+│ FO-14│ Investor Update Templates          │  P1  │   M    │   🔴   │
+│ FO-15│ Cap Table (Basic)                  │  P1  │   L    │   🔴   │
+│ FO-16│ Cap Table (Full — SAFE/Options)    │  P2  │   XL   │   🔴   │
+│ FO-17│ Dilution Simulator                 │  P2  │   M    │   🔴   │
+│ FO-18│ Waterfall Analysis                 │  P2  │   L    │   🔴   │
+│ FO-19│ Execution Score Dashboard          │  P2  │   L    │   🔴   │
+│ FO-20│ Pitch Practice (AI Role-play)      │  P3  │   XL   │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 6 — EQUITY TALENT MARKETPLACE
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ ET-01│ Operator Profile (Equity-focused)  │  P0  │   M    │   🔴   │
+│ ET-02│ Equity Role Posting                │  P0  │   M    │   🔴   │
+│ ET-03│ Role Browsing & Smart Filters      │  P0  │   M    │   🔴   │
+│ ET-04│ AI Compatibility Score             │  P1  │   L    │   🔴   │
+│ ET-05│ Equity Fairness Advisor            │  P1  │   M    │   🔴   │
+│ ET-06│ Application Flow                   │  P0  │   M    │   🔴   │
+│ ET-07│ Application Status Tracking        │  P0  │   S    │   🔴   │
+│ ET-08│ Interview Scheduling               │  P1  │   M    │   🔴   │
+│ ET-09│ Co-Founder Agreement Generator     │  P2  │   XL   │   🔴   │
+│ ET-10│ Reference Verification System      │  P2  │   L    │   🔴   │
+│ ET-11│ Trial Period Management            │  P2  │   M    │   🔴   │
+│ ET-12│ Cap Table Integration on Accept    │  P2  │   L    │   🔴   │
+│ ET-13│ Red Flags Auto-Detection           │  P2  │   L    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 7 — SOCIAL LAYER
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ SL-01│ Intelligent Feed                   │  P1  │   XL   │   🔴   │
+│ SL-02│ Post Creation (Text/Image/Video)   │  P1  │   M    │   🔴   │
+│ SL-03│ Post Types                         │  P1  │   M    │   🔴   │
+│      │ Milestone/Deal/Traction/Insight    │      │        │        │
+│ SL-04│ Reactions System                   │  P1  │   S    │   🔴   │
+│      │ Impressive/Insightful/Interested   │      │        │        │
+│ SL-05│ Comments & Threaded Replies        │  P1  │   M    │   🔴   │
+│ SL-06│ Repost / Share                     │  P2  │   S    │   🔴   │
+│ SL-07│ Save / Bookmark                    │  P1  │   S    │   🔴   │
+│ SL-08│ Hashtags & Search                  │  P2  │   M    │   🔴   │
+│ SL-09│ Mentions (@username)               │  P2  │   S    │   🔴   │
+│ SL-10│ Post Analytics (Views/Reach)       │  P2  │   M    │   🔴   │
+│ SL-11│ Feed Algorithm (AI)                │  P1  │   XL   │   🔴   │
+│ SL-12│ "Why am I seeing this?"            │  P2  │   M    │   🔴   │
+│ SL-13│ Content Moderation System          │  P0  │   L    │   🔴   │
+│ SL-14│ Report & Block                     │  P0  │   S    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 8 — ROOMS & COMMUNITIES
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ RM-01│ Room Creation                      │  P1  │   M    │   🔴   │
+│ RM-02│ Room Types                         │  P1  │   S    │   🔴   │
+│      │ Accelerator/Sector/Geo/Stage       │      │        │        │
+│ RM-03│ Access Controls                    │  P1  │   M    │   🔴   │
+│      │ Public/Request/Invite-Only         │      │        │        │
+│ RM-04│ Room Feed & Posts                  │  P1  │   M    │   🔴   │
+│ RM-05│ Member Management                  │  P1  │   M    │   🔴   │
+│ RM-06│ Room Admin Tools                   │  P1  │   M    │   🔴   │
+│ RM-07│ Featured Deals in Room             │  P2  │   S    │   🔴   │
+│ RM-08│ Room Events & Webinars             │  P2  │   L    │   🔴   │
+│ RM-09│ Weekly Room Digest (Auto)          │  P2  │   M    │   🔴   │
+│ RM-10│ Room Analytics for Admins          │  P2  │   M    │   🔴   │
+│ RM-11│ Discover Rooms (AI Suggested)      │  P2  │   M    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 9 — INVESTMENT MARKETPLACE
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ MP-01│ Startup Listing Page               │  P0  │   M    │   🔴   │
+│ MP-02│ Marketplace Browse & Filters       │  P0  │   L    │   🔴   │
+│ MP-03│ AI Deal Recommendations            │  P1  │   XL   │   🔴   │
+│ MP-04│ Interest Signal (Private)          │  P0  │   S    │   🔴   │
+│ MP-05│ Startup Card Component             │  P0  │   M    │   🔴   │
+│ MP-06│ Franchise Listing                  │  P2  │   L    │   🔴   │
+│ MP-07│ Franchise Browse & Filters         │  P2  │   M    │   🔴   │
+│ MP-08│ FDD Document Viewer                │  P2  │   M    │   🔴   │
+│ MP-09│ Franchise ROI Calculator           │  P2  │   M    │   🔴   │
+│ MP-10│ Fund / LP Marketplace              │  P3  │   XL   │   🔴   │
+│ MP-11│ Secondary Market                   │  P3  │   XL   │   🔴   │
+│ MP-12│ Deals Feed (All Types)             │  P1  │   L    │   🔴   │
+│ MP-13│ Listing Expiry & Renewal           │  P1  │   S    │   🔴   │
+│ MP-14│ Featured/Promoted Listings         │  P2  │   M    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 10 — NETWORKING & CONNECTIONS
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ NW-01│ Connection Request & Accept        │  P0  │   M    │   🔴   │
+│ NW-02│ Follow (One-way)                   │  P1  │   S    │   🔴   │
+│ NW-03│ Connection Strength Score          │  P2  │   L    │   🔴   │
+│ NW-04│ Warm Intro Request                 │  P1  │   L    │   🔴   │
+│ NW-05│ Intro Path Finder (AI)             │  P2  │   XL   │   🔴   │
+│ NW-06│ People You May Know (AI)           │  P2  │   L    │   🔴   │
+│ NW-07│ Block & Restrict                   │  P0  │   S    │   🔴   │
+│ NW-08│ Connection Context Tags            │  P2  │   S    │   🔴   │
+│      │ Co-Invested/Same Cohort/Intro'd By │      │        │        │
+│ NW-09│ Network Graph View                 │  P3  │   XL   │   🔴   │
+│ NW-10│ Mutual Connections Display         │  P1  │   S    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 11 — MESSAGING
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ MS-01│ Direct Messaging (1:1)             │  P0  │   L    │   🔴   │
+│ MS-02│ Message Requests (Non-connections) │  P1  │   M    │   🔴   │
+│ MS-03│ Read Receipts                      │  P1  │   S    │   🔴   │
+│ MS-04│ File & Image Sharing               │  P1  │   M    │   🔴   │
+│ MS-05│ Voice Messages                     │  P2  │   M    │   🔴   │
+│ MS-06│ AI Smart Reply Suggestions         │  P2  │   L    │   🔴   │
+│ MS-07│ AI Draft Message Helper            │  P2  │   M    │   🔴   │
+│ MS-08│ Message Translation (AR↔EN)        │  P2  │   M    │   🔴   │
+│ MS-09│ Message Search                     │  P2  │   M    │   🔴   │
+│ MS-10│ Group Messages (Deal Room)         │  P2  │   L    │   🔴   │
+│ MS-11│ Follow-up Reminder in Chat         │  P2  │   S    │   🔴   │
+│ MS-12│ Message Archiving                  │  P2  │   S    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 12 — AI FEATURES
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ AI-01│ AI Onboarding Assistant            │  P1  │   M    │   🔴   │
+│ AI-02│ Pitch Deck Analyzer                │  P1  │   XL   │   🔴   │
+│ AI-03│ Meeting Transcription (Whisper)    │  P1  │   L    │   🔴   │
+│ AI-04│ Meeting Summary & Action Items     │  P1  │   L    │   🔴   │
+│ AI-05│ Deal Continuity Reminders          │  P1  │   L    │   🔴   │
+│ AI-06│ Investor-Startup Matching          │  P1  │   XL   │   🔴   │
+│ AI-07│ Document Q&A (RAG)                 │  P2  │   XL   │   🔴   │
+│ AI-08│ Founder Execution Score            │  P2  │   XL   │   🔴   │
+│ AI-09│ Market Intelligence Dashboard      │  P2  │   XL   │   🔴   │
+│ AI-10│ Warm Intro Path Finder             │  P2  │   XL   │   🔴   │
+│ AI-11│ Fraud & Fake Claims Detection      │  P1  │   XL   │   🔴   │
+│ AI-12│ Feed Personalization Engine        │  P2  │   XL   │   🔴   │
+│ AI-13│ Co-Founder Compatibility Score     │  P2  │   L    │   🔴   │
+│ AI-14│ LP Report Auto-generation          │  P2  │   XL   │   🔴   │
+│ AI-15│ Equity Fairness Advisor            │  P2  │   M    │   🔴   │
+│ AI-16│ Deal Probability Estimator         │  P3  │   XL   │   🔴   │
+│ AI-17│ Sector Trend Reports (Auto)        │  P3  │   XL   │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 13 — NOTIFICATIONS & ALERTS
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ NT-01│ Push Notifications (Mobile)        │  P0  │   M    │   🔴   │
+│ NT-02│ In-App Notification Center         │  P0  │   M    │   🔴   │
+│ NT-03│ Email Notifications                │  P0  │   M    │   🔴   │
+│ NT-04│ Notification Preferences           │  P0  │   M    │   🔴   │
+│ NT-05│ Smart Notification Grouping        │  P1  │   M    │   🔴   │
+│ NT-06│ Deal Stage Change Alerts           │  P0  │   S    │   🔴   │
+│ NT-07│ Follow-up Due Reminders            │  P1  │   S    │   🔴   │
+│ NT-08│ Milestone Due Alerts               │  P1  │   S    │   🔴   │
+│ NT-09│ Investor Interest Notifications    │  P0  │   S    │   🔴   │
+│ NT-10│ Document Viewed Alerts             │  P1  │   S    │   🔴   │
+│ NT-11│ Weekly Digest Email                │  P2  │   M    │   🔴   │
+│ NT-12│ Do Not Disturb Settings            │  P1  │   S    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 14 — SEARCH & DISCOVERY
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ SE-01│ Global Search (People/Co/Deals)    │  P0  │   L    │   🔴   │
+│ SE-02│ Semantic Search (AR + EN)          │  P1  │   XL   │   🔴   │
+│ SE-03│ Advanced Filters (All Types)       │  P1  │   L    │   🔴   │
+│ SE-04│ Search History & Saved Searches    │  P2  │   S    │   🔴   │
+│ SE-05│ Trending Topics                    │  P2  │   M    │   🔴   │
+│ SE-06│ Suggested Search (AI)              │  P2  │   M    │   🔴   │
+│ SE-07│ Search Analytics (for admins)      │  P3  │   M    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## EPIC 15 — PLATFORM & INFRASTRUCTURE
+
+```
+┌──────┬────────────────────────────────────┬──────┬────────┬────────┐
+│  ID  │  Feature                           │  Pri │ Effort │ Status │
+├──────┼────────────────────────────────────┼──────┼────────┼────────┤
+│ PL-01│ Flutter Mobile App (iOS + Android) │  P0  │   XL   │   🔴   │
+│ PL-02│ Web App (Flutter Web / Next.js)    │  P1  │   XL   │   🔴   │
+│ PL-03│ RTL Full Support (Arabic)          │  P0  │   M    │   🔴   │
+│ PL-04│ AR/EN Language Toggle              │  P0  │   M    │   🔴   │
+│ PL-05│ Dark / Light Mode                  │  P1  │   M    │   🔴   │
+│ PL-06│ Offline Mode (Basic)               │  P2  │   L    │   🔴   │
+│ PL-07│ Deep Linking                       │  P1  │   M    │   🔴   │
+│ PL-08│ App Store Optimization             │  P1  │   S    │   🔴   │
+│ PL-09│ Analytics Integration              │  P0  │   M    │   🔴   │
+│      │ (Mixpanel / PostHog)               │      │        │        │
+│ PL-10│ Error Tracking (Sentry)            │  P0  │   S    │   🔴   │
+│ PL-11│ Performance Monitoring             │  P1  │   M    │   🔴   │
+│ PL-12│ Admin Dashboard                    │  P1  │   L    │   🔴   │
+│ PL-13│ Subscription & Billing             │  P1  │   L    │   🔴   │
+│ PL-14│ Customer Support Chat              │  P1  │   M    │   🔴   │
+│ PL-15│ GDPR + Saudi PDPL Compliance       │  P0  │   L    │   🔴   │
+└──────┴────────────────────────────────────┴──────┴────────┴────────┘
+```
+
+---
+
+## Sprint Plan — Phase 1 (12 Weeks)
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SPRINT 1-2 (Week 1-4): FOUNDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Auth & Onboarding:
+  A-01, A-02, A-04, A-05, A-09, A-10
+
+Core Profiles:
+  P-01, P-02, P-04, P-08, P-11, P-14
+
+Infrastructure:
+  PL-01, PL-03, PL-04, PL-09, PL-10, PL-15
+
+Deliverable: مستخدم يسجل ويبني profile كامل
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SPRINT 3-4 (Week 5-8): ACCELERATOR OS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  AC-01 to AC-09 (Core Wedge)
+  IN-01, IN-02, IN-03, IN-04 (Basic Deal Flow)
+  NT-01 to NT-06 (Core Notifications)
+
+Deliverable: مسرّعة تدير cohort + مستثمر يرى pipeline
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SPRINT 5-6 (Week 9-12): DEAL ROOM & MVP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  FO-01 to FO-10 (Deal Room Core)
+  MP-01 to MP-05 (Basic Marketplace)
+  MS-01 to MS-04 (Basic Messaging)
+  NW-01, NW-02, NW-07 (Core Network)
+  SE-01, SE-03 (Basic Search)
+
+Deliverable: Founder ينشئ Deal Room + مستثمر يرى ويتواصل
+
+Target: 3 مسرّعات تعمل + 10 deals في pipeline
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# DOCUMENT 3 — PRODUCT REQUIREMENTS DOCUMENT
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+```
+PRD-MAJLIS-001
+Version: 1.0
+Status: APPROVED
+Owner: Product Team
+Last Updated: 2026
+```
+
+---
+
+## Section 1 — Document Purpose & Scope
+
+```
+هذا الـ PRD هو المرجع التقني والمنتجي الوحيد
+لكل فريق البناء: Engineering, Design, QA, Data.
+
+أي feature لا يوجد في هذه الوثيقة
+لا يُبنى بدون موافقة Product Owner.
+
+أي تغيير على requirement موجود
+يُوثَّق في Changelog أسفل الوثيقة.
+```
+
+---
+
+## Section 2 — System Overview
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2.1 High-Level Architecture
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CLIENT LAYER:
+├── Flutter Mobile App (iOS + Android)
+├── Flutter Web App
+└── Admin Dashboard (Web)
+
+API GATEWAY:
+└── REST API + GraphQL (للـ Real-time)
+
+BACKEND SERVICES (Microservices):
+├── Auth Service
+├── User Service
+├── Accelerator Service
+├── Deal Service
+├── Marketplace Service
+├── Social Service
+├── Messaging Service
+├── Notification Service
+├── AI Service
+├── Analytics Service
+└── File Service
+
+DATA LAYER:
+├── PostgreSQL (Primary DB)
+├── Redis (Cache + Sessions)
+├── Elasticsearch (Search)
+├── Pinecone (Vector Embeddings)
+├── Neo4j (Graph — Relationships)
+└── S3-compatible (File Storage)
+
+AI LAYER:
+├── OpenAI GPT-4o (LLM)
+├── Whisper (Speech-to-Text)
+├── text-embedding-3-large
+└── LangChain / LangGraph
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2.2 Tech Stack Decisions
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Frontend:    Flutter (iOS + Android + Web)
+             Dart — BLoC State Management
+             
+Backend:     Node.js + TypeScript (Primary)
+             Python (AI Services)
+             
+Database:    PostgreSQL + Prisma ORM
+Cache:       Redis
+Search:      Elasticsearch
+Vector:      Pinecone
+Graph:       Neo4j
+
+Cloud:       AWS (Primary)
+             CDN: CloudFront
+             Storage: S3
+             
+Realtime:    WebSockets (Socket.io)
+Queue:       Bull (Redis-based)
+
+Monitoring:  DataDog + Sentry
+Analytics:   PostHog (Self-hosted)
+CI/CD:       GitHub Actions
+```
+
+---
+
+## Section 3 — Feature Requirements (Detailed)
+
+---
+
+### PRD-3.1 — Authentication System
+
+```
+Feature ID:     AUTH
+Priority:       P0 — Launch Blocker
+Epic:           Authentication & Onboarding
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.1.1 Sign Up Flow
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Functional Requirements:
+FR-AUTH-001:
+  المستخدم يستطيع التسجيل بـ:
+  a) Email + Password
+  b) Phone Number + OTP
+  c) Google OAuth 2.0
+  d) LinkedIn OAuth 2.0
+
+FR-AUTH-002:
+  بعد التسجيل مباشرة:
+  a) يُختار الـ Role الأساسي
+     Options: Founder / Investor / Accelerator
+              Operator / Angel / Franchise
+  b) يبدأ Guided Onboarding Wizard
+
+FR-AUTH-003:
+  Email Verification:
+  a) OTP مكون من 6 أرقام
+  b) صالح لـ 10 دقائق
+  c) إعادة إرسال بعد 60 ثانية
+  d) 3 محاولات قبل Cooldown
+
+FR-AUTH-004:
+  Phone Verification:
+  a) SMS OTP عبر Twilio
+  b) نفس شروط Email OTP
+
+Non-Functional Requirements:
+NFR-AUTH-001: Response time < 500ms للـ OTP
+NFR-AUTH-002: 99.9% Uptime للـ Auth Service
+NFR-AUTH-003: Rate limiting: 5 attempts/minute
+
+Business Rules:
+BR-AUTH-001: Email أو Phone مطلوب (ليس كلاهما)
+BR-AUTH-002: Password: 8+ chars, 1 uppercase,
+             1 number, 1 special char
+BR-AUTH-003: Duplicate email/phone مرفوض
+
+Error States:
+E-AUTH-001: "البريد الإلكتروني مستخدم مسبقاً"
+E-AUTH-002: "رمز التحقق منتهي الصلاحية"
+E-AUTH-003: "كلمة المرور ضعيفة — يرجى التقوية"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.1.2 Session Management
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-AUTH-010: JWT Tokens
+  a) Access Token: 15 دقيقة
+  b) Refresh Token: 30 يوم
+  c) Refresh Token Rotation
+
+FR-AUTH-011: Multi-device Support
+  a) حتى 5 أجهزة متزامنة
+  b) المستخدم يرى كل الأجهزة النشطة
+  c) يستطيع تسجيل الخروج من جهاز محدد
+
+FR-AUTH-012: Force Logout
+  a) عند تغيير الـ Password
+  b) عند اكتشاف نشاط مشبوه
+  c) من قِبل الـ Admin
+```
+
+---
+
+### PRD-3.2 — Accelerator OS
+
+```
+Feature ID:     ACC
+Priority:       P0 — Core Wedge
+Epic:           Accelerator OS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.2.1 Accelerator Profile
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-ACC-001: إنشاء Accelerator Profile
+  Required Fields:
+  a) اسم المسرّعة (AR + EN)
+  b) Logo (min 200x200px, PNG/JPG)
+  c) Cover Image (1440x480px)
+  d) التخصصات (Sectors[])
+  e) الدول (Countries[])
+  f) نبذة تعريفية (max 500 char)
+  g) Website URL
+  h) سنة التأسيس
+  
+  Auto-calculated Fields:
+  i)  إجمالي الشركات الخريجة
+  j)  إجمالي التمويل المجموع (من deals)
+  k)  عدد الـ Cohorts
+  l)  Verified Badge Status
+
+FR-ACC-002: Team Members
+  a) المدير الرئيسي (Admin)
+  b) Program Managers (Multi)
+  c) Mentors (Multi)
+  d) صلاحيات مختلفة لكل دور
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.2.2 Cohort Management
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-ACC-010: إنشاء Cohort
+  Required:
+  a) اسم الـ Cohort (e.g., "Cohort 12")
+  b) تاريخ البداية والنهاية
+  c) تاريخ الـ Demo Day (Optional)
+  d) حجم الـ Cohort المتوقع
+
+FR-ACC-011: إضافة Startups للـ Cohort
+  Methods:
+  a) Invite بالـ Email (فردي أو Bulk CSV)
+  b) Add Manually (بدون invitation)
+  c) من Marketplace الـ Startups
+
+FR-ACC-012: Status Management
+  Statuses:
+  a) 🟡 In Program
+  b) 🟢 Graduated
+  c) 🔵 Raising
+  d) ✅ Funded
+  
+  Transitions:
+  In Program → Graduated (يدوي)
+  Graduated → Raising (يدوي أو من Founder)
+  Raising → Funded (تلقائي عند Deal Close)
+
+FR-ACC-013: Milestone Tracking
+  a) المدير ينشئ Milestones للـ Cohort كله
+  b) كل Startup لها Status لكل Milestone:
+     Not Started / In Progress / Completed / Blocked
+  c) Progress Bar تلقائي لكل Startup
+  d) Overdue Alerts للمدير
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.2.3 Startup Scorecard
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-ACC-020: Scorecard Structure
+  4 أقسام بمجموع 100 نقطة:
+  
+  Section 1: قوة الفريق (25 نقطة)
+  Sub-scores:
+    - خبرة المؤسسين        (0-10)
+    - اكتمال الفريق         (0-8)
+    - التكامل بين الأعضاء   (0-7)
+  
+  Section 2: المنتج والـ Traction (25 نقطة)
+  Sub-scores:
+    - نضج المنتج            (0-10)
+    - حجم المستخدمين        (0-8)
+    - معدل النمو            (0-7)
+  
+  Section 3: الإيراد الحالي (25 نقطة)
+  Sub-scores:
+    - MRR الحالي            (0-10)
+    - جودة العملاء          (0-8)
+    - مسار الإيراد          (0-7)
+  
+  Section 4: جاهزية الاستثمار (25 نقطة)
+  Sub-scores:
+    - الـ Pitch Deck         (0-10)
+    - الـ Financial Model    (0-8)
+    - الـ Market Clarity     (0-7)
+
+FR-ACC-021: Scorecard Completion
+  a) يملأه Program Manager فقط
+  b) يمكن تعديله في أي وقت
+  c) يُسجَّل التاريخ عند كل تعديل (Audit Log)
+  d) الـ Founder لا يرى الـ Sub-scores
+     (يرى الـ Total Score فقط بإذن المسرّعة)
+
+FR-ACC-022: Investment Readiness Score
+  a) = مجموع الـ 4 أقسام / 100
+  b) يظهر كـ Progress Bar ملوّن:
+     0-40:  🔴 Early Stage
+     41-60: 🟡 Developing
+     61-80: 🟠 Getting Ready
+     81-100: 🟢 Investment Ready
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.2.4 Verified Pipeline & Investor View
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-ACC-030: Verified Pipeline
+  Trigger: عندما يُحوّل المدير Startup → Graduated
+  Auto-actions:
+  a) تُضاف علامة ✓ Accelerator Backed
+  b) تظهر في Investor View للمسرّعة
+  c) تظهر في الـ Marketplace للمستثمرين
+
+FR-ACC-031: Investor View Page
+  URL: majlis.io/accelerator/{slug}/pipeline
+  
+  Visibility Options:
+  a) Public (يراه الجميع)
+  b) Registered Investors Only
+  c) Invite-Only (بـ Link خاص)
+  
+  Content per Startup Card:
+  a) اسم الشركة + Logo
+  b) القطاع والمرحلة
+  c) Investment Readiness Score
+  d) أبرز 3 Metrics (يختارها المدير)
+  e) Raising Status + المبلغ
+  f) ✓ Accelerator Backed Badge
+  g) زر: [View Deal Room] أو [Request Intro]
+  
+  Sorting Options:
+  a) Score (الأعلى أولاً — Default)
+  b) تاريخ التخرج
+  c) المبلغ المطلوب
+  d) القطاع
+
+FR-ACC-032: Intro Request Flow
+  a) المستثمر يضغط [Request Intro]
+  b) يكتب رسالة قصيرة (max 200 char)
+  c) المسرّعة تتلقى notification
+  d) تقرر: Approve / Decline / Forward للـ Founder
+  e) عند Approval: يُنشأ thread مباشر بين الطرفين
+```
+
+---
+
+### PRD-3.3 — Deal Room
+
+```
+Feature ID:     DR
+Priority:       P0
+Epic:           Founder OS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.3.1 Deal Room Creation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-DR-001: إنشاء Deal Room
+  Required:
+  a) اسم الـ Room (يُملأ تلقائياً من الشركة)
+  b) نوع الـ Room:
+     FUNDRAISING / PARTNERSHIP / DEMO_DAY
+  c) Privacy:
+     PUBLIC / PRIVATE / INVITE_ONLY / NDA_GATED
+
+FR-DR-002: Pitch Deck
+  Upload:
+  a) PDF (max 50MB)
+  b) PowerPoint .pptx (يُحوَّل لـ PDF)
+  c) Google Slides Link
+  
+  Processing:
+  a) يُحوَّل لصور عالية الجودة
+  b) كل slide يُصبح trackable
+  c) AI يحلل المحتوى (للـ Pitch Coach)
+  
+  Viewer:
+  a) Full-screen presentation mode
+  b) Slide navigation
+  c) Zoom in/out
+  d) لا يمكن Download (إلا بإذن صريح)
+
+FR-DR-003: Analytics Per Visitor
+  يُتتبَّع لكل مستثمر دخل:
+  a) وقت الدخول والخروج
+  b) الـ slides التي رآها
+  c) الوقت الذي قضاه في كل slide
+  d) نقطة الخروج (drop-off)
+  e) عدد المرات التي فتح فيها الـ Room
+  f) هل شارك الـ link مع شخص آخر؟
+
+FR-DR-004: Visitor Notifications
+  الـ Founder يتلقى:
+  a) "فيصل العتيبي فتح الـ Deal Room"
+  b) "قضى 12 دقيقة — توقف كثيراً في Slide 7"
+  c) "فتحه للمرة الثالثة هذا الأسبوع"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.3.2 Data Room
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-DR-010: File Management
+  a) Folder Structure (Custom)
+  b) File Upload: PDF, Excel, Word, Images
+  c) Max File Size: 100MB
+  d) Total Storage per Room: 5GB
+  e) Version Control لكل ملف
+
+FR-DR-011: Access Tiers
+  Tier 1 — Public:     يرى الـ Pitch Deck فقط
+  Tier 2 — Basic DD:   + P&L, Team Bios
+  Tier 3 — Full DD:    + Contracts, Cap Table
+  Tier 4 — NDA Only:   بعد توقيع NDA رقمي
+  
+  الـ Founder يُقرر ماذا يضع في كل Tier
+
+FR-DR-012: NDA Digital Signing
+  a) Template NDA جاهز (قابل للتعديل)
+  b) المستثمر يوقّع رقمياً
+  c) يُحفَّظ PDF موقَّع لكلا الطرفين
+  d) Access يُفتح تلقائياً بعد التوقيع
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.3.3 Interest Signals
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-DR-020: Signal Levels
+  المستثمر يمكنه إرسال signal خاص:
+  👁️  WATCHING          (يتابع فقط)
+  ⭐  INTERESTED        (مهتم جدياً)
+  🚀  READY_TO_INVEST   (جاهز للتحرك)
+
+FR-DR-021: Visibility Rules
+  a) الـ Founder يرى: "3 مستثمرين مهتمون"
+  b) لا يرى الأسماء حتى يرد
+  c) المستثمر يمكنه إلغاء الـ Signal
+  d) بعد الرد: يُكشف الاسم للطرفين
+
+FR-DR-022: Meeting Request
+  a) المستثمر يطلب Meeting مباشرة
+  b) يُقترح وقت (Calendar Integration)
+  c) يُضاف للـ Deal Pipeline تلقائياً
+```
+
+---
+
+### PRD-3.4 — Portfolio Dashboard
+
+```
+Feature ID:     PORT
+Priority:       P0
+Epic:           Investor OS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.4.1 Portfolio Overview
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-PORT-001: Dashboard Header Metrics
+  يعرض تلقائياً:
+  a) إجمالي الشركات في الـ Portfolio
+  b) إجمالي المبلغ المستثمر
+  c) القيمة الحالية (Estimated)
+  d) عدد الـ Active / Exited / Written Off
+
+FR-PORT-002: Company Cards
+  كل شركة تعرض:
+  a) اسم الشركة + Logo
+  b) القطاع والمرحلة عند الاستثمار
+  c) تاريخ الاستثمار والمبلغ
+  d) نسبة الملكية
+  e) آخر KPI Update (مع تاريخه)
+  f) Status: 🟢 Active / 🔵 Raising / 🏆 Exited
+  g) Health Indicator (AI-generated):
+     🟢 On Track / 🟡 Watch / 🔴 At Risk
+
+FR-PORT-003: KPI Tracking per Company
+  الـ Founder يُدخل (أو يُصرّح بـ Integration):
+  a) MRR / ARR
+  b) Users / Customers
+  c) Growth Rate MoM
+  d) Burn Rate
+  e) Runway (months)
+  f) Team Size
+  g) Custom Metric (يحدده الـ Founder)
+  
+  Update Frequency: يختاره الـ Founder
+  (Monthly / Quarterly)
+  
+  Alert للمستثمر:
+  "PayFlow لم تُحدّث KPIs منذ 45 يوماً"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.4.2 LP Report Generator
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-PORT-010: Report Generation
+  المستخدم يختار:
+  a) الفترة الزمنية (Quarter / Annual / Custom)
+  b) الشركات المُدرجة (All / Selected)
+  c) مستوى التفصيل (Summary / Detailed)
+  d) اللغة (AR / EN / كلاهما)
+  
+  المحتوى التلقائي:
+  a) Fund Overview & Highlights
+  b) Portfolio Summary Table
+  c) Performance by Company
+  d) Key Milestones هذه الفترة
+  e) Challenges & Risks
+  f) Next Period Outlook
+  g) Financial Summary (IRR/TVPI/DPI)
+  
+  Output:
+  a) PDF (Branded بلوغو الصندوق)
+  b) PowerPoint (Editable)
+  c) Web Link (للـ LPs مباشرة)
+
+FR-PORT-011: Report Customization
+  a) Custom Cover Page
+  b) Custom Color Scheme
+  c) اختيار الـ sections
+  d) إضافة commentary يدوي لكل شركة
+  e) Hide specific companies من LP Report
+```
+
+---
+
+### PRD-3.5 — Equity Talent Marketplace
+
+```
+Feature ID:     ETM
+Priority:       P0
+Epic:           Equity Talent Marketplace
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.5.1 Equity Role Posting
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-ETM-001: Role Creation
+  Required Fields:
+  a) العنوان الوظيفي (e.g., "Co-Founder & CMO")
+  b) نوع الدور:
+     COFOUNDER / FRACTIONAL_COFOUNDER /
+     EQUITY_EXECUTIVE / ADVISOR_EQUITY
+  c) Domain:
+     TECHNOLOGY / MARKETING / SALES /
+     FINANCE / OPERATIONS / PRODUCT / LEGAL
+  d) وصف الشركة (max 300 char)
+  e) وصف الدور والمسؤوليات
+  f) ما تقدمه (Equity Range)
+  g) ما تحتاجه (Skills, Experience)
+  h) نوع الالتزام:
+     FULL_TIME / PART_TIME / FRACTIONAL
+  i) الموقع + Remote Option
+  
+  Validation:
+  a) Equity % يجب أن يكون منطقياً
+     (يُقارن بـ Market Benchmark)
+  b) شركة مؤسسها فقط يُنشئ الـ Role
+
+FR-ETM-002: AI Role Writing Assistant
+  الـ Founder يكتب مسودة خام →
+  AI يُحوّلها لـ:
+  a) عنوان جذاب واضح
+  b) وصف مقنع للشركة
+  c) What you'll do (Bullet Points)
+  d) What we offer (واضح وشفاف)
+  e) Why this is exciting
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.5.2 Application Process
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-ETM-010: Application Flow
+  Stage 1: SUBMITTED
+    a) Cover Note (max 300 char)
+    b) "لماذا هذه الشركة تحديداً؟"
+    c) "ماذا ستُضيف خلال 90 يوم؟"
+    d) Equity Counter-offer (Optional)
+  
+  Stage 2: VIEWED → SHORTLISTED
+    الـ Founder يُقرر من يُقابل
+  
+  Stage 3: INTRO_CALL
+    30 دقيقة — يُجدوَّل داخل Majlis
+  
+  Stage 4: DEEP_DIVE
+    90 دقيقة — technical + cultural fit
+  
+  Stage 5: TRIAL_PERIOD
+    1-4 أسابيع (paid or equity-based)
+    
+  Stage 6: OFFER_EXTENDED → ACCEPTED
+    الاتفاق النهائي
+
+FR-ETM-011: Application Status Tracking
+  الـ Operator يرى:
+  a) Status لكل طلب (Color-coded)
+  b) تاريخ آخر تغيير
+  c) الرسائل مع الـ Founder
+  d) Compatibility Score (AI)
+  e) سبب الرفض (إذا أختار الـ Founder الإفصاح)
+```
+
+---
+
+### PRD-3.6 — Social Feed
+
+```
+Feature ID:     FEED
+Priority:       P1
+Epic:           Social Layer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.6.1 Post Creation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-FEED-001: Post Types & Fields
+  
+  MILESTONE POST:
+    Required: الإنجاز (text, max 280 char)
+    Optional: الرقم (e.g., "$100K MRR")
+    Optional: Media (Image/Video)
+    Auto-badge: ✓ Verified (if from system)
+  
+  TRACTION_UPDATE:
+    Required: Metric Name + Value
+    Required: Period (e.g., "October 2025")
+    Validation: يُقارن بالـ KPI السابق
+    Auto-badge: ✓ Verified if matches records
+  
+  DEAL_ANNOUNCEMENT:
+    Required: نوع الصفقة + المبلغ (Optional)
+    Required: تأكيد من الطرف الآخر
+    Auto-appears: في الـ feed للمستثمرين ذوي الصلة
+  
+  LOOKING_FOR:
+    Required: ماذا تبحث؟
+    Required: نوع الطلب:
+              INVESTOR / COFOUNDER / TALENT /
+              FRANCHISE / PARTNERSHIP / ADVISOR
+    Auto-routed: يُرسَل للـ users المناسبين
+  
+  INSIGHT:
+    Required: النص (min 100 char)
+    Optional: Media
+    No special validation
+  
+  GENERAL:
+    Text + Media
+    Standard Post
+
+FR-FEED-002: Post Visibility
+  Options:
+  a) PUBLIC (الجميع)
+  b) CONNECTIONS (المتصلون فقط)
+  c) ROOM (أعضاء الـ Room فقط)
+  
+  Default: PUBLIC
+
+FR-FEED-003: Post Actions
+  a) React (4 أنواع)
+  b) Comment (nested, max 3 levels)
+  c) Repost with/without note
+  d) Save
+  e) Share External (Copy Link)
+  f) Report
+  g) Edit (خلال 15 دقيقة)
+  h) Delete (في أي وقت)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.6.2 Feed Algorithm
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-FEED-010: Ranking Signals (Weighted)
+  
+  Relevance Score = Σ(signal × weight)
+  
+  Signals:
+  a) Author in my Network       × 0.25
+  b) Post Type matches my Role  × 0.20
+  c) Sector relevance           × 0.20
+  d) Engagement Rate            × 0.15
+  e) Recency                    × 0.10
+  f) Verified content           × 0.05
+  g) Personal interaction history × 0.05
+  
+  Hard Filters (يُزال من الـ Feed):
+  a) Reported content (3+ reports)
+  b) User is blocked
+  c) Unverified claims فوق threshold
+  
+  Hard Boosts:
+  a) Post من شركة في Portfolio الـ Investor
+  b) Post من Cohort الـ Accelerator
+  c) Post من شخص طلبت intro منه أخيراً
+```
+
+---
+
+### PRD-3.7 — AI Features
+
+```
+Feature ID:     AI
+Priority:       P1 (Core) / P2 (Advanced)
+Epic:           AI Layer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.7.1 Meeting Intelligence
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-AI-001: Voice Note Processing
+  Input: Audio Recording (max 30 min)
+  
+  Processing Pipeline:
+  Step 1: Whisper Arabic → Transcription
+  Step 2: GPT-4o → Structured Extraction
+  
+  Output:
+  a) Summary (3-5 bullet points)
+  b) Action Items (per person)
+     {assignee, task, due_date}
+  c) Key Topics Discussed[]
+  d) Sentiment: POSITIVE/NEUTRAL/NEGATIVE
+  e) Next Step Recommendation
+  f) Deal Stage Suggestion
+  
+  Storage:
+  a) Transcript (searchable)
+  b) Summary (displayed)
+  c) Linked to Contact + Deal
+  
+  Privacy:
+  a) Audio يُحذف بعد المعالجة
+  b) Transcript يبقى خاصاً للمستخدم
+
+FR-AI-002: Deal Continuity Reminders
+  
+  Rule Engine:
+  Rule 1: "لم تتواصل مع X منذ {N} يوم"
+    Trigger: No interaction for N days
+    N = 30 (default, قابل للتخصيص)
+  
+  Rule 2: "X أعلن traction جديد"
+    Trigger: Startup in pipeline posts update
+    Action: Notify investor with context
+  
+  Rule 3: "جولة X قاربت على الإغلاق"
+    Trigger: Closing date < 14 days
+    Action: Urgent notification
+  
+  Rule 4: "X قبل سنة بالضبط — أين هم؟"
+    Trigger: Anniversary of first contact
+    Action: Gentle re-engagement suggestion
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3.7.2 Pitch Deck Analyzer
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FR-AI-010: Analysis Pipeline
+  Input: Pitch Deck (PDF)
+  
+  Processing:
+  a) GPT-4o Vision على كل slide
+  b) Structured extraction لكل section
+  c) Comparison مع benchmark database
+  
+  Output per Slide:
+  a) Score (1-10)
+  b) Strengths (bullet points)
+  c) Weaknesses (bullet points)
+  d) Specific suggestions
+  
+  Overall Output:
+  a) Overall Score /100
+  b) Top 3 Strengths
+  c) Top 3 Critical Issues
+  d) "MENA investors will likely ask about..."
+  e) Missing sections
+  f) Competitive benchmark
+
+FR-AI-011: Scoring Rubric
+  
+  Problem Slide:        /10
+  Solution Slide:       /10
+  Market Size:          /10
+  Business Model:       /10
+  Traction:             /15
+  Team:                 /15
+  Financials:           /10
+  Ask & Use of Funds:   /10
+  Design & Clarity:     /10
+  
+  Total:                /100
+```
+
+---
+
+## Section 4 — Non-Functional Requirements
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.1 Performance Requirements
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NFR-PERF-001: Response Times
+  API Response (P95):     < 500ms
+  Page Load (Mobile):     < 2s
+  Page Load (Web):        < 1.5s
+  Feed Load:              < 1s
+  Search Results:         < 800ms
+  File Upload (10MB):     < 5s
+  AI Processing:          < 10s (with progress)
+  PDF Generation:         < 15s
+
+NFR-PERF-002: Throughput
+  Concurrent Users:       10,000 (Phase 1)
+  Peak RPS:               1,000
+  File Downloads/min:     500
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.2 Availability & Reliability
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NFR-AVAIL-001:
+  Production Uptime:      99.9% (8.7h downtime/year)
+  Auth Service:           99.99%
+  
+NFR-AVAIL-002: Recovery
+  RTO (Recovery Time):    < 1 hour
+  RPO (Data Loss):        < 5 minutes
+  
+NFR-AVAIL-003: Backups
+  Database:               Every 6 hours
+  Files:                  Daily
+  Retention:              30 days
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.3 Security Requirements
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NFR-SEC-001: Data Encryption
+  In Transit:    TLS 1.3 (minimum)
+  At Rest:       AES-256
+  Passwords:     bcrypt (cost factor 12)
+  Sensitive Data: Field-level encryption
+
+NFR-SEC-002: Authentication Security
+  a) MFA support (TOTP + SMS)
+  b) Rate limiting على كل Auth endpoints
+  c) IP-based blocking بعد 10 failed attempts
+  d) Session invalidation على password change
+  e) Suspicious activity detection
+
+NFR-SEC-003: Authorization
+  a) RBAC (Role-Based Access Control)
+  b) Resource-level permissions
+  c) API key management للـ integrations
+  d) Audit log لكل sensitive action
+
+NFR-SEC-004: Compliance
+  a) Saudi PDPL (Personal Data Protection Law)
+  b) UAE PDPL
+  c) GDPR (للمستخدمين الأوروبيين)
+  d) Data Residency: KSA + UAE Regions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.4 Scalability
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NFR-SCALE-001:
+  Horizontal Scaling: Auto-scaling groups
+  Database: Read replicas + Sharding ready
+  
+NFR-SCALE-002: Data Growth
+  يجب أن يدعم:
+  Phase 1: 100K users, 1M posts
+  Phase 2: 500K users, 10M posts
+  Phase 3: 2M users, 100M posts
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.5 Accessibility & Localization
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NFR-A11Y-001: RTL
+  a) كل الـ UI يدعم RTL بشكل كامل
+  b) Text direction تلقائي (AR→RTL, EN→LTR)
+  c) Icons تنعكس حيث يلزم
+  d) Animations تتكيف مع الاتجاه
+
+NFR-A11Y-002: Language
+  a) Arabic (الإعداد الافتراضي)
+  b) English (كامل)
+  c) Toggle في أي وقت
+  d) الـ User Content يبقى بلغته الأصلية
+```
+
+---
+
+## Section 5 — API Design Contracts
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5.1 Authentication Endpoints
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST /api/v1/auth/register
+Request:
+{
+  "email": "string",
+  "phone": "string (optional)",
+  "password": "string",
+  "role": "FOUNDER|INVESTOR|ACCELERATOR|
+           OPERATOR|ANGEL|FRANCHISE",
+  "language": "ar|en"
+}
+Response 201:
+{
+  "user_id": "uuid",
+  "access_token": "jwt",
+  "refresh_token": "jwt",
+  "requires_verification": true,
+  "onboarding_step": "VERIFY_EMAIL"
+}
+Errors:
+  409: EMAIL_ALREADY_EXISTS
+  400: INVALID_PASSWORD_FORMAT
+  422: VALIDATION_ERROR
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POST /api/v1/auth/login
+Request:
+{
+  "email": "string",
+  "password": "string",
+  "device_info": {
+    "device_id": "string",
+    "platform": "ios|android|web",
+    "app_version": "string"
+  }
+}
+Response 200:
+{
+  "access_token": "jwt",
+  "refresh_token": "jwt",
+  "user": { ...UserProfile }
+}
+Errors:
+  401: INVALID_CREDENTIALS
+  403: ACCOUNT_SUSPENDED
+  429: TOO_MANY_ATTEMPTS
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5.2 Accelerator Endpoints
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST /api/v1/accelerators
+Auth: Required (ACCELERATOR role)
+Request:
+{
+  "name_ar": "string",
+  "name_en": "string",
+  "description_ar": "string",
+  "description_en": "string",
+  "sectors": ["FINTECH", "HEALTHTECH"...],
+  "countries": ["SA", "AE", "EG"...],
+  "website": "string",
+  "founded_year": "integer"
+}
+Response 201:
+{
+  "id": "uuid",
+  "slug": "flat6labs-mena",
+  "profile_url": "/accelerator/flat6labs-mena",
+  ...
+}
+
+GET /api/v1/accelerators/{id}/pipeline
+Auth: Optional (visibility based)
+Query Params:
+  ?sort=score|date|amount
+  ?sector=FINTECH
+  ?status=RAISING|GRADUATED
+Response 200:
+{
+  "accelerator": { ...AcceleratorProfile },
+  "startups": [
+    {
+      "id": "uuid",
+      "name": "string",
+      "sector": "string",
+      "stage": "string",
+      "score": 87,
+      "score_breakdown": {...},
+      "verified_badge": true,
+      "raising": {
+        "amount": 1500000,
+        "currency": "USD",
+        "status": "OPEN"
+      },
+      "top_metrics": [
+        {"label": "MRR", "value": "$25K"},
+        {"label": "Growth", "value": "40% MoM"},
+        {"label": "Users", "value": "12K"}
+      ],
+      "deal_room_accessible": true
+    }
+  ],
+  "total": 15,
+  "page": 1
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5.3 Deal Room Endpoints
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+POST /api/v1/deal-rooms
+Auth: Required (FOUNDER role)
+Request:
+{
+  "company_id": "uuid",
+  "name": "string",
+  "type": "FUNDRAISING|PARTNERSHIP|DEMO_DAY",
+  "privacy": "PUBLIC|PRIVATE|INVITE_ONLY|NDA_GATED",
+  "raising_amount": 1500000,
+  "raising_currency": "USD",
+  "instrument": "SAFE|EQUITY|NOTE",
+  "closing_date": "2025-12-31"
+}
+
+POST /api/v1/deal-rooms/{id}/deck
+Content-Type: multipart/form-data
+Body: file (PDF/PPTX, max 50MB)
+Response 200:
+{
+  "deck_id": "uuid",
+  "slides_count": 18,
+  "processing_status": "PROCESSING",
+  "estimated_time": 30
+}
+
+GET /api/v1/deal-rooms/{id}/analytics
+Auth: Required (Owner only)
+Response 200:
+{
+  "total_views": 47,
+  "unique_visitors": 12,
+  "visitors": [
+    {
+      "user_id": "uuid",
+      "name": "فيصل العتيبي",
+      "company": "Wadi Ventures",
+      "visits": [
+        {
+          "entered_at": "2025-10-15T09:22:00Z",
+          "duration_seconds": 742,
+          "slides_viewed": [1,2,3,4,7,8,12],
+          "time_per_slide": {
+            "1": 45, "2": 30, "7": 180...
+          },
+          "exit_slide": 12
+        }
+      ],
+      "interest_signal": "READY_TO_INVEST"
+    }
+  ]
+}
+```
+
+---
+
+## Section 6 — Database Schema
+
+```sql
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Core Tables
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- Users
+CREATE TABLE users (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email                 VARCHAR(255) UNIQUE,
+  phone                 VARCHAR(20) UNIQUE,
+  password_hash         VARCHAR(255),
+  primary_role          VARCHAR(50) NOT NULL,
+  -- FOUNDER/INVESTOR/ACCELERATOR/OPERATOR/ANGEL/FRANCHISE
+  full_name_ar          VARCHAR(255),
+  full_name_en          VARCHAR(255),
+  username              VARCHAR(50) UNIQUE,
+  profile_photo_url     TEXT,
+  cover_photo_url       TEXT,
+  bio_ar                TEXT,
+  bio_en                TEXT,
+  headline              VARCHAR(200),
+  country               VARCHAR(2),
+  city                  VARCHAR(100),
+  language_pref         VARCHAR(5) DEFAULT 'ar',
+  email_verified        BOOLEAN DEFAULT FALSE,
+  phone_verified        BOOLEAN DEFAULT FALSE,
+  identity_verified     BOOLEAN DEFAULT FALSE,
+  verification_level    SMALLINT DEFAULT 0,
+  trust_score           SMALLINT DEFAULT 0,
+  activity_score        SMALLINT DEFAULT 0,
+  subscription_plan     VARCHAR(50) DEFAULT 'FREE',
+  subscription_expires  TIMESTAMPTZ,
+  is_active             BOOLEAN DEFAULT TRUE,
+  is_suspended          BOOLEAN DEFAULT FALSE,
+  suspension_reason     TEXT,
+  last_active_at        TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_users_role ON users(primary_role);
+CREATE INDEX idx_users_country ON users(country);
+CREATE INDEX idx_users_active ON users(is_active, last_active_at);
+
+-- Companies
+CREATE TABLE companies (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name                  VARCHAR(255) NOT NULL,
+  slug                  VARCHAR(100) UNIQUE NOT NULL,
+  logo_url              TEXT,
+  cover_url             TEXT,
+  tagline               VARCHAR(200),
+  description           TEXT,
+  website               VARCHAR(255),
+  founded_year          SMALLINT,
+  country               VARCHAR(2),
+  city                  VARCHAR(100),
+  company_type          VARCHAR(50) NOT NULL,
+  -- STARTUP/VC_FUND/ACCELERATOR/FRANCHISE_BRAND...
+  stage                 VARCHAR(50),
+  -- IDEA/PRE_SEED/SEED/SERIES_A/SERIES_B/GROWTH
+  primary_sector        VARCHAR(50),
+  sectors               TEXT[],
+  business_model        VARCHAR(20),
+  team_size             SMALLINT,
+  is_verified           BOOLEAN DEFAULT FALSE,
+  verification_date     TIMESTAMPTZ,
+  created_by            UUID REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Accelerators
+CREATE TABLE accelerator_profiles (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  company_id            UUID UNIQUE REFERENCES companies(id),
+  total_cohorts         SMALLINT DEFAULT 0,
+  total_startups        INTEGER DEFAULT 0,
+  total_funding_raised  BIGINT DEFAULT 0,
+  acceptance_rate       DECIMAL(5,2),
+  program_duration_weeks SMALLINT,
+  equity_taken          BOOLEAN DEFAULT FALSE,
+  equity_percentage     DECIMAL(5,2),
+  investment_amount     INTEGER,
+  is_verified           BOOLEAN DEFAULT FALSE,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Cohorts
+CREATE TABLE cohorts (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  accelerator_id        UUID REFERENCES accelerator_profiles(id),
+  cohort_number         SMALLINT,
+  name                  VARCHAR(100),
+  status                VARCHAR(50) DEFAULT 'ACTIVE',
+  -- ACTIVE/DEMO_DAY/GRADUATED/ARCHIVED
+  start_date            DATE,
+  end_date              DATE,
+  demo_day_date         DATE,
+  target_size           SMALLINT,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Cohort Startups (Junction)
+CREATE TABLE cohort_startups (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  cohort_id             UUID REFERENCES cohorts(id),
+  company_id            UUID REFERENCES companies(id),
+  status                VARCHAR(50) DEFAULT 'IN_PROGRAM',
+  -- IN_PROGRAM/GRADUATED/RAISING/FUNDED/DROPPED
+  joined_at             DATE,
+  graduated_at          DATE,
+  investment_readiness_score SMALLINT,
+  score_team            SMALLINT,
+  score_product         SMALLINT,
+  score_revenue         SMALLINT,
+  score_readiness       SMALLINT,
+  score_notes           TEXT,
+  scored_by             UUID REFERENCES users(id),
+  scored_at             TIMESTAMPTZ,
+  accelerator_backed    BOOLEAN DEFAULT FALSE,
+  accelerator_note      TEXT,
+  UNIQUE(cohort_id, company_id)
+);
+
+-- Deal Rooms
+CREATE TABLE deal_rooms (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  company_id            UUID REFERENCES companies(id),
+  owner_id              UUID REFERENCES users(id),
+  name                  VARCHAR(255),
+  type                  VARCHAR(50),
+  -- FUNDRAISING/DEMO_DAY/PARTNERSHIP
+  privacy               VARCHAR(50) DEFAULT 'PRIVATE',
+  -- PUBLIC/PRIVATE/INVITE_ONLY/NDA_GATED
+  raising_amount        BIGINT,
+  raising_currency      VARCHAR(3) DEFAULT 'USD',
+  amount_committed      BIGINT DEFAULT 0,
+  instrument            VARCHAR(50),
+  pre_money_valuation   BIGINT,
+  closing_date          DATE,
+  status                VARCHAR(50) DEFAULT 'ACTIVE',
+  -- ACTIVE/PAUSED/CLOSED/FUNDED
+  unique_link_token     VARCHAR(100) UNIQUE,
+  views_count           INTEGER DEFAULT 0,
+  unique_visitors       INTEGER DEFAULT 0,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Pitch Decks
+CREATE TABLE pitch_decks (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  deal_room_id          UUID REFERENCES deal_rooms(id),
+  original_filename     VARCHAR(255),
+  file_url              TEXT,
+  slides_count          SMALLINT,
+  processing_status     VARCHAR(50) DEFAULT 'PROCESSING',
+  ai_analysis           JSONB,
+  ai_score              SMALLINT,
+  is_active             BOOLEAN DEFAULT TRUE,
+  uploaded_by           UUID REFERENCES users(id),
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Deal Room Visits
+CREATE TABLE deal_room_visits (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  deal_room_id          UUID REFERENCES deal_rooms(id),
+  visitor_id            UUID REFERENCES users(id),
+  entered_at            TIMESTAMPTZ DEFAULT NOW(),
+  exited_at             TIMESTAMPTZ,
+  duration_seconds      INTEGER,
+  slides_viewed         SMALLINT[],
+  time_per_slide        JSONB,
+  -- {"1": 45, "2": 30...}
+  exit_slide            SMALLINT,
+  device_type           VARCHAR(20),
+  platform              VARCHAR(20)
+);
+
+CREATE INDEX idx_visits_room ON deal_room_visits(deal_room_id);
+CREATE INDEX idx_visits_visitor ON deal_room_visits(visitor_id);
+
+-- Interest Signals
+CREATE TABLE interest_signals (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  deal_room_id          UUID REFERENCES deal_rooms(id),
+  user_id               UUID REFERENCES users(id),
+  level                 VARCHAR(50),
+  -- WATCHING/INTERESTED/READY_TO_INVEST
+  private_note          TEXT,
+  is_visible_to_owner   BOOLEAN DEFAULT FALSE,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(deal_room_id, user_id)
+);
+
+-- Equity Roles
+CREATE TABLE equity_roles (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  company_id            UUID REFERENCES companies(id),
+  posted_by             UUID REFERENCES users(id),
+  title                 VARCHAR(200),
+  role_type             VARCHAR(50),
+  domain                VARCHAR(50),
+  description           TEXT,
+  why_exciting          TEXT,
+  equity_min            DECIMAL(5,2),
+  equity_max            DECIMAL(5,2),
+  cash_component        BOOLEAN DEFAULT FALSE,
+  cash_amount           INTEGER,
+  time_commitment       VARCHAR(50),
+  location_type         VARCHAR(50),
+  location_city         VARCHAR(100),
+  min_years_experience  SMALLINT,
+  required_skills       TEXT[],
+  vesting_months        SMALLINT DEFAULT 48,
+  cliff_months          SMALLINT DEFAULT 12,
+  status                VARCHAR(50) DEFAULT 'OPEN',
+  views_count           INTEGER DEFAULT 0,
+  applications_count    INTEGER DEFAULT 0,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  expires_at            TIMESTAMPTZ
+);
+
+-- Equity Applications
+CREATE TABLE equity_applications (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  role_id               UUID REFERENCES equity_roles(id),
+  applicant_id          UUID REFERENCES users(id),
+  status                VARCHAR(50) DEFAULT 'SUBMITTED',
+  cover_note            VARCHAR(500),
+  why_this_company      TEXT,
+  what_i_bring          TEXT,
+  equity_counter        DECIMAL(5,2),
+  ai_compatibility      SMALLINT,
+  ai_compatibility_details JSONB,
+  founder_rating        SMALLINT,
+  founder_notes         TEXT,
+  final_equity          DECIMAL(5,2),
+  agreement_signed      BOOLEAN DEFAULT FALSE,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(role_id, applicant_id)
+);
+
+-- Posts
+CREATE TABLE posts (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  author_id             UUID REFERENCES users(id),
+  company_id            UUID REFERENCES companies(id),
+  room_id               UUID,
+  type                  VARCHAR(50),
+  content               TEXT,
+  media_urls            TEXT[],
+  visibility            VARCHAR(50) DEFAULT 'PUBLIC',
+  is_verified_claim     BOOLEAN DEFAULT FALSE,
+  verification_source   VARCHAR(100),
+  linked_deal_id        UUID,
+  reactions_count       JSONB DEFAULT '{}',
+  comments_count        INTEGER DEFAULT 0,
+  shares_count          INTEGER DEFAULT 0,
+  saves_count           INTEGER DEFAULT 0,
+  views_count           INTEGER DEFAULT 0,
+  relevance_scores      JSONB DEFAULT '{}',
+  is_active             BOOLEAN DEFAULT TRUE,
+  edited_at             TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_posts_author ON posts(author_id, created_at DESC);
+CREATE INDEX idx_posts_type ON posts(type);
+CREATE INDEX idx_posts_visibility ON posts(visibility);
+
+-- Connections
+CREATE TABLE connections (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_a_id             UUID REFERENCES users(id),
+  user_b_id             UUID REFERENCES users(id),
+  type                  VARCHAR(20) DEFAULT 'CONNECTED',
+  status                VARCHAR(20) DEFAULT 'PENDING',
+  strength_score        SMALLINT DEFAULT 0,
+  context               VARCHAR(50),
+  introducer_id         UUID REFERENCES users(id),
+  messages_count        INTEGER DEFAULT 0,
+  deals_together        INTEGER DEFAULT 0,
+  last_interacted_at    TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_a_id, user_b_id),
+  CHECK(user_a_id < user_b_id)
+);
+
+-- Notifications
+CREATE TABLE notifications (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id               UUID REFERENCES users(id),
+  type                  VARCHAR(100) NOT NULL,
+  title_ar              VARCHAR(255),
+  title_en              VARCHAR(255),
+  body_ar               TEXT,
+  body_en               TEXT,
+  deep_link             VARCHAR(500),
+  priority              VARCHAR(10) DEFAULT 'MEDIUM',
+  is_read               BOOLEAN DEFAULT FALSE,
+  is_pushed             BOOLEAN DEFAULT FALSE,
+  related_entity_type   VARCHAR(50),
+  related_entity_id     UUID,
+  expires_at            TIMESTAMPTZ,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_notif_user ON notifications(user_id, is_read, created_at DESC);
+
+-- AI Meeting Notes
+CREATE TABLE meeting_notes (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  owner_id              UUID REFERENCES users(id),
+  contact_id            UUID REFERENCES users(id),
+  deal_id               UUID,
+  audio_duration_sec    INTEGER,
+  transcript            TEXT,
+  summary               TEXT,
+  action_items          JSONB,
+  -- [{assignee, task, due_date, status}]
+  topics                TEXT[],
+  sentiment             VARCHAR(20),
+  deal_stage_suggested  VARCHAR(50),
+  model_used            VARCHAR(50),
+  tokens_used           INTEGER,
+  created_at            TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+## Section 7 — Error Handling Standards
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7.1 Error Response Format
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "رسالة للمستخدم بالعربي",
+    "message_en": "English message",
+    "details": [...],
+    "request_id": "uuid",
+    "timestamp": "ISO8601"
+  }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7.2 HTTP Status Codes Usage
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+200: Success with data
+201: Created successfully
+204: Success, no content
+400: Bad request / Validation error
+401: Unauthenticated
+403: Unauthorized (authenticated but no permission)
+404: Resource not found
+409: Conflict (duplicate)
+422: Unprocessable entity
+429: Rate limit exceeded
+500: Internal server error
+503: Service unavailable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7.3 Error Codes Reference
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AUTH errors:
+  AUTH_001: EMAIL_ALREADY_EXISTS
+  AUTH_002: INVALID_CREDENTIALS
+  AUTH_003: TOKEN_EXPIRED
+  AUTH_004: OTP_INVALID
+  AUTH_005: OTP_EXPIRED
+  AUTH_006: ACCOUNT_SUSPENDED
+  AUTH_007: TOO_MANY_ATTEMPTS
+
+Profile errors:
+  PROF_001: USERNAME_TAKEN
+  PROF_002: INCOMPLETE_PROFILE
+  PROF_003: VERIFICATION_REQUIRED
+
+Deal Room errors:
+  DR_001: DECK_TOO_LARGE
+  DR_002: UNSUPPORTED_FORMAT
+  DR_003: ACCESS_DENIED
+  DR_004: ROOM_EXPIRED
+  DR_005: NDA_REQUIRED
+
+Accelerator errors:
+  ACC_001: NOT_PROGRAM_MANAGER
+  ACC_002: STARTUP_ALREADY_IN_COHORT
+  ACC_003: COHORT_CLOSED
+
+AI errors:
+  AI_001: AUDIO_TOO_LONG
+  AI_002: PROCESSING_FAILED
+  AI_003: QUOTA_EXCEEDED
+```
+
+---
+
+## Section 8 — Acceptance Criteria
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-001: Accelerator Onboarding
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مديرة مسرّعة تسجّلت حديثاً
+WHEN تُكمل Onboarding Wizard
+THEN يجب أن:
+  ✓ تُنشئ Accelerator Profile في < 5 دقائق
+  ✓ تُضيف Cohort واحداً على الأقل
+  ✓ تستورد startups عبر CSV
+  ✓ ترى Investor View تلقائياً
+  ✓ تتلقى confirmation email
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-002: Deal Room Analytics
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مستثمر يفتح Deal Room
+WHEN يتصفح الـ Pitch Deck
+THEN يجب أن:
+ 
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-002: Deal Room Analytics (تكملة)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مستثمر يفتح Deal Room
+WHEN يتصفح الـ Pitch Deck
+THEN يجب أن:
+  ✓ يُسجَّل وقت الدخول فوراً
+  ✓ يُتتبَّع الوقت لكل slide بدقة ثانية
+  ✓ يتلقى الـ Founder notification خلال 30 ثانية
+  ✓ تظهر Analytics كاملة في Dashboard
+  ✓ لا يرى المستثمر أنه يُتتبَّع
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-003: Scorecard & Verified Badge
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مدير مسرّعة يملأ Scorecard لـ Startup
+WHEN يضغط "تخرّج من البرنامج"
+THEN يجب أن:
+  ✓ تُحسَب Investment Readiness Score تلقائياً
+  ✓ تظهر علامة ✓ Accelerator Backed على Profile
+  ✓ تنتقل للـ Investor View خلال < 5 ثوانٍ
+  ✓ يتلقى الـ Founder notification بالـ Badge
+  ✓ تظهر في الـ Marketplace للمستثمرين
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-004: LP Report Generation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مدير صندوق لديه 10+ شركات في Portfolio
+WHEN يطلب LP Report للربع الأخير
+THEN يجب أن:
+  ✓ يُولَّد الـ PDF خلال < 15 ثانية
+  ✓ يحتوي على كل الشركات مع آخر KPIs
+  ✓ يكون branded بلوغو الصندوق
+  ✓ يكون قابلاً للتحميل والمشاركة
+  ✓ يُطابق البيانات الموجودة في Dashboard
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-005: Voice Note AI Processing
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مستثمر يُسجّل voice note بعد اجتماع
+WHEN يرفعه على Majlis
+THEN يجب أن:
+  ✓ يُحوَّل للنص خلال < 30 ثانية (لكل دقيقة صوت)
+  ✓ يدعم العربية والإنجليزية والمزيج
+  ✓ يُستخرج ملخص في 3-5 نقاط
+  ✓ تُستخرج Action Items مع أسماء المسؤولين
+  ✓ يُربط بالـ Contact والـ Deal تلقائياً
+  ✓ يُحذف الـ Audio بعد المعالجة
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-006: Equity Role Matching
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN Operator يملأ Profile كاملاً
+WHEN تُنشر Equity Role جديدة تناسبه
+THEN يجب أن:
+  ✓ يتلقى notification خلال < 5 دقائق
+  ✓ يرى Compatibility Score مع تفسير
+  ✓ يستطيع التقديم في < 3 خطوات
+  ✓ يتلقى الـ Founder notification فوراً
+  ✓ يرى Application Status في real-time
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AC-007: Feed Personalization
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GIVEN مستثمر يستخدم Majlis لـ 7 أيام
+WHEN يفتح الـ Feed
+THEN يجب أن:
+  ✓ 80%+ من المنشورات ذات صلة بـ thesis
+  ✓ يرى منشورات شركات Portfolio أولاً
+  ✓ يرى "لماذا أرى هذا؟" لكل منشور
+  ✓ لا يرى محتوى بلّغ عنه أو أخفاه
+  ✓ يتحسن الـ Feed مع كل تفاعل
+```
+
+---
+
+## Section 9 — Testing Requirements
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9.1 Testing Pyramid
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Unit Tests:           70% Coverage (minimum)
+Integration Tests:    20% Coverage
+E2E Tests:            10% (Critical Paths)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9.2 Critical Test Scenarios
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AUTH:
+  TC-AUTH-001: Register with valid email
+  TC-AUTH-002: Register with duplicate email → 409
+  TC-AUTH-003: Login with wrong password → 401
+  TC-AUTH-004: OTP expires after 10 min → 400
+  TC-AUTH-005: 5 failed logins → rate limit
+  TC-AUTH-006: Refresh token rotation works
+  TC-AUTH-007: Force logout clears all sessions
+
+ACCELERATOR:
+  TC-ACC-001: Create accelerator profile
+  TC-ACC-002: Create cohort + add 30 startups via CSV
+  TC-ACC-003: Fill scorecard → auto-calculate score
+  TC-ACC-004: Graduate startup → badge appears
+  TC-ACC-005: Investor View loads < 2s with 30 startups
+  TC-ACC-006: Intro request flow end-to-end
+  TC-ACC-007: Non-admin cannot edit scorecard
+
+DEAL ROOM:
+  TC-DR-001: Upload PDF 40MB → processes correctly
+  TC-DR-002: Upload invalid format → clear error
+  TC-DR-003: Slide analytics tracked accurately
+  TC-DR-004: Founder notified within 30s of visit
+  TC-DR-005: NDA gates access correctly
+  TC-DR-006: Interest signal private until revealed
+  TC-DR-007: Analytics inaccessible to non-owner
+
+PORTFOLIO:
+  TC-PORT-001: Add 20 companies → dashboard loads
+  TC-PORT-002: KPI update reflects immediately
+  TC-PORT-003: LP Report generates correct data
+  TC-PORT-004: Alert fires when no update > 45 days
+  TC-PORT-005: PDF branded correctly with fund logo
+
+AI:
+  TC-AI-001: Arabic voice note → accurate transcript
+  TC-AI-002: Mixed AR/EN note → correct processing
+  TC-AI-003: 30-min note → completes < 15 min
+  TC-AI-004: Action items extracted with correct names
+  TC-AI-005: Pitch deck analyzed → score matches rubric
+  TC-AI-006: MENA-specific feedback in pitch analysis
+
+SECURITY:
+  TC-SEC-001: SQL injection in search → blocked
+  TC-SEC-002: XSS in post content → sanitized
+  TC-SEC-003: Unauthorized API access → 401/403
+  TC-SEC-004: Another user's deal room → 403
+  TC-SEC-005: File path traversal → blocked
+  TC-SEC-006: JWT tampered → rejected
+
+PERFORMANCE:
+  TC-PERF-001: Feed loads < 1s (100 posts)
+  TC-PERF-002: Search returns < 800ms
+  TC-PERF-003: 1000 concurrent users → no degradation
+  TC-PERF-004: File upload 50MB → < 5s
+
+RTL & LOCALIZATION:
+  TC-L10N-001: All━━━━━━━━━━━━━━━━━━━━━━━
+9.3 Performance Benchmarks
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Load Test Scenarios:
+  Scenario 1: Normal Load
+    Users: 500 concurrent
+    Duration: 30 minutes
+    Expected: All < SLA thresholds
+
+  Scenario 2: Peak Load
+    Users: 2,000 concurrent
+    Duration: 15 minutes
+    Expected: < 10% degradation
+
+  Scenario 3: Stress Test
+    Users: Ramp to 5,000
+    Expected: Graceful degradation,
+              no data loss
+
+  Scenario 4: Demo Day Simulation
+    Users: 200 investors open same room simultaneously
+    Expected: Analytics accurate, no data loss
+```
+
+---
+
+## Section 10 — Third-Party Integrations
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10.1 Required Integrations (Phase 1)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+COMMUNICATION:
+  SMS:          Twilio (Primary)
+                Unifonic (MENA Fallback)
+  Email:        SendGrid (Transactional)
+                Postmark (Critical Auth Emails)
+  Push:         Firebase Cloud Messaging (FCM)
+                Apple Push Notification (APNs)
+
+AUTHENTICATION:
+  Google OAuth: Google Identity Platform
+  LinkedIn:     LinkedIn OAuth 2.0
+
+FILE STORAGE:
+  Primary:      AWS S3 (KSA Region)
+  CDN:          CloudFront
+  Processing:   AWS Lambda (PDF→Images)
+
+AI & ML:
+  LLM:          OpenAI API (GPT-4o)
+  Speech:       OpenAI Whisper API
+  EmbedENA:         Tap Payments (KSA/UAE)
+
+DOCUMENT SIGNING:
+  Phase 1:      DocuSign API
+  Phase 2:      Custom (reduce dependency)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10.2 Future Integrations (Phase 2+)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CRM:            Salesforce / HubSpot API
+                (للـ Enterprise Accelerators)
+
+CALENDAR:       Google Calendar
+                Microsoft Outlook
+                (لـ Meeting Scheduling)
+
+ACCOUNTING:     QuickBooks
+                Xero
+                (لـ Financial Verification)
+
+DATA SOURCES:   Crunchbase API
+                LinkedIn Sales Navigator
+                (لتحسين الـ Matching)
+
+BANKING:        Open Banking APIs
+                (للـ Revenue Verification)
+                Lean (MENA Open Banking)
+```
+
+---
+
+## Section 11 — Release Strategy
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11.1 Release Types
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CANARY RELEASE:
+  5% من المستخدمين أولاً
+  مراقبة 24 ساعة
+  ثم 25% → 50% → 100%
+
+FEATURE FLAGS:
+  كل feature كبير خلف Flag
+  يُفعَّل تدريجياً
+  يمكن إيقافه فوراً
+
+A/B TESTING:
+  Feed Algorithm: Version A vs B
+  Onboarding Flow: 2 variants
+  Pricing Page: 3 variants
+
+HOTFIX PROTOCOL:
+  Critical Bug:   Deploy في < 4 ساعات
+  Security Bug:   Deploy في < 1 ساعة
+  No canary:      مباشر لـ Production
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11.2 Environment Strategy
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DEVELOPMENT:   dev.majlis.io
+               Local dev + shared dev DB
+               Auto-deploy from feature branches
+
+STAGING:       staging.majlis.io
+               Production mirror
+               Auto-deploy from main branch
+               Full test suite runs here
+
+PRODUCTION:    majlis.io / app.majlis.io
+               Manual deploy with approval
+               Blue-Green deployment
+               Automatic rollback on error spike
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11.3 Definition of Done
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Feature يُعتبر DONE عندما:
+  ✅ Unit tests written & passing (70%+ coverage)
+  ✅ Integration tests passing
+  ✅ Code reviewed by 1+ engineer
+  ✅ QA tested on staging
+  ✅ RTL tested (Arabic)
+  ✅ Performance benchmarks met
+  ✅ Security checklist completed
+  ✅ Error states handled & tested
+  ✅ Analytics events firing correctly
+  ✅ Documentation updated
+  ✅ Product Owner approved
+```
+
+---
+
+## Section 12 — Analytics Events Tracking Plan
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12.1 Critical Events to Track
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ACQUISITION:
+  user_signed_up
+    properties: role, source, referral_code,
+                platform, country
+
+  onboarding_completed
+    properties: role, steps_completed,
+                time_to_complete, skipped_steps
+
+  invited_user_signed_up
+    properties: inviter_id, inviter_role,
+                invited_role
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACTIVATION:
+  profile_completed
+    properties: role, completeness_score,
+                time_to_complete
+
+  first_cohort_created (Accelerator)
+    properties: cohort_size
+
+  first_deal_room_created (Founder)
+    properties: room_type, has_deck
+
+  first_deal_viewed (Investor)
+    properties: deal_type, match_score
+
+  first_connection_made
+    properties: connection_type, how_connected
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ENGAGEMENT:
+  deal_room_visited
+    properties: room_id, visitor_role,
+                visit_duration, slides_count_viewed
+
+  scorecard_filled
+    properties: accelerator_id, cohort_id,
+                total_score, time_to_fill
+
+  interest_signal_sent
+    properties: signal_level, deal_type
+
+  intro_requested
+    properties: requester_role, target_role,
+                context_type, ai_suggested
+
+  voice_note_processed
+    properties: duration_seconds, language,
+                action_items_count
+
+  equity_role_applied
+    properties: role_domain, equity_offered,
+                commitment_type, ai_match_score
+
+  post_created
+    properties: post_type, visibility,
+                has_media, is_verified_claim
+
+  milestone_published
+    properties: company_stage, milestone_type,
+                verified
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REVENUE:
+  subscription_started
+    properties: plan, billing_cycle,
+                mrr, trial
+
+  subscription_upgraded
+    properties: from_plan, to_plan,
+                mrr_change
+
+  subscription_cancelled
+    properties: plan, reason,
+                days_active, ltv
+
+  deal_room_purchased
+    properties: room_type, amount
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NORTH STAR:
+  deal_closed_via_majlis  ← أهم event
+    properties:
+      deal_type, amount, currency,
+      investor_id, founder_id,
+      accelerator_backed,
+      days_from_first_contact,
+      deal_rooms_viewed,
+      intros_involved
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12.2 Funnels to Monitor
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ACCELERATOR FUNNEL:
+  Sign Up
+  → Profile Created
+  → First Cohort Created
+  → First Startup Added
+  → First Scorecard Filled
+  → First Investor Views Pipeline
+  → First Intro Request
+  → First Deal Closed
+  Target Conversion: 40% Sign Up → First Deal
+
+INVESTOR FUNNEL:
+  Sign Up
+  → Profile + Thesis Set
+  → First Deal Room Opened
+  → First Interest Signal
+  → First Meeting Requested
+  → First Deal Added to Pipeline
+  → First Deal Closed
+  Target: 25% → First Deal Closed (90 days)
+
+FOUNDER FUNNEL:
+  Sign Up
+  → Profile Complete (80%+)
+  → Deal Room Created
+  → Deck Uploaded
+  → First Investor Invited
+  → First Room Opened by Investor
+  → First Interest Signal Received
+  → First Meeting Booked
+  → Deal Closed
+  Target: 15% → Close (120 days)
+```
+
+---
+
+## Section 13 — Localization Requirements
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13.1 Arabic-First Implementation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TEXT DIRECTION:
+  Default:          RTL (Arabic)
+  Toggle:           Instant switch AR↔EN
+  Mixed Content:    Auto-detect per paragraph
+  Numbers:          Eastern Arabic (٠١٢٣) in AR mode
+                    Western (0123) in EN mode
+
+TYPOGRAPHY:
+  Arabic Font:      IBM Plex Arabic
+                    (أو Cairo للعناوين)
+  English Font:     IBM Plex Sans
+  Min Font Size:    16px (Arabic readability)
+  Line Height:      1.8 للعربي (أطول من الإنجليزي)
+
+DATE & TIME:
+  Arabic Mode:      الإثنين، ١٥ أكتوبر ٢٠٢٥
+  English Mode:     Mon, Oct 15, 2025
+  Relative Time:    "منذ ٣ ساعات" / "3 hours ago"
+  Timezone:         Default AST (Arabia Standard)
+                    قابل للتغيير في الإعدادات
+
+CURRENCY:
+  Default:          USD ($)
+  MENA Options:     SAR (ر.س) / AED (د.إ) / EGP (ج.م)
+  Display:          "١٫٥ مليون دولار" in AR
+                    "$1.5M" in EN
+
+PHONE NUMBERS:
+  Format:           +966 5X:      Country code from IP
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13.2 Translation Keys Structure
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{
+  "common": {
+    "save": { "ar": "حفظ", "en": "Save" },
+    "cancel": { "ar": "إلغاء", "en": "Cancel" },
+    "loading": { "ar": "جارٍ التحميل", "en": "Loading" },
+    "error": { "ar": "حدث خطأ", "en": "An error occurred" }
+  },
+  "auth": {
+    "sign_up": { "ar": "إنشاء حساب", "en": "Sign Up" },
+    "sign_in": { "ar": "تسجيل الدخول", "en": "Sign In" }
+  },
+  "accelerator": {
+    "cohort": { "ar": "دفعة", "en": "Cohort" },
+    "scorecard": { "ar": "بطاقة التقييم", "en": "Scorecard" },
+    "verified+ key إضافية
+}
+```
+
+---
+
+## Section 14 — Security & Compliance Checklist
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14.1 OWASP Top 10 Mitigations
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A01 Broken Access Control:
+  ✓ RBAC على كل endpoint
+  ✓ Resource ownership validation
+  ✓ Never trust client-side role claims
+  ✓ Principle of least privilege
+
+A02 Cryptographic Failures:
+  ✓ TLS 1.3 على كل connections
+  ✓ AES-256 للبيانات الحساسة at rest
+  ✓ bcrypt لكلمات المرور
+  ✓ لا sensitive data في logs
+
+A03 InjectionInsecure Design:
+  ✓ Threat modeling لكل Epic
+  ✓ Rate limiting على كل endpoints
+  ✓ Business logic validation server-side
+
+A05 Security Misconfiguration:
+  ✓ Security headers (Helmet.js)
+  ✓ CORS restricted to known origins
+  ✓ Error messages لا تكشف internal details
+  ✓ Dependencies audit (npm audit) في CI/CD
+
+A07 Identification & Authentication Failures:
+  ✓ MFA support
+  ✓ Account lockout بعد failed attempts
+  ✓ Secure session management
+  ✓ Password strength enforcement
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14.2 Data Privacy (PDPL Compliance)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DATA MINIMIZATION:
+  ✓ نجمع فقط ما نحتاجه
+  ✓ Retention policy لكل نوع بيانات
+  ✓ Auto-delete للبيانات المنتهية
+
+USER RIGHTS:
+  ✓ حق الوصول للبيانات (Export)
+  ✓ حق التصحيح
+  ✓ حق الحذف (Right to be forgotten)
+  ✓ حق الاعتراض على المعالجة
+
+DATA RESIDENCY:
+  ✓ بيانات السعوديين: KSA Region (AWS Riyadh)
+  ✓ بيانات الإماراتيين: UAE Region
+  ✓ لا transfer خارج المنطقة بدون موافقة
+
+CONSENT:
+  ✓ Explicit consent عند التسجيل
+  ✓ Granular consent للـ AI features
+  ✓ Cookie consent banner
+  ✓ سجل Consent مُوثَّق بتاريخ
+```
+
+---
+
+## Section 15 — Monitoring & Alerting
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+15.1 Critical Alerts (PagerDuty)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+P1 — IMMEDIATE (< 15 min response):
+  🔴 Auth Service down
+  🔴 Database unreachable
+  🔴 Error rate > 5% for 5 min
+  🔴 Response time > 5s for 5 min
+  🔴 Security breach detected
+
+P2 — URGENT (< 1 hour response):
+  🟠 AI Service degraded
+  🟠 File upload failures > 20%
+  🟠 Notification delivery < 80%
+  🟠 Memory > 90% for 10 min
+
+P3 — WARNING (< 4 hours response):
+  🟡 Disk usage > 80%
+  🟡 Slow queries > 2s (P95)
+  🟡 Failed jobs queue > 100
+  🟡 Cache hit rate < 60%
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+15.2 Business Metrics Dashboard
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Real-time (refreshes كل دقيقة):
+  → Active Users Right Now
+  → Deal Rooms Open
+  → Deals Closed Today
+  → New Sign Ups Today
+
+Daily Review:
+  → DAU / MAU Ratio
+  → New Accelerators Activated
+  → Deal Rooms Created vs Visited
+  → AI Features Usage Rate
+
+Weekly Review:
+  → MRR Growth
+  → Churn Analysis
+  → NPS Responses
+  → Top Features by Usage
+
+Monthly Review:
+  → North Star: Deals Closed
+  → Cohort Retention by Month
+  → Revenue by Segment
+  → AI Accuracy Metrics
+```
+
+---
+
+## Section 16 — Changelog & Version Control
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Document Version History
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+v1.0.0 — 2026-05-14
+  ✓ Initial complete PRD
+  ✓ All 6 Core Products defined
+  ✓ Full Database Schema
+  ✓ API Contracts defined
+  ✓ NFRs documented
+  ✓ Security requirements added
+  ✓ Acceptance Criteria complete
+  ✓ Analytics tracking plan added
+  Author: Product Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Change Management Process
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+أي تغيير على هذا الـ PRD يتبع:
+
+MINOR CHANGE (x.x.1):
+  → لا يؤثر على Architecture
+  → لا يغير API contracts
+  → موافقة: Product Owner فقط
+  → مثال: تعديل نص، إضافة error state
+
+MINOR VERSION (x.1.x):
+  → يضيف feature جديدة
+  → لا يكسر backward compatibility
+  → موافقة: Product Owner + Tech Lead
+  → مثال: إضافة feature جديدة لـ Epic موجود
+
+MAJOR VERSION (1.x.x):
+  → يغير Architecture أو Core Features
+  → قد يكسر backward compatibility
+  → موافقة: Full Product Committee
+  → مثال: تغيير نموذج البيانات الأساسي
+```
+
+---
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│           🏛️ END OF DOCUMENT                           │
+│                                                         │
+│   PRD-MAJLIS-001 — Version 1.0.0                       │
+│   Status: APPROVED FOR DEVELOPMENT                      │
+│                                                         │
+│   ما يحتويه هذا الـ PRD:                               │
+│                                                         │
+│   ✅ User Journey Maps (4 Personas)                    │
+│   ✅ Feature Backlog (150+ Features)                   │
+│   ✅ Sprint Plan (12 Weeks)                            │
+│   ✅ Functional Requirements (كل Feature)              │
+│   ✅ Non-Functional Requirements                        │
+│   ✅ API Design Contracts                               │
+│   ✅ Database Schema (SQL كامل)                        │
+│   ✅ Security & Compliance                              │
+│   ✅ Testing Requirements                               │
+│   ✅ Analytics Tracking Plan                            │
+│   ✅ Third-Party Integrations                           │
+│   ✅ Localization Requirements                          │
+│   ✅ Release Strategy                                   │
+│   ✅ Monitoring & Alerting                              │
+│   ✅ Acceptance Criteria                                │
+│   ✅ Change Management Process                          │
+│                                                         │
+│   الخطوة التالية:                                       │
+│   Information Architecture + Wireframes 🏛️            │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
